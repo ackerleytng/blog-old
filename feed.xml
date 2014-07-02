@@ -4,7 +4,7 @@
 <generator uri="https://github.com/mojombo/jekyll">Jekyll</generator>
 <link rel="self" type="application/atom+xml" href="http://ackerleytng.github.io/feed.xml" />
 <link rel="alternate" type="text/html" href="http://ackerleytng.github.io" />
-<updated>2014-07-03T00:54:07+08:00</updated>
+<updated>2014-07-03T01:04:14+08:00</updated>
 <id>http://ackerleytng.github.io/</id>
 <author>
   <name>Ackerley Tng</name>
@@ -130,10 +130,15 @@
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;lisp&quot;&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;setq&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;backup-directory-alist&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;((&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;.&amp;quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;~/.Trash&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)))&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-&lt;h2 id=&quot;multiple-cursorshttpsgithubcomemacsmirrormultiple-cursors&quot;&gt;&lt;a href=&quot;https://github.com/emacsmirror/multiple-cursors&quot;&gt;Multiple Cursors&lt;/a&gt;!&lt;/h2&gt;
+&lt;h3 id=&quot;multiple-cursorshttpsgithubcomemacsmirrormultiple-cursors&quot;&gt;&lt;a href=&quot;https://github.com/emacsmirror/multiple-cursors&quot;&gt;Multiple Cursors&lt;/a&gt;!&lt;/h3&gt;
 
 &lt;p&gt;Installation instructions are available &lt;a href=&quot;https://github.com/emacsmirror/multiple-cursors&quot;&gt;here&lt;/a&gt;, and you can explore the power of multiple cursors from this &lt;a href=&quot;http://emacsrocks.com/e13.html&quot;&gt;YouTube Video&lt;/a&gt;.&lt;/p&gt;
 
+&lt;h2 id=&quot;finally&quot;&gt;Finally&lt;/h2&gt;
+
+&lt;p&gt;The above is an agglomeration of information from various different sites.&lt;/p&gt;
+
+&lt;p&gt;Drop me a note if you’ve been here and found this useful (or not useful), or if you have questions! It’s my first contribution to the Internet, which has been helping me so much. Hope this help many other people :).&lt;/p&gt;
 
   &lt;p&gt;&lt;a href=&quot;http://ackerleytng.github.io/my-mac-emacs-setup/&quot;&gt;My Mac-Emacs Setup&lt;/a&gt; was originally published by Ackerley Tng at &lt;a href=&quot;http://ackerleytng.github.io&quot;&gt;Ackerley's Blog&lt;/a&gt; on July 01, 2014.&lt;/p&gt;</content>
 </entry>
