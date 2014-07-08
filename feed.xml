@@ -4,13 +4,63 @@
 <generator uri="https://github.com/mojombo/jekyll">Jekyll</generator>
 <link rel="self" type="application/atom+xml" href="http://ackerleytng.github.io/feed.xml" />
 <link rel="alternate" type="text/html" href="http://ackerleytng.github.io" />
-<updated>2014-07-03T01:42:37+08:00</updated>
+<updated>2014-07-09T04:39:34+08:00</updated>
 <id>http://ackerleytng.github.io/</id>
 <author>
   <name>Ackerley Tng</name>
   <uri>http://ackerleytng.github.io/</uri>
   <email>ackerleytng@gmail.com</email>
 </author>
+
+
+<entry>
+  <title type="html"><![CDATA[Reviving the WD Passport]]></title>
+ <link rel="alternate" type="text/html" href="http://ackerleytng.github.io/reviving-wd-passport/" />
+  <id>http://ackerleytng.github.io/reviving-wd-passport</id>
+  <updated>2014-07-08T00:00:00-00:00</updated>
+  <published>2014-07-08T00:00:00+08:00</published>
+  
+  <author>
+    <name>Ackerley Tng</name>
+    <uri>http://ackerleytng.github.io</uri>
+    <email>ackerleytng@gmail.com</email>
+  </author>
+  <content type="html">&lt;p&gt;So. I’m not sure if this is just luck, but I managed to revive a connection to my WD Passport (Essential SE). There are so many forum threads on the Internet that discuss this topic, but most are just cliffhangers that don’t provide real solutions.&lt;/p&gt;
+
+&lt;p&gt;It was neither being recognized on a Mac nor PC, even after:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Trying different cables&lt;/li&gt;
+  &lt;li&gt;Using the USB ports at the back of the computer instead of those in the front&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Here are some other suggestions that you might want to try if you have the resources or patience. I personally think that this is not an issue with power supply to the WD Passport, but you can still try:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Using a Y-cable, which is something like &lt;a href=&quot;http://en.wikipedia.org/wiki/File:Y-shaped_USB_3.0_cable.jpg&quot;&gt;this&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;Returning it to Western Digital for a new unit&lt;/li&gt;
+  &lt;li&gt;Disconnecting all unnecessary USB devices so that all the power goes to the WD Passport&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;revival-procedure&quot;&gt;Revival Procedure&lt;/h3&gt;
+
+&lt;p&gt;I used a desktop PC running 64-bit Windows 7, eventually, to connect to the WD Passport. The WD Passport was never used with this desktop before, hence we know that the drivers for the WD Passport was never installed from the web.&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Connect the WD Passport to the USB ports at the &lt;em&gt;back&lt;/em&gt; of a &lt;em&gt;desktop&lt;/em&gt; PC. Windows will probably attempt to install the WD Passport, but will not find the right drivers, because it is unable to identify the device.&lt;/li&gt;
+  &lt;li&gt;Go to Device Manager. You should see a USB device that has a yellow triangle next to it, indicating that the drivers for the WD Passport were not installed properly.&lt;/li&gt;
+  &lt;li&gt;Download and install the appropriate WD Passport drivers from &lt;a href=&quot;http://wdc.custhelp.com/app/answers/detail/a_id/1708/related/1/session/L2F2LzEvdGltZS8xNDA0ODUwMTc4L3NpZC8zd0ExaE9ZbA%3D%3D&quot;&gt;here&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;Go back to Device Manager. Right-click on the Unknown Device, then select “Update Driver Software”.&lt;/li&gt;
+  &lt;li&gt;Choose to browse your computer for driver software.&lt;/li&gt;
+  &lt;li&gt;Pick from a list of device drivers on your computer.&lt;/li&gt;
+  &lt;li&gt;From the list, choose Western Digital, then select WD SES Device. Complete that installation procedure and the WD Passport should now be recognized as a “WD SES Device”. The drive, however, is probably still not working.&lt;/li&gt;
+  &lt;li&gt;Unplug the WD Passport. (I unplugged the USB cable on the side of the WD Passport (as opposed to the side plugged into the computer)&lt;/li&gt;
+  &lt;li&gt;Plug it back in, and it should auto-detect and install, and work this time.&lt;/li&gt;
+  &lt;li&gt;You should probably grab everything you can from the drive and not use it again.&lt;/li&gt;
+&lt;/ol&gt;
+
+  &lt;p&gt;&lt;a href=&quot;http://ackerleytng.github.io/reviving-wd-passport/&quot;&gt;Reviving the WD Passport&lt;/a&gt; was originally published by Ackerley Tng at &lt;a href=&quot;http://ackerleytng.github.io&quot;&gt;Ackerley's Blog&lt;/a&gt; on July 08, 2014.&lt;/p&gt;</content>
+</entry>
 
 
 <entry>
