@@ -1,0 +1,98 @@
+<h2 id="1_emacs_distribution">1. Emacs distribution</h2>
+
+<p>There are a few distributions of Emacs, and I was looking for the cleanest, most vanilla Emacs, without sacrificing convenience. I went with emacs-app from Macports.</p>
+
+<p>The version I got was 24.3.1.</p>
+<div class='highlight'><pre><code class='bash'>sudo port install emacs-app
+</code></pre></div>
+<h2 id="2_running_emacs_as_a_daemon">2. Running Emacs as a Daemon</h2>
+
+<p>Advantage of running Emacs as a Daemon: all Emacs instances initialized from the Terminal will use the same Emacs process, allowing all of them to share the same buffers, command history etc.</p>
+
+<p>The idea here is to get OSX to start the daemon, aka Emacs server, when the system starts up, and then subsequently, emacsclient is used to connect to that server.</p>
+
+<p>There are some ways of starting the Emacs daemon automatically on system startup. I chose to use launchd because it felt like the cleanest method.</p>
+
+<h3 id="writing_plist_file">Writing plist file</h3>
+
+<p>OSX can be configured to read plist files on startup and start the Emacs daemon. Find out more about writing the plist file from <a href="https://developer.apple.com/library/mac/documentation/MacOSX/Conceptual/BPSystemStartup/Chapters/CreatingLaunchdJobs.html">Apple</a>.</p>
+<div class='highlight'><pre><code class='xml'><span class='cp'>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span>
+<span class='cp'>&lt;!DOCTYPE plist PUBLIC &quot;-//Apple//DTD PLIST 1.0//EN&quot; &quot;http://www.apple.com/DTDs/PropertyList-1.0.dtd&quot;&gt;</span>
+<span class='nt'>&lt;plist</span> <span class='na'>version=</span><span class='s'>&quot;1.0&quot;</span><span class='nt'>&gt;</span>
+<span class='nt'>&lt;dict&gt;</span>
+  <span class='nt'>&lt;key&gt;</span>Label<span class='nt'>&lt;/key&gt;</span>
+  <span class='nt'>&lt;string&gt;</span>gnu.emacs.daemon.plist<span class='nt'>&lt;/string&gt;</span>
+  <span class='nt'>&lt;key&gt;</span>ProgramArguments<span class='nt'>&lt;/key&gt;</span>
+  <span class='nt'>&lt;array&gt;</span>
+    <span class='nt'>&lt;string&gt;</span>/Applications/MacPorts/Emacs.app/Contents/MacOS/Emacs<span class='nt'>&lt;/string&gt;</span>
+    <span class='nt'>&lt;string&gt;</span>--daemon<span class='nt'>&lt;/string&gt;</span>
+  <span class='nt'>&lt;/array&gt;</span>
+  <span class='nt'>&lt;key&gt;</span>RunAtLoad<span class='nt'>&lt;/key&gt;</span>
+  <span class='nt'>&lt;true/&gt;</span>
+  <span class='nt'>&lt;key&gt;</span>ServiceDescription<span class='nt'>&lt;/key&gt;</span>
+  <span class='nt'>&lt;string&gt;</span>Gnu Emacs Daemon<span class='nt'>&lt;/string&gt;</span>
+  <span class='nt'>&lt;key&gt;</span>UserName<span class='nt'>&lt;/key&gt;</span>
+  <span class='nt'>&lt;string&gt;</span>[Your Username]<span class='nt'>&lt;/string&gt;</span>
+<span class='nt'>&lt;/dict&gt;</span>
+<span class='nt'>&lt;/plist&gt;</span>
+</code></pre></div>
+<p>The above plist file was named gnu.emacs.daemon.plist and was placed in the ~/Library/LaunchAgents/ directory.</p>
+
+<p>I chose the user’s LaunchAgents Directory as opposed to the system one to make this start only with my account.</p>
+
+<h3 id="checking_to_see_that_the_daemon_starts">Checking to see that the daemon starts</h3>
+
+<p>At this point, restart OSX.</p>
+
+<p>After restarting, to check that the daemon is running, open a Terminal window and do</p>
+<div class='highlight'><pre><code class='bash'>ps aux <span class='p'>|</span> grep Emacs
+</code></pre></div>
+<p>If it is running, you should see a process with this name</p>
+<div class='highlight'><pre><code class='bash'>/Applications/MacPorts/Emacs.app/Contents/MacOS/Emacs --daemon
+</code></pre></div>
+<h3 id="configuring_terminal_to_work_with_the_daemon">Configuring Terminal to work with the daemon</h3>
+
+<p>To do this simply, I set up two aliases in ~/.bash_profile</p>
+<div class='highlight'><pre><code class='bash'><span class='nb'>alias </span><span class='nv'>oe</span><span class='o'>=</span><span class='s2'>&quot;/Applications/MacPorts/Emacs.app/Contents/MacOS/bin/emacsclient -c -n&quot;</span>
+<span class='nb'>alias </span><span class='nv'>oie</span><span class='o'>=</span><span class='s2'>&quot;/Applications/MacPorts/Emacs.app/Contents/MacOS/bin/emacsclient -n&quot;</span>
+<span class='nb'>alias </span><span class='nv'>ed</span><span class='o'>=</span><span class='s2'>&quot;/Applications/MacPorts/Emacs.app/Contents/MacOS/Emacs --daemon&quot;</span>
+</code></pre></div>
+<p>oe is the command I use to open files, such as</p>
+<div class='highlight'><pre><code class='bash'>oe foobar.txt
+</code></pre></div>
+<p>and ed is used to start the daemon again in case the daemon was shut down.</p>
+
+<p>Using -c uses a graphical frame, otherwise if there is no existing graphical frame, nothing appears to happen in the terminal.</p>
+
+<p>oie allows me to open a file in an existing frame, if I choose to.</p>
+
+<p>Using -n allows you to continue using the same terminal window even after Emacs is opened.</p>
+
+<p>Using the above brings focus to the newly-opened Emacs window and away from the Terminal window.</p>
+
+<h3 id="closing_the_daemon">Closing the daemon</h3>
+
+<p>If there’s a need to close the daemon for whatever reason, just press Cmd+Q (on an open Emacs frame - it doesn’t work if you do that without an open Emacs frame) as you would for any other OSX program.</p>
+
+<h2 id="3_important_emacs_config">3. Important emacs config</h2>
+
+<p>This section contains emacs configuration files that I love to use</p>
+
+<h3 id="setting_default_window_size">Setting default window size</h3>
+<div class='highlight'><pre><code class='lisp'><span class='p'>(</span><span class='nv'>add-to-list</span> <span class='ss'>&#39;default-frame-alist</span> <span class='o'>&#39;</span><span class='p'>(</span><span class='nv'>height</span> <span class='o'>.</span> <span class='mi'>58</span><span class='p'>))</span>
+<span class='p'>(</span><span class='nv'>add-to-list</span> <span class='ss'>&#39;default-frame-alist</span> <span class='o'>&#39;</span><span class='p'>(</span><span class='nv'>width</span> <span class='o'>.</span> <span class='mi'>144</span><span class='p'>))</span>
+</code></pre></div>
+<h3 id="moving_all_backups_to_trash">Moving all backups to Trash</h3>
+
+<p>To remove clutter:</p>
+<div class='highlight'><pre><code class='lisp'><span class='p'>(</span><span class='k'>setq</span> <span class='nv'>backup-directory-alist</span> <span class='o'>&#39;</span><span class='p'>((</span><span class='s'>&quot;.&quot;</span> <span class='o'>.</span> <span class='s'>&quot;~/.Trash&quot;</span><span class='p'>)))</span>
+</code></pre></div>
+<h3 id="multiple_cursors"><a href="https://github.com/emacsmirror/multiple-cursors">Multiple Cursors</a>!</h3>
+
+<p>Installation instructions are available <a href="https://github.com/emacsmirror/multiple-cursors">here</a>, and you can explore the power of multiple cursors from this <a href="http://emacsrocks.com/e13.html">YouTube Video</a>.</p>
+
+<h2 id="4_finally">4. Finally</h2>
+
+<p>The above combines information from various different sites.</p>
+
+<p>Drop me a note if you’ve been here and found this useful (or not useful), or if you have questions! It’s my first contribution to the Internet, which has been helping me so much. Hope this will help many other people :).</p>
