@@ -4,13 +4,132 @@
 <generator uri="https://github.com/mojombo/jekyll">Jekyll</generator>
 <link rel="self" type="application/atom+xml" href="http://ackerleytng.github.io/feed.xml" />
 <link rel="alternate" type="text/html" href="http://ackerleytng.github.io" />
-<updated>2014-07-13T09:12:58+08:00</updated>
+<updated>2014-07-17T10:21:25+08:00</updated>
 <id>http://ackerleytng.github.io/</id>
 <author>
   <name>Ackerley Tng</name>
   <uri>http://ackerleytng.github.io/</uri>
   <email>ackerleytng@gmail.com</email>
 </author>
+
+
+<entry>
+  <title type="html"><![CDATA[Web Server Setup on my Mac]]></title>
+ <link rel="alternate" type="text/html" href="http://ackerleytng.github.io/web-server-setup/" />
+  <id>http://ackerleytng.github.io/web-server-setup</id>
+  <updated>2014-07-17T00:00:00-00:00</updated>
+  <published>2014-07-17T00:00:00+08:00</published>
+  
+  <author>
+    <name>Ackerley Tng</name>
+    <uri>http://ackerleytng.github.io</uri>
+    <email>ackerleytng@gmail.com</email>
+  </author>
+  <content type="html">&lt;p&gt;I used MacPorts to handle all of these installations. I guess I should have tried php54 or even php55, but I was partially following instructions &lt;a href=&quot;http://dsheiko.com/weblog/my-lovely-mac-os-x-web-development-environment&quot;&gt;here&lt;/a&gt; and wanted to just get something working first.&lt;/p&gt;
+
+&lt;p&gt;Here’s a list of commands&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;sudo port -v selfupdate
+sudo port upgrade outdated
+sudo port install apache2
+sudo port install php5 +apache2
+sudo port install php5-mysql
+sudo port install mysql56-server
+sudo port install phpmyadmin +php5
+
+sudo port select mysql mysql56
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Setting up mysql&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;sudo /opt/local/lib/mysql56/bin/mysql_install_db --user mysql
+sudo chown -R mysql:mysql /opt/local/var/db/mysql56/ 
+sudo chown -R mysql:mysql /opt/local/var/run/mysql56/ 
+sudo chown -R mysql:mysql /opt/local/var/log/mysql56/
+mysqladmin -u root -p password &amp;lt;new-password&amp;gt; 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Setting up PHP to work with apache&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;sudo  /opt/local/apache2/bin/apxs -a -e -n &quot;php5&quot; libphp5.so
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Update Apache’s httpd.conf file. Search for and modify&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;DirectoryIndex index.php index.html
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Add these lines to httpd.conf too&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# For PHP
+Include conf/extra/mod_php.conf
+
+# For phpMyAdmin
+Include conf/extra/httpd-phpmyadmin.conf
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Create /opt/local/apache2/conf/extra/httpd-phpmyadmin.conf and add the following as contents&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;AliasMatch ^/phpmyadmin(?:/)?(/.*)?$ &quot;/opt/local/www/phpmyadmin$1&quot;
+
+&amp;lt;Directory &quot;/opt/local/www/phpmyadmin&quot;&amp;gt;
+    Options -Indexes
+    AllowOverride None
+    Order allow,deny
+    Allow from all
+    LanguagePriority en de es fr ja ko pt-br ru 
+    ForceLanguagePriority Prefer Fallback
+&amp;lt;/Directory&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Edit phpMyAdmin config file: /opt/local/www/phpmyadmin/config.inc.php&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$cfg[&#39;Servers&#39;][$i][&#39;auth_type&#39;] = &#39;config&#39;;
+$cfg[&#39;Servers&#39;][$i][&#39;user&#39;] = &#39;root&#39;;
+$cfg[&#39;Servers&#39;][$i][&#39;password&#39;] = &#39;&amp;lt;new-password&amp;gt;&#39;;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;PHP config files&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;cd /opt/local/etc/php5
+sudo cp php.ini-development php.ini
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Follow instructions from MacPorts&lt;/p&gt;
+
+&lt;p&gt;To use mysqlnd with a local MySQL server, edit /opt/local/etc/php5/php.ini and set mysql.default_socket,
+mysqli.default_socket and pdo_mysql.default_socket to the path to your MySQL server’s socket file.&lt;/p&gt;
+
+&lt;p&gt;For mysql5, use /opt/local/var/run/mysql5/mysqld.sock
+For mysql51, use /opt/local/var/run/mysql51/mysqld.sock
+For mysql55, use /opt/local/var/run/mysql55/mysqld.sock
+For mysql56, use /opt/local/var/run/mysql56/mysqld.sock
+For mariadb, use /opt/local/var/run/mariadb/mysqld.sock
+For percona, use /opt/local/var/run/percona/mysqld.sock&lt;/p&gt;
+
+&lt;p&gt;To prevent auto-starting of the daemons on boot, I did&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;sudo launchctl unload /Library/LaunchDaemons/org.macports.apache2.plist
+sudo launchctl unload /Library/LaunchDaemons/org.macports.mysql56-server.plist
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;But I believe you could use this too&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;sudo port unload apache2
+sudo port unload mysql-server
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Setting up aliases in ~/.bash_profile&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;alias apachestart=&quot;sudo /opt/local/apache2/bin/apachectl -k start&quot;
+alias apachestop=&quot;sudo /opt/local/apache2/bin/apachectl -k stop&quot;
+alias apacherestart=&quot;sudo /opt/local/apache2/bin/apachectl -k restart&quot;
+alias mysqlstart=&quot;sudo /opt/local/lib/mysql56/bin/mysqld_safe &amp;amp;&quot;
+alias mysqlstop=&quot;mysqladmin -u root -p shutdown&quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+  &lt;p&gt;&lt;a href=&quot;http://ackerleytng.github.io/web-server-setup/&quot;&gt;Web Server Setup on my Mac&lt;/a&gt; was originally published by Ackerley Tng at &lt;a href=&quot;http://ackerleytng.github.io&quot;&gt;Ackerley's Blog&lt;/a&gt; on July 17, 2014.&lt;/p&gt;</content>
+</entry>
 
 
 <entry>
