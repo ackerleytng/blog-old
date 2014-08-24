@@ -5,25 +5,25 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
 <head>
 <meta charset="utf-8">
-<title>A Pure WinAVR Setup &#8211; Ackerley's Blog</title>
-<meta name="description" content="A Pure WinAVR Setup">
-<meta name="keywords" content="winavr, arduino, atmel, atmel2560, avrispmkii, setup">
+<title>Emacs-Tramp-Terminator-Integration &#8211; Ackerley's Blog</title>
+<meta name="description" content="Emacs-Tramp-Terminator-Integration">
+<meta name="keywords" content="emacs, terminator, tramp, iterm">
 
 
 
 <!-- Open Graph -->
 <meta property="og:locale" content="en_US">
 <meta property="og:type" content="article">
-<meta property="og:title" content="A Pure WinAVR Setup">
-<meta property="og:description" content="A Pure WinAVR Setup">
-<meta property="og:url" content="http://ackerleytng.github.io/pure-winavr/">
+<meta property="og:title" content="Emacs-Tramp-Terminator-Integration">
+<meta property="og:description" content="Emacs-Tramp-Terminator-Integration">
+<meta property="og:url" content="http://ackerleytng.github.io/emacs-tramp-terminator-integration/">
 <meta property="og:site_name" content="Ackerley's Blog">
 
 
 
 
 
-<link rel="canonical" href="http://ackerleytng.github.io/pure-winavr/">
+<link rel="canonical" href="http://ackerleytng.github.io/emacs-tramp-terminator-integration/">
 <link href="http://ackerleytng.github.io/feed.xml" type="application/atom+xml" rel="alternate" title="Ackerley's Blog Feed">
 
 
@@ -106,7 +106,7 @@
 <div class="entry-header">
   <div class="image-credit">Image source: <a href="http://www.dargadgetz.com/ios-7-abstract-wallpaper-pack-for-iphone-5-and-ipod-touch-retina/">dargadgetz</a></div><!-- /.image-credit -->
   <div class="entry-image">
-    <img src="http://ackerleytng.github.io/images/abstract-3.jpg" alt="A Pure WinAVR Setup">
+    <img src="http://ackerleytng.github.io/images/abstract-3.jpg" alt="Emacs-Tramp-Terminator-Integration">
   </div><!-- /.entry-image -->
 </div><!-- /.entry-header -->
 
@@ -116,39 +116,79 @@
     <header class="header-title">
       <div class="header-title-wrap">
         
-          <h1 class="entry-title"><a href="http://ackerleytng.github.io/pure-winavr/" rel="bookmark" title="A Pure WinAVR Setup">A Pure WinAVR Setup</a></h1>
+          <h1 class="entry-title"><a href="http://ackerleytng.github.io/emacs-tramp-terminator-integration/" rel="bookmark" title="Emacs-Tramp-Terminator-Integration">Emacs-Tramp-Terminator-Integration</a></h1>
         
-        <h2>July 31, 2014</h2>
+        <h2>August 23, 2014</h2>
         
         <p class="entry-reading-time">
           <i class="fa fa-clock-o"></i>
           
-          Reading time ~1 minute
+          Reading time ~2 minutes
         </p><!-- /.entry-reading-time -->
         
       </div><!-- /.header-title-wrap -->
     </header>
     <div class="entry-content">
-      <p>This describes how to use WinAVR with the AVRISP mkII Programmer <em>without</em> using Atmel Studio. This has been tried on Windows 7.</p>
+      <p>iTerm2 has a feature called <a href="http://iterm2.com/triggers.html">Triggers</a> which doesn’t seem to exist in any of the Linux terminal emulators.</p>
 
-<ol>
-  <li>Install WinAVR from <a href="http://sourceforge.net/projects/winavr/files/">SourceForge</a></li>
-  <li>Download libusb-win32 from <a href="http://sourceforge.net/p/libusb-win32/wiki/Home/">SourceForge</a></li>
-  <li>Unzip and open the libusb-win32-bin-1.2.6.0/bin/ folder</li>
-  <li>Run inf-wizard.exe with the AVRISP mkII Programmer plugged in</li>
-  <li>Follow the instructions and allow the wizard to do the driver installation for you.</li>
-</ol>
+<p>Terminator has a plugin system, so I hacked together something that would parse emacs-formatted ‘urls’ and open those urls in Emacs over Tramp. The concept of tying triggers with the terminal emulator is borrowed from my ECE MEng advisor, Prof. (Christopher Batten)[http://www.csl.cornell.edu/~cbatten/].</p>
+
+<h2 id="concept">Concept</h2>
+
+<p>The idea is as follows. ssh into the research server to access source code there. Instead of customizing Emacs on every server you work with, customize only one - the one on the computer that you ssh from.</p>
+
+<p>Generate a string containing information about the current user and server IP address, and the path to the file you want to edit.</p>
+
+<p>I do this using a bash function added to .bashrc on the remote server:</p>
+
+<pre><code># Remote emacsclient trigger
+function oe() {
+    user=$(whoami)
+    file=$(echo "$1" | tr -d ' ')
+    hostname=$(hostname -I | tr -d ' ')
+    workingdir=$(pwd | tr -d ' ')
+    echo "remote-emacsclient-trigger[[[/$user@${hostname}:${workingdir}/${file}]]]"
+}
+</code></pre>
+
+<p>So say I’m in /home/user/ on the remote server and I’m working on blah.</p>
+
+<pre><code>oe blah
+</code></pre>
+
+<p>will cause the remote server to echo</p>
+
+<pre><code>remote-emacsclient-trigger[[[/user@123.123.123.123:/home/user/blah]]]
+</code></pre>
+
+<p>In iTerm2, the trigger can pick up the string and in turn start a coprocess with the line <code>emacsclient -c -n &lt;the content between [[[ and ]]]&gt;</code>, using regex matches.</p>
+
+<p>The following plugin, written for Terminator, will give you a similar effect, except you have to right click on the part between <code>[[[</code> and <code>]]]</code>, and click open link.</p>
+
+<p><a href="http://ackerleytng.github.io/post_downloads/activate_emacs.py">Download</a></p>
+
+<p>Place that file in /usr/share/terminator/terminatorlib/plugins/activate_emacs.py and restart Terminator, then right click and click Preferences, go to the Plugins tab and check the ActivateEmacs plugin.</p>
+
+<h2 id="the-process">The process</h2>
+
+<p>There’s little documentation on plugin writing, so it took a while to look through the examples and other plugins to start. Fortunately Terminator’s code could mostly be found in /usr/share/terminator/, but unfortunately it still takes time to scan through all the code.</p>
+
+<p>There are lots of functions in terminator’s code to do with matching, but I believe those are only activated on mouseovers rather than as they appear in the terminal.</p>
+
+<p>The URLHandler plugin sounds like it could parse any text or string - it can, but only on mouseovers. The <code>callback()</code> function is something that is meant to transform the ‘url’ that matched to another url for a web browser to open; it does not perform actions on the matched string directly.</p>
+
+<p>(Jocelyn’s comment)[http://www.tenshu.net/2010/04/writing-terminator-plugins.html?showComment=1350573521137#c3847139789739776267] was so super useful in writing my plugin!</p>
 
       <footer class="entry-meta">
-        <span class="entry-tags"><a href="http://ackerleytng.github.io/tags/#winavr" title="Pages tagged winavr" class="tag">winavr</a><a href="http://ackerleytng.github.io/tags/#arduino" title="Pages tagged arduino" class="tag">arduino</a><a href="http://ackerleytng.github.io/tags/#atmel" title="Pages tagged atmel" class="tag">atmel</a><a href="http://ackerleytng.github.io/tags/#atmel2560" title="Pages tagged atmel2560" class="tag">atmel2560</a><a href="http://ackerleytng.github.io/tags/#avrispmkii" title="Pages tagged avrispmkii" class="tag">avrispmkii</a><a href="http://ackerleytng.github.io/tags/#setup" title="Pages tagged setup" class="tag">setup</a></span>
-        <span><a href="http://ackerleytng.github.io/pure-winavr/" rel="bookmark" title="A Pure WinAVR Setup">A Pure WinAVR Setup</a> was published on <span class="entry-date date published updated"><time datetime="2014-07-31T00:00:00+08:00">July 31, 2014</time></span></span>
-        (revised: <span class="entry-date date modified"><time datetime="2014-07-31">07/31/2014</time></span>)
+        <span class="entry-tags"><a href="http://ackerleytng.github.io/tags/#emacs" title="Pages tagged emacs" class="tag">emacs</a><a href="http://ackerleytng.github.io/tags/#terminator" title="Pages tagged terminator" class="tag">terminator</a><a href="http://ackerleytng.github.io/tags/#tramp" title="Pages tagged tramp" class="tag">tramp</a><a href="http://ackerleytng.github.io/tags/#iterm" title="Pages tagged iterm" class="tag">iterm</a></span>
+        <span><a href="http://ackerleytng.github.io/emacs-tramp-terminator-integration/" rel="bookmark" title="Emacs-Tramp-Terminator-Integration">Emacs-Tramp-Terminator-Integration</a> was published on <span class="entry-date date published updated"><time datetime="2014-08-23T00:00:00+08:00">August 23, 2014</time></span></span>
+        (revised: <span class="entry-date date modified"><time datetime="2014-08-23">08/23/2014</time></span>)
         <span class="author vcard"><span class="fn"><a href="http://ackerleytng.github.io/about/" title="About Ackerley Tng">Ackerley Tng</a></span></span>
         <div class="social-share">
           <ul class="socialcount socialcount-small inline-list">
-            <li class="facebook"><a href="https://www.facebook.com/sharer/sharer.php?u=http://ackerleytng.github.io/pure-winavr/" title="Share on Facebook"><span class="count"><i class="fa fa-facebook-square"></i> Like</span></a></li>
-            <li class="twitter"><a href="https://twitter.com/intent/tweet?text=http://ackerleytng.github.io/pure-winavr/" title="Share on Twitter"><span class="count"><i class="fa fa-twitter-square"></i> Tweet</span></a></li>
-            <li class="googleplus"><a href="https://plus.google.com/share?url=http://ackerleytng.github.io/pure-winavr/" title="Share on Google Plus"><span class="count"><i class="fa fa-google-plus-square"></i> +1</span></a></li>
+            <li class="facebook"><a href="https://www.facebook.com/sharer/sharer.php?u=http://ackerleytng.github.io/emacs-tramp-terminator-integration/" title="Share on Facebook"><span class="count"><i class="fa fa-facebook-square"></i> Like</span></a></li>
+            <li class="twitter"><a href="https://twitter.com/intent/tweet?text=http://ackerleytng.github.io/emacs-tramp-terminator-integration/" title="Share on Twitter"><span class="count"><i class="fa fa-twitter-square"></i> Tweet</span></a></li>
+            <li class="googleplus"><a href="https://plus.google.com/share?url=http://ackerleytng.github.io/emacs-tramp-terminator-integration/" title="Share on Google Plus"><span class="count"><i class="fa fa-google-plus-square"></i> +1</span></a></li>
           </ul>
         </div><!-- /.social-share -->
       </footer>
@@ -158,11 +198,11 @@
     <div class="read-more">
       
         <div class="read-more-header">
-          <a href="http://ackerleytng.github.io/wireless-at-sgx/" class="read-more-btn">Read More</a>
+          <a href="http://ackerleytng.github.io/pure-winavr/" class="read-more-btn">Read More</a>
         </div><!-- /.read-more-header -->
         <div class="read-more-content">
-          <h3><a href="http://ackerleytng.github.io/emacs-tramp-terminator-integration/" title="Emacs-Tramp-Terminator-Integration">Emacs-Tramp-Terminator-Integration</a></h3>
-          <p>Emacs-Tramp-Terminator-Integration <a href="http://ackerleytng.github.io/emacs-tramp-terminator-integration/">Continue reading</a></p>
+          <h3><a href="http://ackerleytng.github.io/pure-winavr/" title="A Pure WinAVR Setup">A Pure WinAVR Setup</a></h3>
+          <p>A Pure WinAVR Setup <a href="http://ackerleytng.github.io/pure-winavr/">Continue reading</a></p>
         </div><!-- /.read-more-content -->
       
       <div class="read-more-list">
