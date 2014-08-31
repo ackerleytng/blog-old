@@ -4,13 +4,346 @@
 <generator uri="https://github.com/mojombo/jekyll">Jekyll</generator>
 <link rel="self" type="application/atom+xml" href="http://ackerleytng.github.io/feed.xml" />
 <link rel="alternate" type="text/html" href="http://ackerleytng.github.io" />
-<updated>2014-08-24T10:15:07+08:00</updated>
+<updated>2014-08-31T12:58:12+08:00</updated>
 <id>http://ackerleytng.github.io/</id>
 <author>
   <name>Ackerley Tng</name>
   <uri>http://ackerleytng.github.io/</uri>
   <email>ackerleytng@gmail.com</email>
 </author>
+
+
+<entry>
+  <title type="html"><![CDATA[CPF Reading]]></title>
+ <link rel="alternate" type="text/html" href="http://ackerleytng.github.io/cpf-reading/" />
+  <id>http://ackerleytng.github.io/cpf-reading</id>
+  <updated>2014-08-25T00:00:00-00:00</updated>
+  <published>2014-08-25T00:00:00+08:00</published>
+  
+  <author>
+    <name>Ackerley Tng</name>
+    <uri>http://ackerleytng.github.io</uri>
+    <email>ackerleytng@gmail.com</email>
+  </author>
+  <content type="html">&lt;p&gt;This is a really messy set of reading notes. Might just be easier to go and re-read from the website in future.&lt;/p&gt;
+
+&lt;h2 id=&quot;definitions&quot;&gt;Definitions&lt;/h2&gt;
+
+&lt;p&gt;Annuity: Any continuing payment with a fixed total annual amount.
+Life annuity: Insurance schemes that secure you a steady cash flow for retirement years&lt;/p&gt;
+
+&lt;p&gt;Source: &lt;a href=&quot;http://mycpf.cpf.gov.sg/CPF/About-Us/Intro/Intro.htm&quot;&gt;CPF&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;cpf&quot;&gt;CPF&lt;/h2&gt;
+
+&lt;p&gt;Central Provident Fund (CPF) is a comprehensive social security savings plan.&lt;/p&gt;
+
+&lt;p&gt;Scope and benefits of CPF are&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Retirement &lt;/li&gt;
+  &lt;li&gt;Healthcare &lt;/li&gt;
+  &lt;li&gt;Home Ownership &lt;/li&gt;
+  &lt;li&gt;Family Protection &lt;/li&gt;
+  &lt;li&gt;Asset Enhancement&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Both Singaporeans and their employers make monthly contributions to the CPF and these contributions go into three accounts:
+- Ordinary (OA): to buy a home, pay for CPF insurance, investment, education
+- Special (SA): for old age and investment in retirement-related financial products
+- Medisave (MA): hospitalization expenses and approved medical insurance&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Retirement (RA): created on the 55th birthday by transferring savings from SA and OA.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&amp;lt;TODO after this transfer happens, does the SA and OA cease to exist? (Seems like the answer is no)&amp;gt;&lt;/p&gt;
+
+&lt;p&gt;CPF savings earn a minimum risk-free interest of 2.5% guaranteed by the government.
+The first $60,000 in your combined CPF balances, with up to $20,000 from your Ordinary Account, will earn an extra 1% interest &amp;lt;TODO How exactly does this 20k work?&amp;gt;&lt;/p&gt;
+
+&lt;p&gt;When the savings are transferred from SA and OA to RA, this forms the minimum sum (MS).&lt;/p&gt;
+
+&lt;h2 id=&quot;minimum-sum-ms-scheme&quot;&gt;Minimum Sum (MS) Scheme&lt;/h2&gt;
+
+&lt;p&gt;The MS Scheme provides CPF members a monthly income to support a basic standard of living during retirement for about 20 years.&lt;/p&gt;
+
+&lt;p&gt;The MS is the amount to set aside in your RA for your retirement needs.&lt;/p&gt;
+
+&lt;p&gt;MS is raised gradually every year (perhaps because of increasing healthcare costs and cost of living), and adjusted (upwards) for inflation.
+55th birthday on or after 1 July 2014: MS = $155k&lt;/p&gt;
+
+&lt;p&gt;At age 55, SA, followed by OA will be transferred to RA to meet MS. If SA, OA are not enough for MS, property purchased using CPF savings will be automatically pledged for up to half of your MS. Pledge amount will be the amount of CPF used for the property or the MS shortfall, whichever is lower.&lt;/p&gt;
+
+&lt;p&gt;If you sell the property &amp;lt;TODO that was pledged? Or any property bought using money from OA?&amp;gt; you need to refund CPF used to buy it, and accrued interest. &amp;lt;TODO accrued interest based on what? and at what interest rate?&amp;gt; This refunded amount will count towards the MS and MMS.&lt;/p&gt;
+
+&lt;p&gt;If after 55, amount in RA &amp;lt; MS, any new inflows will count towards that shortfall.&lt;/p&gt;
+
+&lt;p&gt;After setting aside MS and MMS, you can withdraw the remaining cash balances, or keep the savings in CPF to earn interest.&lt;/p&gt;
+
+&lt;p&gt;You can use the MS to join the CPF LIFE annuity scheme.&lt;/p&gt;
+
+&lt;h3 id=&quot;my-numerical-example&quot;&gt;My numerical example&lt;/h3&gt;
+
+&lt;p&gt;(Arbitrary units)&lt;/p&gt;
+
+&lt;p&gt;At age 55:
+SA: 9u
+OA: 8u
+MS: 20u
+Property purchased using CPF: 6u &amp;lt;TODO why do we use the amount that was spent on the property? the property might have appreciated (or depreciated. If MS is meant for retirement then the actual value of the property should be taken into account.)&amp;gt;&lt;/p&gt;
+
+&lt;p&gt;9u + 8u &amp;lt; 20u, hence property automatically pledged for up to half of MS.
+Half of MS = 10u
+Pledged value from property = 20 
+20 - 6 - 8 - 9 = 3u&lt;/p&gt;
+
+&lt;p&gt;Can withdraw 3u at 55 years of age.&lt;/p&gt;
+
+&lt;p&gt;&amp;lt;TODO Is this correct?&amp;gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;receiving-the-ms-monthly-payment&quot;&gt;Receiving the MS monthly payment&lt;/h3&gt;
+
+&lt;p&gt;Apply to receive MS monthly payment when you reach DDA.&lt;/p&gt;
+
+&lt;p&gt;MS scheme provides a monthly payment until MS runs out.&lt;/p&gt;
+
+&lt;p&gt;Example: 4% interest, pa. for person with $39500 at age 55, will get $351 per month for 20 years&lt;/p&gt;
+
+&lt;p&gt;If you do not wish to start monthly payments at DDA, then you will receive payouts over a longer period of time. &amp;lt;TODO Why is this the case? is it because interest will allow the sum in the RA to grow and hence you can spread the amount over a wider time period?&amp;gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;topping-up-cpf&quot;&gt;Topping up CPF&lt;/h3&gt;
+
+&lt;p&gt;You can top-up SA or RA savings using cash (yourself or loved ones) if and enjoy a tax relief of up to $7000 ($7000 more for the rest).&lt;/p&gt;
+
+&lt;p&gt;You can also top up CPF MS using your CPF, only if you meet the MS requirement.&lt;/p&gt;
+
+&lt;h4 id=&quot;maximum-top-ups&quot;&gt;Maximum top-ups&lt;/h4&gt;
+
+&lt;p&gt;&amp;lt;TODO Why is there a maximum for top-ups?&amp;gt;&lt;/p&gt;
+
+&lt;p&gt;Recipient &amp;lt; 55 years old:
+MS - (SA balance + amounts withdrawn from SA under CPF-IS)&lt;/p&gt;
+
+&lt;p&gt;Recipient &amp;gt;= 55 years old:
+MS - RA - interest earned on RA since 55 years - govt grants - amts withdrawn
+&amp;lt;TODO RA balance is the same as RA balance less amounts withdrawn right?&amp;gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;drawdown-age-dda&quot;&gt;Drawdown Age (DDA)&lt;/h4&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;Year of Birth&lt;/th&gt;
+      &lt;th&gt;Drawdown Age&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&amp;lt;= 1943&lt;/td&gt;
+      &lt;td&gt;60&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;1944 -&amp;gt; 1949&lt;/td&gt;
+      &lt;td&gt;62&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;1950, 1951&lt;/td&gt;
+      &lt;td&gt;63&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;1952, 1953&lt;/td&gt;
+      &lt;td&gt;64&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&amp;gt;= 1954&lt;/td&gt;
+      &lt;td&gt;65&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h3 id=&quot;exemption-from-ms&quot;&gt;Exemption from MS&lt;/h3&gt;
+
+&lt;p&gt;May apply for exemption from MS if:
+- have your own life annuity bought using cash. The monthly payment you receive from the life annuity &amp;gt;= MS monthly payment.
+- are a pensioner receiving a monthly pension &amp;gt;= MS monthly payment&lt;/p&gt;
+
+&lt;h3 id=&quot;medisave-minimum-sum-mms-scheme&quot;&gt;Medisave Minimum Sum (MMS) Scheme&lt;/h3&gt;
+
+&lt;p&gt;The Medisave Minimum Sum (MMS) is the amount you need to retain in your MA for healthcare needs. You may choose to withdraw any excess Medisave savings on or after 55 subject to the applicable withdrawal rules &amp;lt;TODO which are?&amp;gt; after meeting CPF MS requirement. Otherwise, transfer money from SA then OA to MA to meet MMS, then withdraw the rest.&lt;/p&gt;
+
+&lt;p&gt;Current MMS is $43,500.&lt;/p&gt;
+
+&lt;h2 id=&quot;cpf-life&quot;&gt;CPF LIFE&lt;/h2&gt;
+
+&lt;p&gt;CPF LIFE = CPF Lifelong Income For the Elderly. Is an annuity scheme that Provides citizens and PRs with a monthly payout from your drawdown age (DDA) for as long as you &lt;em&gt;live&lt;/em&gt; (for the rest of your life). &lt;requirements abstracted=&quot;&quot;&gt; Will be placed on CPF life if you have at least $40,000 in your RA at age 55 or $60,000 in RA at DDA. Can apply to join CPF LIFE anytime between age 55 and 80 if you&#39;re not placed on CPF LIFE.&lt;/requirements&gt;&lt;/p&gt;
+
+&lt;p&gt;&amp;lt;TODO What is the reason for automatically placing some people on the scheme and not some other people, based on the amount they have in the RA when they reach 55?&amp;gt;&lt;/p&gt;
+
+&lt;p&gt;Two LIFE plans:
+- LIFE Standard plan: higher monthly payouts, lower bequests (default)
+- LIFE Basic plan: lower monthly payouts, higher bequests&lt;/p&gt;
+
+&lt;p&gt;You will have 6 months from your 55th birthday to choose between the above two plans.&lt;/p&gt;
+
+&lt;p&gt;All cash savings in the RA at DDA will be used for the CPF LIFE plan. Any money added to the RA after DDA will be paid out as Additional Monthly Payout (AMP).&lt;/p&gt;
+
+&lt;p&gt;Savings used for CPF LIFE will continue to earn interest. Interest will be added every January.
+Interest earned on annuity premium will be added to annuity fund. Annuity fund is also known as the Lifelong Income Fund.
+Annuity fund = Annuity premium + interest earned on premium + 1% more interest if you’re on the LIFE Standard Plan &amp;lt;TODO does the CPF LIFE Standard plan really give you 1% more interest?&amp;gt;.&lt;/p&gt;
+
+&lt;p&gt;If you’re above DDA and there is extra money in your RA &lt;todo i=&quot;&quot; suppose=&quot;&quot; extra=&quot;&quot; means=&quot;&quot;&gt; MS?&amp;gt;, then you have two options
+1. Leave the money in RA and have it paid out as AMP
+2. Choose to buy another annuity for higher annuity payout&lt;/todo&gt;&lt;/p&gt;
+
+&lt;p&gt;There will be 1% extra interest paid on the first $60,000 of combined balances, from all of SMRA accounts + the annuity premium.
+1% extra interest:
+LIFE Basic: Interest goes to RA, will be paid as part of monthly CPF LIFE payout. When total balance falls below $60,000, then the extra interest will reduce.
+LIFE Standard: Interest goes to annuity fund. Stable payout for the rest of your life.&lt;/p&gt;
+
+&lt;p&gt;Amount for monthly payout will vary based on reviews - life expectancy rates, investment income, transactions. Will be notified 2-3 months before change in monthly payout.&lt;/p&gt;
+
+&lt;p&gt;To receive higher payouts from CPF LIFE, you can make cash or CPF top-ups into your RA if you have not reached your topping-up limit.
+Topping up limit = difference between MS and RA balance
+RA balance = cash set aside in RA, not including interest earned, govt grants, amounts withdrawn.
+Top up RA to buy extra CPF LIFE annuity to get higher CPF LIFE payout.
+Monthly payouts go to bank account by GIRO, every 4th of the month. If payouts are not successful, the payouts will go into CPF OA.&lt;/p&gt;
+
+&lt;p&gt;MSCC = 0.5 MS&lt;/p&gt;
+
+&lt;h2 id=&quot;premium-payment&quot;&gt;Premium Payment&lt;/h2&gt;
+
+&lt;p&gt;No minimum for joining CPF LIFE, but amount in RA used for CPF LIFE is positively correlated with monthly payout.
+Max amount that you can commit to CPF LIFE = MS.
+Can pledge property to meet the MS, can withdraw RA savings above MSCC. (Payouts will be affected by pledging of property)&lt;/p&gt;
+
+&lt;h3 id=&quot;life-standard-plan-premium-payment&quot;&gt;LIFE Standard Plan Premium Payment&lt;/h3&gt;
+&lt;p&gt;Annuity premium taken from RA in 2 instalments.
+1. At 55: deduct RA savings up to Minimum Sum Cash Component (MSCC). The rest of the RA savings stay in the RA. &amp;lt;TODO what is the point of having the money in the RA stay in the RA? What can I do with RA money anyway, other than start to draw it out at DDA?&amp;gt;
+2. 1 to 2 months before DDA: deduct the rest of RA savings. Will include
+   - Top-ups
+   - Transferral of funds from other accounts into RA
+   - Interest earned
+   - Refunds from selling property/investments&lt;/p&gt;
+
+&lt;p&gt;From DDA: monthly payouts from the annuity fund.&lt;/p&gt;
+
+&lt;h3 id=&quot;life-basic-plan-premium-payment&quot;&gt;LIFE Basic Plan Premium Payment&lt;/h3&gt;
+&lt;p&gt;Annuity premium taken from RA in 2 instalments.
+1. At 55: small portion of RA as first instalment: About 10%
+2. 1 to 2 months before DDA: A small portion of new money that was built up&lt;/p&gt;
+
+&lt;p&gt;From DDA: monthly payouts, paid from RA until 1 month before 90 years of age. After 90, monthly for life&lt;/p&gt;
+
+&lt;h3 id=&quot;payouts&quot;&gt;Payouts&lt;/h3&gt;
+
+&lt;p&gt;Not fixed, reviewed every year or when the money from RA is used to buy property.&lt;/p&gt;
+
+&lt;p&gt;Reasons for review:
+- Changes in life expectancy rates
+- Changes in investment income
+- Transactions might affect RA balance, such as
+  - Refund of money from selling property
+  - Top-ups
+  - Lump sum withdrawals
+- If LIFE Basic was chosen, then the amount committed might fall below $60,000&lt;/p&gt;
+
+&lt;p&gt;Indication from infographic: Male member 55 years old, joins Standard plan with $155,000, can expect to receive $1200 per month.
+(/ 155000.0 1200.0) = 129.2 months
+(/ 129.2 12) = 10.76 years&lt;/p&gt;
+
+&lt;h3 id=&quot;higher-payouts&quot;&gt;Higher Payouts&lt;/h3&gt;
+
+&lt;p&gt;Make cash or CPF top-ups into RA if you have not reached your topping-up limit.
+Topping-up limit = difference between current MS and RA balance.
+RA balance = cash set aside in RA, not including interest earned, govt grants received, amounts withdrawn&lt;/p&gt;
+
+&lt;h3 id=&quot;bequests&quot;&gt;Bequests&lt;/h3&gt;
+
+&lt;p&gt;All unused annuity premium and RA savings will be refunded to CPF OA, which will then be paid to beneficiaries along with savings.&lt;/p&gt;
+
+&lt;h3 id=&quot;leaving-cpf-life&quot;&gt;Leaving CPF LIFE&lt;/h3&gt;
+
+&lt;p&gt;Can only leave CPF LIFE if
+- Medical condition that causes you to
+  - be permanently unfit for employment &lt;?! - you aren&#39;t supposed to be working anyway right?&gt;
+  - have a severly reduced life expectancy
+  - be terminally ill &lt;second two=&quot;&quot; points=&quot;&quot; are=&quot;&quot; the=&quot;&quot; same=&quot;&quot; thing=&quot;&quot;&gt;
+- You will leave Singapore or West Malaysia permanently with no intention of returning for work or to live
+- You are fully exempted from the MS scheme because you are receiving a monthly pension or annuity payout&lt;/second&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;refund&quot;&gt;Refund&lt;/h3&gt;
+
+&lt;p&gt;Refund is your unused annuity premium.
+If you are already receiving a monthly pension or payout under a personal annuity, you may apply to be exempted from the MS Scheme &amp;lt;TODO exempted from MS scheme or CPF LIFE?&amp;gt;.
+If the MS scheme does not apply to you, you may choose to leave CPF LIFE.&lt;/p&gt;
+
+&lt;h2 id=&quot;medisave-account&quot;&gt;Medisave Account&lt;/h2&gt;
+
+&lt;p&gt;Monthly contributions to MA for healthcare needs.&lt;/p&gt;
+
+&lt;p&gt;Using money in Medisave Account:
+- Pay for your own or your dependants’ hospitalization expenses
+- Pay for outpatient treatments like chemotherapy or radiotherapy
+- Pay premiums for Medishield or insurance plans under the Private Medical Insurance Scheme (PMIS)
+  - These help to pay for expenses arising from the insured’s hospitalizations and certain outpatient treatments at certain medical institutions
+- Eldershield: a severe disability insurance scheme that provides insurance coverage to those who require long term care&lt;/p&gt;
+
+&lt;p&gt;Medifund is available to help the poor and needy with medical bills&lt;/p&gt;
+
+&lt;p&gt;&amp;lt;TODO follow links under this section on http://mycpf.cpf.gov.sg/Members/Gen-Info/Sch-Svc/S-and-S.htm&amp;gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;property&quot;&gt;Property&lt;/h2&gt;
+
+&lt;p&gt;Your OA savings can be used to buy a home under CPF housing schemes
+- HDB under Public Housing Scheme
+- Private property under Private Properties Scheme&lt;/p&gt;
+
+&lt;p&gt;Can pay for full or part payment of property, and service the monthly housing payments.
+If you buy a flat under the Public Housing Scheme, you need to be insured under the Home Protection Scheme.
+If you already own property bought with CPF savings and wish to buy another property with CPF savings, you can do that only if
+-  &amp;lt; 55: You keep half the MS
+- &amp;gt;= 55: All of MS&lt;/p&gt;
+
+&lt;h2 id=&quot;cpf-investments&quot;&gt;CPF Investments&lt;/h2&gt;
+
+&lt;p&gt;Money from OA and SA can be invested in CPF Investment Schemes&lt;/p&gt;
+
+&lt;h2 id=&quot;education-scheme&quot;&gt;Education Scheme&lt;/h2&gt;
+
+&lt;p&gt;Loan scheme that allows CPF savings to be used for full-time tertiary education&lt;/p&gt;
+
+&lt;h2 id=&quot;transferring-savings-from-oa-to-sa&quot;&gt;Transferring Savings from OA to SA&lt;/h2&gt;
+
+&lt;p&gt;Can only transfer when you are &amp;lt; 55 years old.&lt;/p&gt;
+
+&lt;p&gt;Amount in SA must not exceed the CPF MS after the transfer. This allows higher interest rate of SA.&lt;/p&gt;
+
+&lt;h2 id=&quot;supplementary-retirement-scheme-srs&quot;&gt;Supplementary Retirement Scheme (SRS)&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Voluntary scheme that complements the CPF.&lt;/li&gt;
+  &lt;li&gt;Contribute to the SRS at your own discretion.&lt;/li&gt;
+  &lt;li&gt;Contributions may be used to purchase various investment instruments.&lt;/li&gt;
+  &lt;li&gt;SRS has attractive tax benefits.
+    &lt;ul&gt;
+      &lt;li&gt;Contributions are eligible for tax relief&lt;/li&gt;
+      &lt;li&gt;Investment returns are tax-free (except for Singapore dividends)&lt;/li&gt;
+      &lt;li&gt;Only 50% of withdrawals from SRS are taxable at retirement &amp;lt;TODO taxed at retirement, or withdrawn at retirement?&amp;gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;voluntary-contributions&quot;&gt;Voluntary Contributions&lt;/h2&gt;
+
+&lt;p&gt;Voluntary contributions to CPF allowed, to all three accounts. Contributions to the MA is tax-deductible. Voluntary contributions are subject to the CPF Annual Limit. Above that, contributions will be refunded without interest &amp;lt;TODO refunded immediately, or when?&amp;gt;. Contributions to the MA are subject to the Medisave Contribution Ceiling (MCC).&lt;/p&gt;
+
+&lt;p&gt;CPF Annual Limit is $30,600. From 2015, the Annual Limit will be $31,450.
+Voluntary contributions = CPF Annual Limit - Mandatory contributions&lt;/p&gt;
+
+
+  &lt;p&gt;&lt;a href=&quot;http://ackerleytng.github.io/cpf-reading/&quot;&gt;CPF Reading&lt;/a&gt; was originally published by Ackerley Tng at &lt;a href=&quot;http://ackerleytng.github.io&quot;&gt;Ackerley's Blog&lt;/a&gt; on August 25, 2014.&lt;/p&gt;</content>
+</entry>
 
 
 <entry>
