@@ -4,13 +4,102 @@
 <generator uri="https://github.com/mojombo/jekyll">Jekyll</generator>
 <link rel="self" type="application/atom+xml" href="http://ackerleytng.github.io/feed.xml" />
 <link rel="alternate" type="text/html" href="http://ackerleytng.github.io" />
-<updated>2014-09-28T14:49:52+08:00</updated>
+<updated>2014-10-05T22:31:25+08:00</updated>
 <id>http://ackerleytng.github.io/</id>
 <author>
   <name>Ackerley Tng</name>
   <uri>http://ackerleytng.github.io/</uri>
   <email>ackerleytng@gmail.com</email>
 </author>
+
+
+<entry>
+  <title type="html"><![CDATA[GitLab Hacking]]></title>
+ <link rel="alternate" type="text/html" href="http://ackerleytng.github.io/gitlab-hacking/" />
+  <id>http://ackerleytng.github.io/gitlab-hacking</id>
+  <updated>2014-10-03T00:00:00-00:00</updated>
+  <published>2014-10-03T00:00:00+08:00</published>
+  
+  <author>
+    <name>Ackerley Tng</name>
+    <uri>http://ackerleytng.github.io</uri>
+    <email>ackerleytng@gmail.com</email>
+  </author>
+  <content type="html">&lt;h1 id=&quot;to-disable-minifying-of-the-js-file-comment-this-line-out&quot;&gt;To disable minifying of the js file, comment this line out&lt;/h1&gt;
+
+&lt;pre&gt;&lt;code&gt;user@ubuntu:/opt/gitlab/embedded$ sudo vim ./service/gitlab-rails/config/environments/production.rb
+#config.assets.js_compressor = :uglifier
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1 id=&quot;gitlab-rake-is-a-script-that-sets-a-default-user-and-does-bundle-exec-rake&quot;&gt;gitlab-rake is a script that sets a default user and does bundle exec rake&lt;/h1&gt;
+
+&lt;p&gt;Needs permission to write, so change permissions for public folder&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;sudo chmod a+w public
+cd public
+sudo chmod a+w assets
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1 id=&quot;to-recompile-fully&quot;&gt;To recompile fully&lt;/h1&gt;
+
+&lt;pre&gt;&lt;code&gt;sudo gitlab-rake assets:clobber --trace # this step is sort of optional if you don&#39;t want to completely clean it out
+sudo gitlab-rake assets:precompile --trace
+sudo gitlab-ctl restart
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1 id=&quot;add-all-accepted-mimetypes-to-this-file&quot;&gt;Add all accepted mimetypes to this file&lt;/h1&gt;
+
+&lt;pre&gt;&lt;code&gt;/opt/gitlab/embedded$ sudo vim service/gitlab-rails/app/assets/javascripts/markdown_area.js.coffee
+acceptedFiles: &quot;image/*,audio/*,video/*,application/*,text/*&quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1 id=&quot;add-extensions-for-acceptable-files-here&quot;&gt;Add extensions for acceptable files here:&lt;/h1&gt;
+
+&lt;pre&gt;&lt;code&gt;/opt/gitlab/embedded$ sudo vim service/gitlab-rails/app/services/projects/image_service.rb
+
+def accepted_images
+  %w(png jpg jpeg gif pdf zip tar.gz)
+end
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1 id=&quot;change-the-function-formatlink&quot;&gt;Change the function formatLink&lt;/h1&gt;
+
+&lt;pre&gt;&lt;code&gt;/opt/gitlab/embedded$ sudo vim service/gitlab-rails/app/assets/javascripts/markdown_area.js.coffee
+  
+String::endsWith = (s) -&amp;gt; s is &#39;&#39; or @[-s.length..] is s
+  
+formatLink = (str) -&amp;gt;
+  image_extensions = [&#39;jpg&#39;, &#39;gif&#39;, &#39;jpeg&#39;, &#39;png&#39;]
+  
+  is_image = false
+  for ext in image_extensions
+    is_image = is_image | str.url.toLowerCase().endsWith(ext)
+  
+  if is_image
+    &quot;![&quot; + str.alt + &quot;](&quot; + str.url + &quot;)&quot;
+  else
+    &quot;[&quot; + str.alt + &quot;](&quot; + str.url + &quot;)&quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1 id=&quot;changing-html-in-views-changing-the-text&quot;&gt;Changing html in views (changing the text)&lt;/h1&gt;
+
+&lt;p&gt;Go to /opt/gitlab/embedded/service/gitlab-rails/app/views/projects/wikis
+Modify the .haml files.
+Restart server to see effects&lt;/p&gt;
+
+&lt;p&gt;Replace &lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;.pull-right Attach images (JPG, PNG, GIF) by dragging &amp;amp; dropping or #{link_to &quot;selecting them&quot;, &#39;#&#39;, class: &#39;markdown-selector&#39; }.
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;with&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;.pull-right Attach files: zip, tar.gz, pdf, png, jpg, jpeg, gif by dragging &amp;amp; dropping them.
+&lt;/code&gt;&lt;/pre&gt;
+
+
+  &lt;p&gt;&lt;a href=&quot;http://ackerleytng.github.io/gitlab-hacking/&quot;&gt;GitLab Hacking&lt;/a&gt; was originally published by Ackerley Tng at &lt;a href=&quot;http://ackerleytng.github.io&quot;&gt;Ackerley's Blog&lt;/a&gt; on October 03, 2014.&lt;/p&gt;</content>
+</entry>
 
 
 <entry>

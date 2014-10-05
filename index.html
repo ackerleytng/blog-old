@@ -122,6 +122,99 @@
 <article class="hentry">
   <header>
     <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2014-10-03T00:00:00+08:00"><a href="http://ackerleytng.github.io/gitlab-hacking/">October 03, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://ackerleytng.github.io/about/" title="About Ackerley Tng">Ackerley Tng</a></span></span>&nbsp; &bull; &nbsp;<span class="entry-comments"><a href="http://ackerleytng.github.io/gitlab-hacking/#disqus_thread">Comment</a></span>
+      
+      <span class="entry-reading-time pull-right">
+        <i class="fa fa-clock-o"></i>
+        
+        Reading time ~1 minute
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="http://ackerleytng.github.io/gitlab-hacking/" rel="bookmark" title="GitLab Hacking" itemprop="url">GitLab Hacking</a></h1>
+    
+  </header>
+  <div class="entry-content">
+    <h1 id="to-disable-minifying-of-the-js-file-comment-this-line-out">To disable minifying of the js file, comment this line out</h1>
+
+<pre><code>user@ubuntu:/opt/gitlab/embedded$ sudo vim ./service/gitlab-rails/config/environments/production.rb
+#config.assets.js_compressor = :uglifier
+</code></pre>
+
+<h1 id="gitlab-rake-is-a-script-that-sets-a-default-user-and-does-bundle-exec-rake">gitlab-rake is a script that sets a default user and does bundle exec rake</h1>
+
+<p>Needs permission to write, so change permissions for public folder</p>
+
+<pre><code>sudo chmod a+w public
+cd public
+sudo chmod a+w assets
+</code></pre>
+
+<h1 id="to-recompile-fully">To recompile fully</h1>
+
+<pre><code>sudo gitlab-rake assets:clobber --trace # this step is sort of optional if you don't want to completely clean it out
+sudo gitlab-rake assets:precompile --trace
+sudo gitlab-ctl restart
+</code></pre>
+
+<h1 id="add-all-accepted-mimetypes-to-this-file">Add all accepted mimetypes to this file</h1>
+
+<pre><code>/opt/gitlab/embedded$ sudo vim service/gitlab-rails/app/assets/javascripts/markdown_area.js.coffee
+acceptedFiles: "image/*,audio/*,video/*,application/*,text/*"
+</code></pre>
+
+<h1 id="add-extensions-for-acceptable-files-here">Add extensions for acceptable files here:</h1>
+
+<pre><code>/opt/gitlab/embedded$ sudo vim service/gitlab-rails/app/services/projects/image_service.rb
+
+def accepted_images
+  %w(png jpg jpeg gif pdf zip tar.gz)
+end
+</code></pre>
+
+<h1 id="change-the-function-formatlink">Change the function formatLink</h1>
+
+<pre><code>/opt/gitlab/embedded$ sudo vim service/gitlab-rails/app/assets/javascripts/markdown_area.js.coffee
+  
+String::endsWith = (s) -&gt; s is '' or @[-s.length..] is s
+  
+formatLink = (str) -&gt;
+  image_extensions = ['jpg', 'gif', 'jpeg', 'png']
+  
+  is_image = false
+  for ext in image_extensions
+    is_image = is_image | str.url.toLowerCase().endsWith(ext)
+  
+  if is_image
+    "![" + str.alt + "](" + str.url + ")"
+  else
+    "[" + str.alt + "](" + str.url + ")"
+</code></pre>
+
+<h1 id="changing-html-in-views-changing-the-text">Changing html in views (changing the text)</h1>
+
+<p>Go to /opt/gitlab/embedded/service/gitlab-rails/app/views/projects/wikis
+Modify the .haml files.
+Restart server to see effects</p>
+
+<p>Replace </p>
+
+<pre><code>.pull-right Attach images (JPG, PNG, GIF) by dragging &amp; dropping or #{link_to "selecting them", '#', class: 'markdown-selector' }.
+</code></pre>
+
+<p>with</p>
+
+<pre><code>.pull-right Attach files: zip, tar.gz, pdf, png, jpg, jpeg, gif by dragging &amp; dropping them.
+</code></pre>
+
+
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
+
+<article class="hentry">
+  <header>
+    <div class="entry-meta">
       <span class="entry-date date published updated"><time datetime="2014-09-08T00:00:00+08:00"><a href="http://ackerleytng.github.io/buddhist-script-pali-sanskrit/">September 08, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://ackerleytng.github.io/about/" title="About Ackerley Tng">Ackerley Tng</a></span></span>&nbsp; &bull; &nbsp;<span class="entry-comments"><a href="http://ackerleytng.github.io/buddhist-script-pali-sanskrit/#disqus_thread">Comment</a></span>
       
       <span class="entry-reading-time pull-right">
@@ -661,36 +754,6 @@ function oe() {
   </div><!-- /.entry-content -->
 </article><!-- /.hentry -->
 
-<article class="hentry">
-  <header>
-    <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2014-07-31T00:00:00+08:00"><a href="http://ackerleytng.github.io/pure-winavr/">July 31, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://ackerleytng.github.io/about/" title="About Ackerley Tng">Ackerley Tng</a></span></span>&nbsp; &bull; &nbsp;<span class="entry-comments"><a href="http://ackerleytng.github.io/pure-winavr/#disqus_thread">Comment</a></span>
-      
-      <span class="entry-reading-time pull-right">
-        <i class="fa fa-clock-o"></i>
-        
-        Reading time ~1 minute
-      </span><!-- /.entry-reading-time -->
-      
-    </div><!-- /.entry-meta -->
-    
-      <h1 class="entry-title"><a href="http://ackerleytng.github.io/pure-winavr/" rel="bookmark" title="A Pure WinAVR Setup" itemprop="url">A Pure WinAVR Setup</a></h1>
-    
-  </header>
-  <div class="entry-content">
-    <p>This describes how to use WinAVR with the AVRISP mkII Programmer <em>without</em> using Atmel Studio. This has been tried on Windows 7.</p>
-
-<ol>
-  <li>Install WinAVR from <a href="http://sourceforge.net/projects/winavr/files/">SourceForge</a></li>
-  <li>Download libusb-win32 from <a href="http://sourceforge.net/p/libusb-win32/wiki/Home/">SourceForge</a></li>
-  <li>Unzip and open the libusb-win32-bin-1.2.6.0/bin/ folder</li>
-  <li>Run inf-wizard.exe with the AVRISP mkII Programmer plugged in</li>
-  <li>Follow the instructions and allow the wizard to do the driver installation for you.</li>
-</ol>
-
-  </div><!-- /.entry-content -->
-</article><!-- /.hentry -->
-
 
 <div class="pagination">
   
@@ -712,6 +775,12 @@ function oe() {
       <li>
         
           <a href="http://ackerleytng.github.io/page3">3</a>
+        
+      </li>
+    
+      <li>
+        
+          <a href="http://ackerleytng.github.io/page4">4</a>
         
       </li>
     
