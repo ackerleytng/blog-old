@@ -136,13 +136,13 @@
     
   </header>
   <div class="entry-content">
-    <h1 id="to-disable-minifying-of-the-js-file-comment-this-line-out">To disable minifying of the js file, comment this line out</h1>
+    <h2 id="to-disable-minifying-of-the-js-file-comment-this-line-out">To disable minifying of the js file, comment this line out</h2>
 
 <pre><code>user@ubuntu:/opt/gitlab/embedded$ sudo vim ./service/gitlab-rails/config/environments/production.rb
 #config.assets.js_compressor = :uglifier
 </code></pre>
 
-<h1 id="gitlab-rake-is-a-script-that-sets-a-default-user-and-does-bundle-exec-rake">gitlab-rake is a script that sets a default user and does bundle exec rake</h1>
+<h2 id="gitlab-rake-is-a-script-that-sets-a-default-user-and-does-bundle-exec-rake">gitlab-rake is a script that sets a default user and does bundle exec rake</h2>
 
 <p>Needs permission to write, so change permissions for public folder</p>
 
@@ -151,20 +151,20 @@ cd public
 sudo chmod a+w assets
 </code></pre>
 
-<h1 id="to-recompile-fully">To recompile fully</h1>
+<h2 id="to-recompile-fully">To recompile fully</h2>
 
 <pre><code>sudo gitlab-rake assets:clobber --trace # this step is sort of optional if you don't want to completely clean it out
 sudo gitlab-rake assets:precompile --trace
 sudo gitlab-ctl restart
 </code></pre>
 
-<h1 id="add-all-accepted-mimetypes-to-this-file">Add all accepted mimetypes to this file</h1>
+<h2 id="add-all-accepted-mimetypes-to-this-file">Add all accepted mimetypes to this file</h2>
 
 <pre><code>/opt/gitlab/embedded$ sudo vim service/gitlab-rails/app/assets/javascripts/markdown_area.js.coffee
 acceptedFiles: "image/*,audio/*,video/*,application/*,text/*"
 </code></pre>
 
-<h1 id="add-extensions-for-acceptable-files-here">Add extensions for acceptable files here:</h1>
+<h2 id="add-extensions-for-acceptable-files-here">Add extensions for acceptable files here:</h2>
 
 <pre><code>/opt/gitlab/embedded$ sudo vim service/gitlab-rails/app/services/projects/image_service.rb
 
@@ -173,7 +173,7 @@ def accepted_images
 end
 </code></pre>
 
-<h1 id="change-the-function-formatlink">Change the function formatLink</h1>
+<h2 id="change-the-function-formatlink">Change the function formatLink</h2>
 
 <pre><code>/opt/gitlab/embedded$ sudo vim service/gitlab-rails/app/assets/javascripts/markdown_area.js.coffee
   
@@ -192,7 +192,7 @@ formatLink = (str) -&gt;
     "[" + str.alt + "](" + str.url + ")"
 </code></pre>
 
-<h1 id="changing-html-in-views-changing-the-text">Changing html in views (changing the text)</h1>
+<h2 id="changing-html-in-views-changing-the-text">Changing html in views (changing the text)</h2>
 
 <p>Go to /opt/gitlab/embedded/service/gitlab-rails/app/views/projects/wikis
 Modify the .haml files.
