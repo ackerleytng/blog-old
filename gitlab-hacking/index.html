@@ -157,13 +157,19 @@ sudo gitlab-ctl restart
 acceptedFiles: "image/*,audio/*,video/*,application/*,text/*"
 </code></pre>
 
-<h2 id="add-extensions-for-acceptable-files-here">Add extensions for acceptable files here:</h2>
+<h2 id="disable-checking-of-extensions">Disable checking of extensions</h2>
 
 <pre><code>/opt/gitlab/embedded$ sudo vim service/gitlab-rails/app/services/projects/image_service.rb
+</code></pre>
 
-def accepted_images
-  %w(png jpg jpeg gif pdf zip tar.gz)
-end
+<p>Replace</p>
+
+<pre><code>if image &amp;&amp; correct_mime_type?(image)
+</code></pre>
+
+<p>with</p>
+
+<pre><code>if image
 </code></pre>
 
 <h2 id="change-the-function-formatlink">Change the function formatLink</h2>
@@ -198,9 +204,15 @@ Restart server to see effects</p>
 
 <p>with</p>
 
-<pre><code>.pull-right Attach files: zip, tar.gz, pdf, png, jpg, jpeg, gif by dragging &amp; dropping them.
+<pre><code>.pull-right Attach files by dragging &amp; dropping.
 </code></pre>
 
+<h2 id="change-maximum-filesize-for-uploads">Change maximum filesize for uploads</h2>
+
+<pre><code>/opt/gitlab/embedded$ sudo vim service/gitlab-rails/app/assets/javascripts/markdown_area.js.coffee
+</code></pre>
+
+<p>Change line 29</p>
 
       <footer class="entry-meta">
         <span class="entry-tags"><a href="http://ackerleytng.github.io/tags/#gitlab" title="Pages tagged gitlab" class="tag">gitlab</a><a href="http://ackerleytng.github.io/tags/#hacking" title="Pages tagged hacking" class="tag">hacking</a><a href="http://ackerleytng.github.io/tags/#ruby" title="Pages tagged ruby" class="tag">ruby</a><a href="http://ackerleytng.github.io/tags/#rails" title="Pages tagged rails" class="tag">rails</a></span>

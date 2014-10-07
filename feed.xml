@@ -4,7 +4,7 @@
 <generator uri="https://github.com/mojombo/jekyll">Jekyll</generator>
 <link rel="self" type="application/atom+xml" href="http://ackerleytng.github.io/feed.xml" />
 <link rel="alternate" type="text/html" href="http://ackerleytng.github.io" />
-<updated>2014-10-05T22:34:32+08:00</updated>
+<updated>2014-10-07T19:55:19+08:00</updated>
 <id>http://ackerleytng.github.io/</id>
 <author>
   <name>Ackerley Tng</name>
@@ -53,13 +53,19 @@ sudo gitlab-ctl restart
 acceptedFiles: &quot;image/*,audio/*,video/*,application/*,text/*&quot;
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;h2 id=&quot;add-extensions-for-acceptable-files-here&quot;&gt;Add extensions for acceptable files here:&lt;/h2&gt;
+&lt;h2 id=&quot;disable-checking-of-extensions&quot;&gt;Disable checking of extensions&lt;/h2&gt;
 
 &lt;pre&gt;&lt;code&gt;/opt/gitlab/embedded$ sudo vim service/gitlab-rails/app/services/projects/image_service.rb
+&lt;/code&gt;&lt;/pre&gt;
 
-def accepted_images
-  %w(png jpg jpeg gif pdf zip tar.gz)
-end
+&lt;p&gt;Replace&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;if image &amp;amp;&amp;amp; correct_mime_type?(image)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;with&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;if image
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;h2 id=&quot;change-the-function-formatlink&quot;&gt;Change the function formatLink&lt;/h2&gt;
@@ -94,9 +100,15 @@ Restart server to see effects&lt;/p&gt;
 
 &lt;p&gt;with&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;.pull-right Attach files: zip, tar.gz, pdf, png, jpg, jpeg, gif by dragging &amp;amp; dropping them.
+&lt;pre&gt;&lt;code&gt;.pull-right Attach files by dragging &amp;amp; dropping.
 &lt;/code&gt;&lt;/pre&gt;
 
+&lt;h2 id=&quot;change-maximum-filesize-for-uploads&quot;&gt;Change maximum filesize for uploads&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code&gt;/opt/gitlab/embedded$ sudo vim service/gitlab-rails/app/assets/javascripts/markdown_area.js.coffee
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Change line 29&lt;/p&gt;
 
   &lt;p&gt;&lt;a href=&quot;http://ackerleytng.github.io/gitlab-hacking/&quot;&gt;GitLab Hacking&lt;/a&gt; was originally published by Ackerley Tng at &lt;a href=&quot;http://ackerleytng.github.io&quot;&gt;Ackerley's Blog&lt;/a&gt; on October 03, 2014.&lt;/p&gt;</content>
 </entry>
