@@ -4,13 +4,37 @@
 <generator uri="https://github.com/mojombo/jekyll">Jekyll</generator>
 <link rel="self" type="application/atom+xml" href="http://ackerleytng.github.io/feed.xml" />
 <link rel="alternate" type="text/html" href="http://ackerleytng.github.io" />
-<updated>2014-10-07T23:18:51+08:00</updated>
+<updated>2014-11-23T18:47:32+08:00</updated>
 <id>http://ackerleytng.github.io/</id>
 <author>
   <name>Ackerley Tng</name>
   <uri>http://ackerleytng.github.io/</uri>
   <email>ackerleytng@gmail.com</email>
 </author>
+
+
+<entry>
+  <title type="html"><![CDATA[Fried Okra!]]></title>
+ <link rel="alternate" type="text/html" href="http://ackerleytng.github.io/fried-okra/" />
+  <id>http://ackerleytng.github.io/fried-okra</id>
+  <updated>2014-11-19T00:00:00-00:00</updated>
+  <published>2014-11-19T00:00:00+08:00</published>
+  
+  <author>
+    <name>Ackerley Tng</name>
+    <uri>http://ackerleytng.github.io</uri>
+    <email>ackerleytng@gmail.com</email>
+  </author>
+  <content type="html">&lt;p&gt;First try:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://ackerleytng.github.io/post_images/fried-okra-0.jpg&quot; alt=&quot;fried-okra-0&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Second try:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://ackerleytng.github.io/post_images/fried-okra-1.jpg&quot; alt=&quot;fried-okra-1&quot; /&gt;&lt;/p&gt;
+
+  &lt;p&gt;&lt;a href=&quot;http://ackerleytng.github.io/fried-okra/&quot;&gt;Fried Okra!&lt;/a&gt; was originally published by Ackerley Tng at &lt;a href=&quot;http://ackerleytng.github.io&quot;&gt;Ackerley's Blog&lt;/a&gt; on November 19, 2014.&lt;/p&gt;</content>
+</entry>
 
 
 <entry>

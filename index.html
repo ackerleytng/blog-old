@@ -122,6 +122,34 @@
 <article class="hentry">
   <header>
     <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2014-11-19T00:00:00+08:00"><a href="http://ackerleytng.github.io/fried-okra/">November 19, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://ackerleytng.github.io/about/" title="About Ackerley Tng">Ackerley Tng</a></span></span>&nbsp; &bull; &nbsp;<span class="entry-comments"><a href="http://ackerleytng.github.io/fried-okra/#disqus_thread">Comment</a></span>
+      
+      <span class="entry-reading-time pull-right">
+        <i class="fa fa-clock-o"></i>
+        
+        Reading time ~1 minute
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="http://ackerleytng.github.io/fried-okra/" rel="bookmark" title="Fried Okra!" itemprop="url">Fried Okra!</a></h1>
+    
+  </header>
+  <div class="entry-content">
+    <p>First try:</p>
+
+<p><img src="http://ackerleytng.github.io/post_images/fried-okra-0.jpg" alt="fried-okra-0" /></p>
+
+<p>Second try:</p>
+
+<p><img src="http://ackerleytng.github.io/post_images/fried-okra-1.jpg" alt="fried-okra-1" /></p>
+
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
+
+<article class="hentry">
+  <header>
+    <div class="entry-meta">
       <span class="entry-date date published updated"><time datetime="2014-10-03T00:00:00+08:00"><a href="http://ackerleytng.github.io/gitlab-hacking/">October 03, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://ackerleytng.github.io/about/" title="About Ackerley Tng">Ackerley Tng</a></span></span>&nbsp; &bull; &nbsp;<span class="entry-comments"><a href="http://ackerleytng.github.io/gitlab-hacking/#disqus_thread">Comment</a></span>
       
       <span class="entry-reading-time pull-right">
@@ -714,76 +742,6 @@ If you already own property bought with CPF savings and wish to buy another prop
 <p>CPF Annual Limit is $30,600. From 2015, the Annual Limit will be $31,450.
 Voluntary contributions = CPF Annual Limit - Mandatory contributions</p>
 
-
-  </div><!-- /.entry-content -->
-</article><!-- /.hentry -->
-
-<article class="hentry">
-  <header>
-    <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2014-08-23T00:00:00+08:00"><a href="http://ackerleytng.github.io/emacs-tramp-terminator-integration/">August 23, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://ackerleytng.github.io/about/" title="About Ackerley Tng">Ackerley Tng</a></span></span>&nbsp; &bull; &nbsp;<span class="entry-comments"><a href="http://ackerleytng.github.io/emacs-tramp-terminator-integration/#disqus_thread">Comment</a></span>
-      
-      <span class="entry-reading-time pull-right">
-        <i class="fa fa-clock-o"></i>
-        
-        Reading time ~2 minutes
-      </span><!-- /.entry-reading-time -->
-      
-    </div><!-- /.entry-meta -->
-    
-      <h1 class="entry-title"><a href="http://ackerleytng.github.io/emacs-tramp-terminator-integration/" rel="bookmark" title="Emacs-Tramp-Terminator-Integration" itemprop="url">Emacs-Tramp-Terminator-Integration</a></h1>
-    
-  </header>
-  <div class="entry-content">
-    <p>iTerm2 has a feature called <a href="http://iterm2.com/triggers.html">Triggers</a> which doesn’t seem to exist in any of the Linux terminal emulators.</p>
-
-<p>Terminator has a plugin system, so I hacked together something that would parse emacs-formatted ‘urls’ and open those urls in Emacs over Tramp. The concept of tying triggers with the terminal emulator is borrowed from my ECE MEng advisor, Prof. (Christopher Batten)[http://www.csl.cornell.edu/~cbatten/].</p>
-
-<h2 id="concept">Concept</h2>
-
-<p>The idea is as follows. ssh into the research server to access source code there. Instead of customizing Emacs on every server you work with, customize only one - the one on the computer that you ssh from.</p>
-
-<p>Generate a string containing information about the current user and server IP address, and the path to the file you want to edit.</p>
-
-<p>I do this using a bash function added to .bashrc on the remote server:</p>
-
-<pre><code># Remote emacsclient trigger
-function oe() {
-    user=$(whoami)
-    file=$(echo "$1" | tr -d ' ')
-    hostname=$(hostname -I | tr -d ' ')
-    workingdir=$(pwd | tr -d ' ')
-    echo "remote-emacsclient-trigger[[[/$user@${hostname}:${workingdir}/${file}]]]"
-}
-</code></pre>
-
-<p>So say I’m in /home/user/ on the remote server and I’m working on blah.</p>
-
-<pre><code>oe blah
-</code></pre>
-
-<p>will cause the remote server to echo</p>
-
-<pre><code>remote-emacsclient-trigger[[[/user@123.123.123.123:/home/user/blah]]]
-</code></pre>
-
-<p>In iTerm2, the trigger can pick up the string and in turn start a coprocess with the line <code>emacsclient -c -n &lt;the content between [[[ and ]]]&gt;</code>, using regex matches.</p>
-
-<p>The following plugin, written for Terminator, will give you a similar effect, except you have to right click on the part between <code>[[[</code> and <code>]]]</code>, and click open link.</p>
-
-<p><a href="http://ackerleytng.github.io/post_downloads/activate_emacs.py">Download</a></p>
-
-<p>Place that file in /usr/share/terminator/terminatorlib/plugins/activate_emacs.py and restart Terminator, then right click and click Preferences, go to the Plugins tab and check the ActivateEmacs plugin.</p>
-
-<h2 id="the-process">The process</h2>
-
-<p>There’s little documentation on plugin writing, so it took a while to look through the examples and other plugins to start. Fortunately Terminator’s code could mostly be found in /usr/share/terminator/, but unfortunately it still takes time to scan through all the code.</p>
-
-<p>There are lots of functions in terminator’s code to do with matching, but I believe those are only activated on mouseovers rather than as they appear in the terminal.</p>
-
-<p>The URLHandler plugin sounds like it could parse any text or string - it can, but only on mouseovers. The <code>callback()</code> function is something that is meant to transform the ‘url’ that matched to another url for a web browser to open; it does not perform actions on the matched string directly.</p>
-
-<p><a href="http://www.tenshu.net/2010/04/writing-terminator-plugins.html?showComment=1350573521137#c3847139789739776267">Jocelyn’s comment</a> was so super useful in writing this plugin!</p>
 
   </div><!-- /.entry-content -->
 </article><!-- /.hentry -->

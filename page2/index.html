@@ -122,6 +122,76 @@
 <article class="hentry">
   <header>
     <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2014-08-23T00:00:00+08:00"><a href="http://ackerleytng.github.io/emacs-tramp-terminator-integration/">August 23, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://ackerleytng.github.io/about/" title="About Ackerley Tng">Ackerley Tng</a></span></span>&nbsp; &bull; &nbsp;<span class="entry-comments"><a href="http://ackerleytng.github.io/emacs-tramp-terminator-integration/#disqus_thread">Comment</a></span>
+      
+      <span class="entry-reading-time pull-right">
+        <i class="fa fa-clock-o"></i>
+        
+        Reading time ~2 minutes
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="http://ackerleytng.github.io/emacs-tramp-terminator-integration/" rel="bookmark" title="Emacs-Tramp-Terminator-Integration" itemprop="url">Emacs-Tramp-Terminator-Integration</a></h1>
+    
+  </header>
+  <div class="entry-content">
+    <p>iTerm2 has a feature called <a href="http://iterm2.com/triggers.html">Triggers</a> which doesn’t seem to exist in any of the Linux terminal emulators.</p>
+
+<p>Terminator has a plugin system, so I hacked together something that would parse emacs-formatted ‘urls’ and open those urls in Emacs over Tramp. The concept of tying triggers with the terminal emulator is borrowed from my ECE MEng advisor, Prof. (Christopher Batten)[http://www.csl.cornell.edu/~cbatten/].</p>
+
+<h2 id="concept">Concept</h2>
+
+<p>The idea is as follows. ssh into the research server to access source code there. Instead of customizing Emacs on every server you work with, customize only one - the one on the computer that you ssh from.</p>
+
+<p>Generate a string containing information about the current user and server IP address, and the path to the file you want to edit.</p>
+
+<p>I do this using a bash function added to .bashrc on the remote server:</p>
+
+<pre><code># Remote emacsclient trigger
+function oe() {
+    user=$(whoami)
+    file=$(echo "$1" | tr -d ' ')
+    hostname=$(hostname -I | tr -d ' ')
+    workingdir=$(pwd | tr -d ' ')
+    echo "remote-emacsclient-trigger[[[/$user@${hostname}:${workingdir}/${file}]]]"
+}
+</code></pre>
+
+<p>So say I’m in /home/user/ on the remote server and I’m working on blah.</p>
+
+<pre><code>oe blah
+</code></pre>
+
+<p>will cause the remote server to echo</p>
+
+<pre><code>remote-emacsclient-trigger[[[/user@123.123.123.123:/home/user/blah]]]
+</code></pre>
+
+<p>In iTerm2, the trigger can pick up the string and in turn start a coprocess with the line <code>emacsclient -c -n &lt;the content between [[[ and ]]]&gt;</code>, using regex matches.</p>
+
+<p>The following plugin, written for Terminator, will give you a similar effect, except you have to right click on the part between <code>[[[</code> and <code>]]]</code>, and click open link.</p>
+
+<p><a href="http://ackerleytng.github.io/post_downloads/activate_emacs.py">Download</a></p>
+
+<p>Place that file in /usr/share/terminator/terminatorlib/plugins/activate_emacs.py and restart Terminator, then right click and click Preferences, go to the Plugins tab and check the ActivateEmacs plugin.</p>
+
+<h2 id="the-process">The process</h2>
+
+<p>There’s little documentation on plugin writing, so it took a while to look through the examples and other plugins to start. Fortunately Terminator’s code could mostly be found in /usr/share/terminator/, but unfortunately it still takes time to scan through all the code.</p>
+
+<p>There are lots of functions in terminator’s code to do with matching, but I believe those are only activated on mouseovers rather than as they appear in the terminal.</p>
+
+<p>The URLHandler plugin sounds like it could parse any text or string - it can, but only on mouseovers. The <code>callback()</code> function is something that is meant to transform the ‘url’ that matched to another url for a web browser to open; it does not perform actions on the matched string directly.</p>
+
+<p><a href="http://www.tenshu.net/2010/04/writing-terminator-plugins.html?showComment=1350573521137#c3847139789739776267">Jocelyn’s comment</a> was so super useful in writing this plugin!</p>
+
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
+
+<article class="hentry">
+  <header>
+    <div class="entry-meta">
       <span class="entry-date date published updated"><time datetime="2014-07-31T00:00:00+08:00"><a href="http://ackerleytng.github.io/pure-winavr/">July 31, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://ackerleytng.github.io/about/" title="About Ackerley Tng">Ackerley Tng</a></span></span>&nbsp; &bull; &nbsp;<span class="entry-comments"><a href="http://ackerleytng.github.io/pure-winavr/#disqus_thread">Comment</a></span>
       
       <span class="entry-reading-time pull-right">
@@ -327,137 +397,6 @@
 <p><img src="http://ackerleytng.github.io/post_images/tamagoyaki-0.jpg" alt="tamagoyaki-0" /></p>
 
 <p><img src="http://ackerleytng.github.io/post_images/tamagoyaki-1.jpg" alt="tamagoyaki-1" /></p>
-
-  </div><!-- /.entry-content -->
-</article><!-- /.hentry -->
-
-<article class="hentry">
-  <header>
-    <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2014-07-17T00:00:00+08:00"><a href="http://ackerleytng.github.io/web-server-setup/">July 17, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://ackerleytng.github.io/about/" title="About Ackerley Tng">Ackerley Tng</a></span></span>&nbsp; &bull; &nbsp;<span class="entry-comments"><a href="http://ackerleytng.github.io/web-server-setup/#disqus_thread">Comment</a></span>
-      
-      <span class="entry-reading-time pull-right">
-        <i class="fa fa-clock-o"></i>
-        
-        Reading time ~1 minute
-      </span><!-- /.entry-reading-time -->
-      
-    </div><!-- /.entry-meta -->
-    
-      <h1 class="entry-title"><a href="http://ackerleytng.github.io/web-server-setup/" rel="bookmark" title="Web Server Setup on my Mac" itemprop="url">Web Server Setup on my Mac</a></h1>
-    
-  </header>
-  <div class="entry-content">
-    <p>I used MacPorts to handle all of these installations. I guess I should have tried php54 or even php55, but I was partially following instructions <a href="http://dsheiko.com/weblog/my-lovely-mac-os-x-web-development-environment">here</a> and wanted to just get something working first.</p>
-
-<p>Here’s a list of commands</p>
-
-<pre><code>sudo port -v selfupdate
-sudo port upgrade outdated
-sudo port install apache2
-sudo port install php56 +apache2
-sudo port install php56-mysql
-sudo port install mysql56-server
-sudo port install phpmyadmin +php56
-
-sudo port select mysql mysql56
-</code></pre>
-
-<p>Setting up mysql</p>
-
-<pre><code>sudo /opt/local/lib/mysql56/bin/mysql_install_db --user mysql
-sudo chown -R mysql:mysql /opt/local/var/db/mysql56/ 
-sudo chown -R mysql:mysql /opt/local/var/run/mysql56/ 
-sudo chown -R mysql:mysql /opt/local/var/log/mysql56/
-mysqladmin -u root -p password &lt;new-password&gt; 
-</code></pre>
-
-<p>Setting up PHP to work with apache</p>
-
-<pre><code>sudo port install php56-apache2handler
-cd /opt/local/apache2/modules
-sudo /opt/local/apache2/bin/apxs -a -e -n php5 mod_php56.so
-</code></pre>
-
-<p>Update Apache’s httpd.conf file. Search for and modify</p>
-
-<pre><code>DirectoryIndex index.php index.html
-</code></pre>
-
-<p>Add these lines to httpd.conf too</p>
-
-<pre><code># For PHP
-Include conf/extra/mod_php56.conf
-
-# For phpMyAdmin
-Include conf/extra/httpd-phpmyadmin.conf
-</code></pre>
-
-<p>Create /opt/local/apache2/conf/extra/httpd-phpmyadmin.conf and add the following as contents</p>
-
-<pre><code>AliasMatch ^/phpmyadmin(?:/)?(/.*)?$ "/opt/local/www/phpmyadmin$1"
-
-&lt;Directory "/opt/local/www/phpmyadmin"&gt;
-    Options -Indexes
-    AllowOverride None
-    Order allow,deny
-    Allow from all
-    LanguagePriority en de es fr ja ko pt-br ru 
-    ForceLanguagePriority Prefer Fallback
-&lt;/Directory&gt;
-</code></pre>
-
-<p>Edit phpMyAdmin config file: /opt/local/www/phpmyadmin/config.inc.php</p>
-
-<pre><code>$cfg['Servers'][$i]['auth_type'] = 'config';
-$cfg['Servers'][$i]['user'] = 'root';
-$cfg['Servers'][$i]['password'] = '&lt;new-password&gt;';
-</code></pre>
-
-<p>Edit this line to AllowNoPassword.</p>
-
-<pre><code>$cfg['Servers'][$i]['AllowNoPassword'] = true;
-</code></pre>
-
-<p>PHP config files</p>
-
-<pre><code>cd /opt/local/etc/php5
-sudo cp php.ini-development php.ini
-</code></pre>
-
-<p>Follow instructions from MacPorts</p>
-
-<pre><code>To use mysqlnd with a local MySQL server, edit /opt/local/etc/php5/php.ini and set mysql.default_socket,
-mysqli.default_socket and pdo_mysql.default_socket to the path to your MySQL server's socket file.
-
-For mysql5, use /opt/local/var/run/mysql5/mysqld.sock
-For mysql51, use /opt/local/var/run/mysql51/mysqld.sock
-For mysql55, use /opt/local/var/run/mysql55/mysqld.sock
-For mysql56, use /opt/local/var/run/mysql56/mysqld.sock
-For mariadb, use /opt/local/var/run/mariadb/mysqld.sock
-For percona, use /opt/local/var/run/percona/mysqld.sock
-</code></pre>
-
-<p>To prevent auto-starting of the daemons on boot, I did</p>
-
-<pre><code>sudo launchctl unload /Library/LaunchDaemons/org.macports.apache2.plist
-sudo launchctl unload /Library/LaunchDaemons/org.macports.mysql56-server.plist
-</code></pre>
-
-<p>But I believe you could use this too</p>
-
-<pre><code>sudo port unload apache2
-sudo port unload mysql-server
-</code></pre>
-
-<p>Setting up aliases in ~/.bash_profile</p>
-
-<pre><code>alias apachestart="sudo /opt/local/apache2/bin/apachectl -k start"
-alias apachestop="sudo /opt/local/apache2/bin/apachectl -k stop"
-alias apacherestart="sudo /opt/local/apache2/bin/apachectl -k restart"
-alias mysqlstart="sudo /opt/local/lib/mysql56/bin/mysqld_safe &amp;"
-alias mysqlstop="mysqladmin -u root -p shutdown"
-</code></pre>
 
   </div><!-- /.entry-content -->
 </article><!-- /.hentry -->
