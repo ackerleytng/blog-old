@@ -129,38 +129,32 @@
       </div><!-- /.header-title-wrap -->
     </header>
     <div class="entry-content">
-      <p>iTerm2 has a feature called <a href="http://iterm2.com/triggers.html">Triggers</a> which doesn’t seem to exist in any of the Linux terminal emulators.</p>
+      <p>iTerm2 has a feature called <a href="http://iterm2.com/triggers.html">Triggers</a> which doesn&#39;t seem to exist in any of the Linux terminal emulators.</p>
 
-<p>Terminator has a plugin system, so I hacked together something that would parse emacs-formatted ‘urls’ and open those urls in Emacs over Tramp. The concept of tying triggers with the terminal emulator is borrowed from my ECE MEng advisor, Prof. (Christopher Batten)[http://www.csl.cornell.edu/~cbatten/].</p>
+<p>Terminator has a plugin system, so I hacked together something that would parse emacs-formatted &#39;urls&#39; and open those urls in Emacs over Tramp. The concept of tying triggers with the terminal emulator is borrowed from my ECE MEng advisor, Prof. (Christopher Batten)[http://www.csl.cornell.edu/~cbatten/].</p>
 
-<h2 id="concept">Concept</h2>
+<h2>Concept</h2>
 
 <p>The idea is as follows. ssh into the research server to access source code there. Instead of customizing Emacs on every server you work with, customize only one - the one on the computer that you ssh from.</p>
 
 <p>Generate a string containing information about the current user and server IP address, and the path to the file you want to edit.</p>
 
 <p>I do this using a bash function added to .bashrc on the remote server:</p>
-
-<pre><code># Remote emacsclient trigger
+<div class="highlight"><pre><code class="language-text" data-lang="text"># Remote emacsclient trigger
 function oe() {
     user=$(whoami)
-    file=$(echo "$1" | tr -d ' ')
-    hostname=$(hostname -I | tr -d ' ')
-    workingdir=$(pwd | tr -d ' ')
-    echo "remote-emacsclient-trigger[[[/$user@${hostname}:${workingdir}/${file}]]]"
+    file=$(echo &quot;$1&quot; | tr -d &#39; &#39;)
+    hostname=$(hostname -I | tr -d &#39; &#39;)
+    workingdir=$(pwd | tr -d &#39; &#39;)
+    echo &quot;remote-emacsclient-trigger[[[/$user@${hostname}:${workingdir}/${file}]]]&quot;
 }
-</code></pre>
-
-<p>So say I’m in /home/user/ on the remote server and I’m working on blah.</p>
-
-<pre><code>oe blah
-</code></pre>
-
+</code></pre></div>
+<p>So say I&#39;m in /home/user/ on the remote server and I&#39;m working on blah.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">oe blah
+</code></pre></div>
 <p>will cause the remote server to echo</p>
-
-<pre><code>remote-emacsclient-trigger[[[/user@123.123.123.123:/home/user/blah]]]
-</code></pre>
-
+<div class="highlight"><pre><code class="language-text" data-lang="text">remote-emacsclient-trigger[[[/user@123.123.123.123:/home/user/blah]]]
+</code></pre></div>
 <p>In iTerm2, the trigger can pick up the string and in turn start a coprocess with the line <code>emacsclient -c -n &lt;the content between [[[ and ]]]&gt;</code>, using regex matches.</p>
 
 <p>The following plugin, written for Terminator, will give you a similar effect, except you have to right click on the part between <code>[[[</code> and <code>]]]</code>, and click open link.</p>
@@ -169,15 +163,15 @@ function oe() {
 
 <p>Place that file in /usr/share/terminator/terminatorlib/plugins/activate_emacs.py and restart Terminator, then right click and click Preferences, go to the Plugins tab and check the ActivateEmacs plugin.</p>
 
-<h2 id="the-process">The process</h2>
+<h2>The process</h2>
 
-<p>There’s little documentation on plugin writing, so it took a while to look through the examples and other plugins to start. Fortunately Terminator’s code could mostly be found in /usr/share/terminator/, but unfortunately it still takes time to scan through all the code.</p>
+<p>There&#39;s little documentation on plugin writing, so it took a while to look through the examples and other plugins to start. Fortunately Terminator&#39;s code could mostly be found in /usr/share/terminator/, but unfortunately it still takes time to scan through all the code.</p>
 
-<p>There are lots of functions in terminator’s code to do with matching, but I believe those are only activated on mouseovers rather than as they appear in the terminal.</p>
+<p>There are lots of functions in terminator&#39;s code to do with matching, but I believe those are only activated on mouseovers rather than as they appear in the terminal.</p>
 
-<p>The URLHandler plugin sounds like it could parse any text or string - it can, but only on mouseovers. The <code>callback()</code> function is something that is meant to transform the ‘url’ that matched to another url for a web browser to open; it does not perform actions on the matched string directly.</p>
+<p>The URLHandler plugin sounds like it could parse any text or string - it can, but only on mouseovers. The <code>callback()</code> function is something that is meant to transform the &#39;url&#39; that matched to another url for a web browser to open; it does not perform actions on the matched string directly.</p>
 
-<p><a href="http://www.tenshu.net/2010/04/writing-terminator-plugins.html?showComment=1350573521137#c3847139789739776267">Jocelyn’s comment</a> was so super useful in writing this plugin!</p>
+<p><a href="http://www.tenshu.net/2010/04/writing-terminator-plugins.html?showComment=1350573521137#c3847139789739776267">Jocelyn&#39;s comment</a> was so super useful in writing this plugin!</p>
 
       <footer class="entry-meta">
         <span class="entry-tags"><a href="http://ackerleytng.github.io/tags/#emacs" title="Pages tagged emacs" class="tag">emacs</a><a href="http://ackerleytng.github.io/tags/#terminator" title="Pages tagged terminator" class="tag">terminator</a><a href="http://ackerleytng.github.io/tags/#tramp" title="Pages tagged tramp" class="tag">tramp</a><a href="http://ackerleytng.github.io/tags/#iterm" title="Pages tagged iterm" class="tag">iterm</a></span>

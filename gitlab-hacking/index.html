@@ -129,113 +129,85 @@
       </div><!-- /.header-title-wrap -->
     </header>
     <div class="entry-content">
-      <h2 id="to-disable-minifying-of-the-js-file-comment-this-line-out">To disable minifying of the js file, comment this line out</h2>
-
-<pre><code>user@ubuntu:/opt/gitlab/embedded$ sudo vim ./service/gitlab-rails/config/environments/production.rb
+      <h2>To disable minifying of the js file, comment this line out</h2>
+<div class="highlight"><pre><code class="language-text" data-lang="text">user@ubuntu:/opt/gitlab/embedded$ sudo vim ./service/gitlab-rails/config/environments/production.rb
 #config.assets.js_compressor = :uglifier
-</code></pre>
-
-<h2 id="gitlab-rake-is-a-script-that-sets-a-default-user-and-does-bundle-exec-rake">gitlab-rake is a script that sets a default user and does bundle exec rake</h2>
+</code></pre></div>
+<h2>gitlab-rake is a script that sets a default user and does bundle exec rake</h2>
 
 <p>Needs permission to write, so change permissions for public folder</p>
-
-<pre><code>sudo chmod a+w public
+<div class="highlight"><pre><code class="language-text" data-lang="text">sudo chmod a+w public
 cd public
 sudo chmod a+w assets
-</code></pre>
-
-<h2 id="to-recompile-fully">To recompile fully</h2>
-
-<pre><code>sudo gitlab-rake assets:clobber --trace # this step is sort of optional if you don't want to completely clean it out
+</code></pre></div>
+<h2>To recompile fully</h2>
+<div class="highlight"><pre><code class="language-text" data-lang="text">sudo gitlab-rake assets:clobber --trace # this step is sort of optional if you don&#39;t want to completely clean it out
 sudo gitlab-rake assets:precompile --trace
 sudo gitlab-ctl restart
-</code></pre>
-
-<h2 id="add-all-accepted-mimetypes-to-this-file">Add all accepted mimetypes to this file</h2>
-
-<pre><code>/opt/gitlab/embedded$ sudo vim service/gitlab-rails/app/assets/javascripts/markdown_area.js.coffee
-acceptedFiles: "image/*,audio/*,video/*,application/*,text/*"
-</code></pre>
-
-<h2 id="disable-checking-of-extensions">Disable checking of extensions</h2>
-
-<pre><code>/opt/gitlab/embedded$ sudo vim service/gitlab-rails/app/services/projects/image_service.rb
-</code></pre>
-
+</code></pre></div>
+<h2>Add all accepted mimetypes to this file</h2>
+<div class="highlight"><pre><code class="language-text" data-lang="text">/opt/gitlab/embedded$ sudo vim service/gitlab-rails/app/assets/javascripts/markdown_area.js.coffee
+acceptedFiles: &quot;image/*,audio/*,video/*,application/*,text/*&quot;
+</code></pre></div>
+<h2>Disable checking of extensions</h2>
+<div class="highlight"><pre><code class="language-text" data-lang="text">/opt/gitlab/embedded$ sudo vim service/gitlab-rails/app/services/projects/image_service.rb
+</code></pre></div>
 <p>Replace</p>
-
-<pre><code>if image &amp;&amp; correct_mime_type?(image)
-</code></pre>
-
+<div class="highlight"><pre><code class="language-text" data-lang="text">if image &amp;&amp; correct_mime_type?(image)
+</code></pre></div>
 <p>with</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">if image
+</code></pre></div>
+<h2>Change the function formatLink</h2>
+<div class="highlight"><pre><code class="language-text" data-lang="text">/opt/gitlab/embedded$ sudo vim service/gitlab-rails/app/assets/javascripts/markdown_area.js.coffee
 
-<pre><code>if image
-</code></pre>
+String::endsWith = (s) -&gt; s is &#39;&#39; or @[-s.length..] is s
 
-<h2 id="change-the-function-formatlink">Change the function formatLink</h2>
-
-<pre><code>/opt/gitlab/embedded$ sudo vim service/gitlab-rails/app/assets/javascripts/markdown_area.js.coffee
-  
-String::endsWith = (s) -&gt; s is '' or @[-s.length..] is s
-  
 formatLink = (str) -&gt;
-  image_extensions = ['jpg', 'gif', 'jpeg', 'png']
-  
+  image_extensions = [&#39;jpg&#39;, &#39;gif&#39;, &#39;jpeg&#39;, &#39;png&#39;]
+
   is_image = false
   for ext in image_extensions
     is_image = is_image | str.url.toLowerCase().endsWith(ext)
-  
-  if is_image
-    "![" + str.alt + "](" + str.url + ")"
-  else
-    "[" + str.alt + "](" + str.url + ")"
-</code></pre>
 
-<h2 id="changing-html-in-views-changing-the-text">Changing html in views (changing the text)</h2>
+  if is_image
+    &quot;![&quot; + str.alt + &quot;](&quot; + str.url + &quot;)&quot;
+  else
+    &quot;[&quot; + str.alt + &quot;](&quot; + str.url + &quot;)&quot;
+</code></pre></div>
+<h2>Changing html in views (changing the text)</h2>
 
 <p>Go to /opt/gitlab/embedded/service/gitlab-rails/app/views/projects/wikis
 Modify the .haml files.
 Restart server to see effects</p>
 
 <p>Replace </p>
-
-<pre><code>.pull-right Attach images (JPG, PNG, GIF) by dragging &amp; dropping or #{link_to "selecting them", '#', class: 'markdown-selector' }.
-</code></pre>
-
+<div class="highlight"><pre><code class="language-text" data-lang="text">.pull-right Attach images (JPG, PNG, GIF) by dragging &amp; dropping or #{link_to &quot;selecting them&quot;, &#39;#&#39;, class: &#39;markdown-selector&#39; }.
+</code></pre></div>
 <p>with</p>
-
-<pre><code>.pull-right Attach files by dragging &amp; dropping.
-</code></pre>
-
-<h2 id="change-maximum-filesize-for-uploads">Change maximum filesize for uploads</h2>
-
-<pre><code>/opt/gitlab/embedded$ sudo vim service/gitlab-rails/app/assets/javascripts/markdown_area.js.coffee
-</code></pre>
-
+<div class="highlight"><pre><code class="language-text" data-lang="text">.pull-right Attach files by dragging &amp; dropping.
+</code></pre></div>
+<h2>Change maximum filesize for uploads</h2>
+<div class="highlight"><pre><code class="language-text" data-lang="text">/opt/gitlab/embedded$ sudo vim service/gitlab-rails/app/assets/javascripts/markdown_area.js.coffee
+</code></pre></div>
 <p>Change line 29. The unit of memory for that value is MiB.</p>
 
-<h2 id="remove-dropzones-check">Remove dropzone’s check</h2>
-
-<pre><code>/opt/gitlab/embedded$ sudo vim service/gem/ruby/2.1.0/gems/dropzonejs-rails-0.4.14/vendor/assets/javascripts/dropzone.js
+<h2>Remove dropzone&#39;s check</h2>
+<div class="highlight"><pre><code class="language-text" data-lang="text">/opt/gitlab/embedded$ sudo vim service/gem/ruby/2.1.0/gems/dropzonejs-rails-0.4.14/vendor/assets/javascripts/dropzone.js
 
 } else if (!Dropzone.isValidFile(file, this.options.acceptedFiles)) {
   return done(this.options.dictInvalidFileType);
-</code></pre>
-
-<h2 id="clear-out-acceptedimages">Clear out accepted_images</h2>
+</code></pre></div>
+<h2>Clear out accepted_images</h2>
 
 <p>I think this makes the FileUploader class not check extensions</p>
-
-<pre><code>/opt/gitlab/embedded$ sudo vim service/gitlab-rails/app/services/projects/image_service.rb
-</code></pre>
-
+<div class="highlight"><pre><code class="language-text" data-lang="text">/opt/gitlab/embedded$ sudo vim service/gitlab-rails/app/services/projects/image_service.rb
+</code></pre></div>
 <p>Make accepted_images return nothing</p>
-
-<pre><code>def accepted_images
+<div class="highlight"><pre><code class="language-text" data-lang="text">def accepted_images
   #%w(png jpg jpeg gif pdf zip tar.gz txt)
 end
-</code></pre>
-
+</code></pre></div>
       <footer class="entry-meta">
         <span class="entry-tags"><a href="http://ackerleytng.github.io/tags/#gitlab" title="Pages tagged gitlab" class="tag">gitlab</a><a href="http://ackerleytng.github.io/tags/#hacking" title="Pages tagged hacking" class="tag">hacking</a><a href="http://ackerleytng.github.io/tags/#ruby" title="Pages tagged ruby" class="tag">ruby</a><a href="http://ackerleytng.github.io/tags/#rails" title="Pages tagged rails" class="tag">rails</a></span>
         <span><a href="http://ackerleytng.github.io/gitlab-hacking/" rel="bookmark" title="GitLab Hacking">GitLab Hacking</a> was published on <span class="entry-date date published updated"><time datetime="2014-10-03T00:00:00+08:00">October 03, 2014</time></span></span>

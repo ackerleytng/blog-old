@@ -131,9 +131,8 @@
     <div class="entry-content">
       <p>I used MacPorts to handle all of these installations. I guess I should have tried php54 or even php55, but I was partially following instructions <a href="http://dsheiko.com/weblog/my-lovely-mac-os-x-web-development-environment">here</a> and wanted to just get something working first.</p>
 
-<p>Here’s a list of commands</p>
-
-<pre><code>sudo port -v selfupdate
+<p>Here&#39;s a list of commands</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">sudo port -v selfupdate
 sudo port upgrade outdated
 sudo port install apache2
 sudo port install php56 +apache2
@@ -142,43 +141,33 @@ sudo port install mysql56-server
 sudo port install phpmyadmin +php56
 
 sudo port select mysql mysql56
-</code></pre>
-
+</code></pre></div>
 <p>Setting up mysql</p>
-
-<pre><code>sudo /opt/local/lib/mysql56/bin/mysql_install_db --user mysql
+<div class="highlight"><pre><code class="language-text" data-lang="text">sudo /opt/local/lib/mysql56/bin/mysql_install_db --user mysql
 sudo chown -R mysql:mysql /opt/local/var/db/mysql56/ 
 sudo chown -R mysql:mysql /opt/local/var/run/mysql56/ 
 sudo chown -R mysql:mysql /opt/local/var/log/mysql56/
 mysqladmin -u root -p password &lt;new-password&gt; 
-</code></pre>
-
+</code></pre></div>
 <p>Setting up PHP to work with apache</p>
-
-<pre><code>sudo port install php56-apache2handler
+<div class="highlight"><pre><code class="language-text" data-lang="text">sudo port install php56-apache2handler
 cd /opt/local/apache2/modules
 sudo /opt/local/apache2/bin/apxs -a -e -n php5 mod_php56.so
-</code></pre>
-
+</code></pre></div>
 <p>Update Apache’s httpd.conf file. Search for and modify</p>
-
-<pre><code>DirectoryIndex index.php index.html
-</code></pre>
-
+<div class="highlight"><pre><code class="language-text" data-lang="text">DirectoryIndex index.php index.html
+</code></pre></div>
 <p>Add these lines to httpd.conf too</p>
-
-<pre><code># For PHP
+<div class="highlight"><pre><code class="language-text" data-lang="text"># For PHP
 Include conf/extra/mod_php56.conf
 
 # For phpMyAdmin
 Include conf/extra/httpd-phpmyadmin.conf
-</code></pre>
-
+</code></pre></div>
 <p>Create /opt/local/apache2/conf/extra/httpd-phpmyadmin.conf and add the following as contents</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">AliasMatch ^/phpmyadmin(?:/)?(/.*)?$ &quot;/opt/local/www/phpmyadmin$1&quot;
 
-<pre><code>AliasMatch ^/phpmyadmin(?:/)?(/.*)?$ "/opt/local/www/phpmyadmin$1"
-
-&lt;Directory "/opt/local/www/phpmyadmin"&gt;
+&lt;Directory &quot;/opt/local/www/phpmyadmin&quot;&gt;
     Options -Indexes
     AllowOverride None
     Order allow,deny
@@ -186,30 +175,22 @@ Include conf/extra/httpd-phpmyadmin.conf
     LanguagePriority en de es fr ja ko pt-br ru 
     ForceLanguagePriority Prefer Fallback
 &lt;/Directory&gt;
-</code></pre>
-
+</code></pre></div>
 <p>Edit phpMyAdmin config file: /opt/local/www/phpmyadmin/config.inc.php</p>
-
-<pre><code>$cfg['Servers'][$i]['auth_type'] = 'config';
-$cfg['Servers'][$i]['user'] = 'root';
-$cfg['Servers'][$i]['password'] = '&lt;new-password&gt;';
-</code></pre>
-
+<div class="highlight"><pre><code class="language-text" data-lang="text">$cfg[&#39;Servers&#39;][$i][&#39;auth_type&#39;] = &#39;config&#39;;
+$cfg[&#39;Servers&#39;][$i][&#39;user&#39;] = &#39;root&#39;;
+$cfg[&#39;Servers&#39;][$i][&#39;password&#39;] = &#39;&lt;new-password&gt;&#39;;
+</code></pre></div>
 <p>Edit this line to AllowNoPassword.</p>
-
-<pre><code>$cfg['Servers'][$i]['AllowNoPassword'] = true;
-</code></pre>
-
+<div class="highlight"><pre><code class="language-text" data-lang="text">$cfg[&#39;Servers&#39;][$i][&#39;AllowNoPassword&#39;] = true;
+</code></pre></div>
 <p>PHP config files</p>
-
-<pre><code>cd /opt/local/etc/php5
+<div class="highlight"><pre><code class="language-text" data-lang="text">cd /opt/local/etc/php5
 sudo cp php.ini-development php.ini
-</code></pre>
-
+</code></pre></div>
 <p>Follow instructions from MacPorts</p>
-
-<pre><code>To use mysqlnd with a local MySQL server, edit /opt/local/etc/php5/php.ini and set mysql.default_socket,
-mysqli.default_socket and pdo_mysql.default_socket to the path to your MySQL server's socket file.
+<div class="highlight"><pre><code class="language-text" data-lang="text">To use mysqlnd with a local MySQL server, edit /opt/local/etc/php5/php.ini and set mysql.default_socket,
+mysqli.default_socket and pdo_mysql.default_socket to the path to your MySQL server&#39;s socket file.
 
 For mysql5, use /opt/local/var/run/mysql5/mysqld.sock
 For mysql51, use /opt/local/var/run/mysql51/mysqld.sock
@@ -217,29 +198,22 @@ For mysql55, use /opt/local/var/run/mysql55/mysqld.sock
 For mysql56, use /opt/local/var/run/mysql56/mysqld.sock
 For mariadb, use /opt/local/var/run/mariadb/mysqld.sock
 For percona, use /opt/local/var/run/percona/mysqld.sock
-</code></pre>
-
+</code></pre></div>
 <p>To prevent auto-starting of the daemons on boot, I did</p>
-
-<pre><code>sudo launchctl unload /Library/LaunchDaemons/org.macports.apache2.plist
+<div class="highlight"><pre><code class="language-text" data-lang="text">sudo launchctl unload /Library/LaunchDaemons/org.macports.apache2.plist
 sudo launchctl unload /Library/LaunchDaemons/org.macports.mysql56-server.plist
-</code></pre>
-
+</code></pre></div>
 <p>But I believe you could use this too</p>
-
-<pre><code>sudo port unload apache2
+<div class="highlight"><pre><code class="language-text" data-lang="text">sudo port unload apache2
 sudo port unload mysql-server
-</code></pre>
-
+</code></pre></div>
 <p>Setting up aliases in ~/.bash_profile</p>
-
-<pre><code>alias apachestart="sudo /opt/local/apache2/bin/apachectl -k start"
-alias apachestop="sudo /opt/local/apache2/bin/apachectl -k stop"
-alias apacherestart="sudo /opt/local/apache2/bin/apachectl -k restart"
-alias mysqlstart="sudo /opt/local/lib/mysql56/bin/mysqld_safe &amp;"
-alias mysqlstop="mysqladmin -u root -p shutdown"
-</code></pre>
-
+<div class="highlight"><pre><code class="language-text" data-lang="text">alias apachestart=&quot;sudo /opt/local/apache2/bin/apachectl -k start&quot;
+alias apachestop=&quot;sudo /opt/local/apache2/bin/apachectl -k stop&quot;
+alias apacherestart=&quot;sudo /opt/local/apache2/bin/apachectl -k restart&quot;
+alias mysqlstart=&quot;sudo /opt/local/lib/mysql56/bin/mysqld_safe &amp;&quot;
+alias mysqlstop=&quot;mysqladmin -u root -p shutdown&quot;
+</code></pre></div>
       <footer class="entry-meta">
         <span class="entry-tags"><a href="http://ackerleytng.github.io/tags/#web server" title="Pages tagged web server" class="tag">web server</a><a href="http://ackerleytng.github.io/tags/#setup" title="Pages tagged setup" class="tag">setup</a><a href="http://ackerleytng.github.io/tags/#mac" title="Pages tagged mac" class="tag">mac</a></span>
         <span><a href="http://ackerleytng.github.io/web-server-setup/" rel="bookmark" title="Web Server Setup on my Mac">Web Server Setup on my Mac</a> was published on <span class="entry-date date published updated"><time datetime="2014-07-17T00:00:00+08:00">July 17, 2014</time></span></span>

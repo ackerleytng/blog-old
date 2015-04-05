@@ -136,16 +136,14 @@
     
   </header>
   <div class="entry-content">
-    <p>When installing crunchbang I’m pretty sure I chose to install the OpenSSH server but somehow I when I did this again, it still installed for me. Hope it isn’t installed twice for some stupid reason.</p>
-
-<pre><code>sudo apt-get install openssh-server
-</code></pre>
-
+    <p>When installing crunchbang I&#39;m pretty sure I chose to install the OpenSSH server but somehow I when I did this again, it still installed for me. Hope it isn&#39;t installed twice for some stupid reason.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">sudo apt-get install openssh-server
+</code></pre></div>
 <p>and that was it. I can ssh in from my mac after that.</p>
 
 <p>Follow instructions from <a href="http://crunchbanglinux.org/wiki/howto/ssh">here</a></p>
 
-<p>When setting up ssh keys, there’s no need to modify the sshd_config file as described on the page. It seems to work out of the box.</p>
+<p>When setting up ssh keys, there&#39;s no need to modify the sshd_config file as described on the page. It seems to work out of the box.</p>
 
   </div><!-- /.entry-content -->
 </article><!-- /.hentry -->
@@ -167,22 +165,18 @@
     
   </header>
   <div class="entry-content">
-    <p>I’m powering the Arduino Mega 2560 board using USB. However, I’m going to program the Arduino using an AVRISP mkii programmer. <a href="http://allaboutee.com/2011/05/11/how-to-program-an-avr-microcontroller/">This site</a> shows the pinout of the programmer, and upon comparison with the <a href="http://arduino.cc/en/uploads/Main/arduino-mega2560_R3-sch.pdf">Arduino schematic</a>, I’ve decided to use the programmer this way:</p>
+    <p>I&#39;m powering the Arduino Mega 2560 board using USB. However, I&#39;m going to program the Arduino using an AVRISP mkii programmer. <a href="http://allaboutee.com/2011/05/11/how-to-program-an-avr-microcontroller/">This site</a> shows the pinout of the programmer, and upon comparison with the <a href="http://arduino.cc/en/uploads/Main/arduino-mega2560_R3-sch.pdf">Arduino schematic</a>, I&#39;ve decided to use the programmer this way:</p>
 
-<p><img src="http://ackerleytng.github.io/post_images/arduino_setup.jpg" alt="Arduino Setup" /></p>
+<p><img src="http://ackerleytng.github.io/post_images/arduino_setup.jpg" alt="Arduino Setup"></p>
 
 <p>Use apt-get to install packages</p>
-
-<pre><code>sudo apt-get install gcc-avr binutils-avr gdb-avr avr-libc avrdude
-</code></pre>
-
+<div class="highlight"><pre><code class="language-text" data-lang="text">sudo apt-get install gcc-avr binutils-avr gdb-avr avr-libc avrdude
+</code></pre></div>
 <p>To use avr-gcc to compile</p>
-
-<pre><code>avr-gcc -DF_CPU=16000000UL -mmcu=atmega2560 -Os -o blink.out blink.c
+<div class="highlight"><pre><code class="language-text" data-lang="text">avr-gcc -DF_CPU=16000000UL -mmcu=atmega2560 -Os -o blink.out blink.c
 avr-objcopy -O ihex -R .eeprom blink.out blink.hex
 sudo avrdude -V -F -c avrisp2 -p m2560 -P usb -U flash:w:blink.hex
-</code></pre>
-
+</code></pre></div>
   </div><!-- /.entry-content -->
 </article><!-- /.hentry -->
 
@@ -203,11 +197,11 @@ sudo avrdude -V -F -c avrisp2 -p m2560 -P usb -U flash:w:blink.hex
     
   </header>
   <div class="entry-content">
-    <p>The Asus RT-AC66R is a rather popular router! But I guess instructions are lacking. Anyway, here’s a post to show that the RT-AC66R can indeed be used with Singtel’s mio TV.</p>
+    <p>The Asus RT-AC66R is a rather popular router! But I guess instructions are lacking. Anyway, here&#39;s a post to show that the RT-AC66R can indeed be used with Singtel&#39;s mio TV.</p>
 
-<p>Connect the Optical Network Terminal (ONT) to the Asus RT-AC66R’s WAN port. Then, connect the mio TV set-top box to the 4th LAN port of the RT-AC66R.</p>
+<p>Connect the Optical Network Terminal (ONT) to the Asus RT-AC66R&#39;s WAN port. Then, connect the mio TV set-top box to the 4th LAN port of the RT-AC66R.</p>
 
-<p>Go to the RT-AC66R’s configuration page, and then on the “Advanced Settings” column on the left, select “LAN”. Select the “IPTV” tab at the top. For the ISP profile, select Singtel-MIO. (My firmware version is 3.0.0.4.374_979) The table entry for IPTV STB Port should say LAN4. I didn’t change the other entries in the “Special Applications” section.</p>
+<p>Go to the RT-AC66R&#39;s configuration page, and then on the &quot;Advanced Settings&quot; column on the left, select &quot;LAN&quot;. Select the &quot;IPTV&quot; tab at the top. For the ISP profile, select Singtel-MIO. (My firmware version is 3.0.0.4.374_979) The table entry for IPTV STB Port should say LAN4. I didn&#39;t change the other entries in the &quot;Special Applications&quot; section.</p>
 
 <p>Then, I had to restart my set-top box (like completely power off and start it again) and then it worked.</p>
 
@@ -231,41 +225,41 @@ sudo avrdude -V -F -c avrisp2 -p m2560 -P usb -U flash:w:blink.hex
     
   </header>
   <div class="entry-content">
-    <p>So. I’m not sure if this is just luck, but I managed to revive a connection to my WD Passport (Essential SE). There are so many forum threads on the Internet that discuss this topic, but most are just cliffhangers that don’t provide real solutions.</p>
+    <p>So. I&#39;m not sure if this is just luck, but I managed to revive a connection to my WD Passport (Essential SE). There are so many forum threads on the Internet that discuss this topic, but most are just cliffhangers that don&#39;t provide real solutions.</p>
 
 <p>It was neither being recognized on a Mac nor PC, even after:</p>
 
 <ul>
-  <li>Trying different cables</li>
-  <li>Using the USB ports at the back of the computer instead of those in the front</li>
+<li>Trying different cables</li>
+<li>Using the USB ports at the back of the computer instead of those in the front</li>
 </ul>
 
 <p>Here are some other suggestions that you might want to try if you have the resources or patience. I personally think that this is not an issue with power supply to the WD Passport, but you can still try:</p>
 
 <ul>
-  <li>Using a Y-cable, which is something like <a href="http://en.wikipedia.org/wiki/File:Y-shaped_USB_3.0_cable.jpg">this</a></li>
-  <li>Returning it to Western Digital for a new unit</li>
-  <li>Disconnecting all unnecessary USB devices so that all the power goes to the WD Passport</li>
+<li>Using a Y-cable, which is something like <a href="http://en.wikipedia.org/wiki/File:Y-shaped_USB_3.0_cable.jpg">this</a></li>
+<li>Returning it to Western Digital for a new unit</li>
+<li>Disconnecting all unnecessary USB devices so that all the power goes to the WD Passport</li>
 </ul>
 
-<h3 id="revival-procedure">Revival Procedure</h3>
+<h3>Revival Procedure</h3>
 
 <p>I used a desktop PC running 64-bit Windows 7, eventually, to connect to the WD Passport. The WD Passport was never used with this desktop before, hence we know that the drivers for the WD Passport was never installed from the web.</p>
 
 <ol>
-  <li>Connect the WD Passport to the USB ports at the <em>back</em> of a <em>desktop</em> PC. Windows will probably attempt to install the WD Passport, but will not find the right drivers, because it is unable to identify the device.</li>
-  <li>Go to Device Manager. You should see a USB device that has a yellow triangle next to it, indicating that the drivers for the WD Passport were not installed properly.</li>
-  <li>Download and install the appropriate WD Passport drivers from <a href="http://wdc.custhelp.com/app/answers/detail/a_id/1708/related/1/session/L2F2LzEvdGltZS8xNDA0ODUwMTc4L3NpZC8zd0ExaE9ZbA%3D%3D">here</a></li>
-  <li>Go back to Device Manager. Right-click on the Unknown Device, then select “Update Driver Software”.</li>
-  <li>Choose to browse your computer for driver software.</li>
-  <li>Pick from a list of device drivers on your computer.</li>
-  <li>From the list, choose Western Digital, then select WD SES Device. Complete that installation procedure and the WD Passport should now be recognized as a “WD SES Device”. The drive, however, is probably still not working.</li>
-  <li>Unplug the WD Passport. (I unplugged the USB cable on the side of the WD Passport (as opposed to the side plugged into the computer)</li>
-  <li>Plug it back in, and it should auto-detect and install, and work this time.</li>
-  <li>You should probably grab everything you can from the drive and not use it again.</li>
+<li>Connect the WD Passport to the USB ports at the <em>back</em> of a <em>desktop</em> PC. Windows will probably attempt to install the WD Passport, but will not find the right drivers, because it is unable to identify the device.</li>
+<li>Go to Device Manager. You should see a USB device that has a yellow triangle next to it, indicating that the drivers for the WD Passport were not installed properly.</li>
+<li>Download and install the appropriate WD Passport drivers from <a href="http://wdc.custhelp.com/app/answers/detail/a_id/1708/related/1/session/L2F2LzEvdGltZS8xNDA0ODUwMTc4L3NpZC8zd0ExaE9ZbA%3D%3D">here</a></li>
+<li>Go back to Device Manager. Right-click on the Unknown Device, then select &quot;Update Driver Software&quot;.</li>
+<li>Choose to browse your computer for driver software.</li>
+<li>Pick from a list of device drivers on your computer.</li>
+<li>From the list, choose Western Digital, then select WD SES Device. Complete that installation procedure and the WD Passport should now be recognized as a &quot;WD SES Device&quot;. The drive, however, is probably still not working.</li>
+<li>Unplug the WD Passport. (I unplugged the USB cable on the side of the WD Passport (as opposed to the side plugged into the computer)</li>
+<li>Plug it back in, and it should auto-detect and install, and work this time.</li>
+<li>You should probably grab everything you can from the drive and not use it again.</li>
 </ol>
 
-<h3 id="update-the-firmware">Update the Firmware</h3>
+<h3>Update the Firmware</h3>
 
 <p>Update the firmware on the newly-revived Passport following instructions <a href="http://www.wdc.com/wdproducts/wdsmartwareupdate/firmware.asp?id=wdfMyPassport&amp;os=WIN">here</a>.</p>
 
@@ -292,20 +286,20 @@ sudo avrdude -V -F -c avrisp2 -p m2560 -P usb -U flash:w:blink.hex
     <p>Installed from source</p>
 
 <ul>
-  <li>None</li>
+<li>None</li>
 </ul>
 
 <p>Installed from .pkg</p>
 
 <ul>
-  <li>MacPorts</li>
-  <li>Node.js</li>
+<li>MacPorts</li>
+<li>Node.js</li>
 </ul>
 
 <p>Installed from .dmg</p>
 
 <ul>
-  <li>Look into /Applications</li>
+<li>Look into /Applications</li>
 </ul>
 
 <p>Others are installed using MacPorts

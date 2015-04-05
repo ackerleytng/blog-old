@@ -129,22 +129,18 @@
       </div><!-- /.header-title-wrap -->
     </header>
     <div class="entry-content">
-      <p>I’m powering the Arduino Mega 2560 board using USB. However, I’m going to program the Arduino using an AVRISP mkii programmer. <a href="http://allaboutee.com/2011/05/11/how-to-program-an-avr-microcontroller/">This site</a> shows the pinout of the programmer, and upon comparison with the <a href="http://arduino.cc/en/uploads/Main/arduino-mega2560_R3-sch.pdf">Arduino schematic</a>, I’ve decided to use the programmer this way:</p>
+      <p>I&#39;m powering the Arduino Mega 2560 board using USB. However, I&#39;m going to program the Arduino using an AVRISP mkii programmer. <a href="http://allaboutee.com/2011/05/11/how-to-program-an-avr-microcontroller/">This site</a> shows the pinout of the programmer, and upon comparison with the <a href="http://arduino.cc/en/uploads/Main/arduino-mega2560_R3-sch.pdf">Arduino schematic</a>, I&#39;ve decided to use the programmer this way:</p>
 
-<p><img src="http://ackerleytng.github.io/post_images/arduino_setup.jpg" alt="Arduino Setup" /></p>
+<p><img src="http://ackerleytng.github.io/post_images/arduino_setup.jpg" alt="Arduino Setup"></p>
 
 <p>Use apt-get to install packages</p>
-
-<pre><code>sudo apt-get install gcc-avr binutils-avr gdb-avr avr-libc avrdude
-</code></pre>
-
+<div class="highlight"><pre><code class="language-text" data-lang="text">sudo apt-get install gcc-avr binutils-avr gdb-avr avr-libc avrdude
+</code></pre></div>
 <p>To use avr-gcc to compile</p>
-
-<pre><code>avr-gcc -DF_CPU=16000000UL -mmcu=atmega2560 -Os -o blink.out blink.c
+<div class="highlight"><pre><code class="language-text" data-lang="text">avr-gcc -DF_CPU=16000000UL -mmcu=atmega2560 -Os -o blink.out blink.c
 avr-objcopy -O ihex -R .eeprom blink.out blink.hex
 sudo avrdude -V -F -c avrisp2 -p m2560 -P usb -U flash:w:blink.hex
-</code></pre>
-
+</code></pre></div>
       <footer class="entry-meta">
         <span class="entry-tags"><a href="http://ackerleytng.github.io/tags/#arduino" title="Pages tagged arduino" class="tag">arduino</a><a href="http://ackerleytng.github.io/tags/#arduino mega2560" title="Pages tagged arduino mega2560" class="tag">arduino mega2560</a><a href="http://ackerleytng.github.io/tags/#crunchbang" title="Pages tagged crunchbang" class="tag">crunchbang</a><a href="http://ackerleytng.github.io/tags/#linux" title="Pages tagged linux" class="tag">linux</a><a href="http://ackerleytng.github.io/tags/#C" title="Pages tagged C" class="tag">C</a><a href="http://ackerleytng.github.io/tags/#projects" title="Pages tagged projects" class="tag">projects</a><a href="http://ackerleytng.github.io/tags/#setup" title="Pages tagged setup" class="tag">setup</a></span>
         <span><a href="http://ackerleytng.github.io/arduino-with-avrisp-mkii-crunchbang/" rel="bookmark" title="Setting up Arduino with CrunchBang Linux for pure C projects">Setting up Arduino with CrunchBang Linux for pure C projects</a> was published on <span class="entry-date date published updated"><time datetime="2014-07-17T00:00:00+08:00">July 17, 2014</time></span></span>

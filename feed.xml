@@ -4,7 +4,7 @@
 <generator uri="https://github.com/mojombo/jekyll">Jekyll</generator>
 <link rel="self" type="application/atom+xml" href="http://ackerleytng.github.io/feed.xml" />
 <link rel="alternate" type="text/html" href="http://ackerleytng.github.io" />
-<updated>2015-04-05T19:54:57+08:00</updated>
+<updated>2015-04-05T19:57:58+08:00</updated>
 <id>http://ackerleytng.github.io/</id>
 <author>
   <name>Ackerley Tng</name>
@@ -25,36 +25,36 @@
     <uri>http://ackerleytng.github.io</uri>
     <email>ackerleytng@gmail.com</email>
   </author>
-  <content type="html">&lt;h1 id=&quot;mini2440-setup-guide&quot;&gt;mini2440 setup guide&lt;/h1&gt;
+  <content type="html">&lt;h1&gt;mini2440 setup guide&lt;/h1&gt;
 
 &lt;p&gt;I hope to make this&lt;/p&gt;
 
 &lt;ul&gt;
-  &lt;li&gt;Pain free&lt;/li&gt;
-  &lt;li&gt;As close to first principles as possible so when new versions come out you can still follow this guide&lt;/li&gt;
+&lt;li&gt;Pain free&lt;/li&gt;
+&lt;li&gt;As close to first principles as possible so when new versions come out you can still follow this guide&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h2 id=&quot;building-the-kernel-and-root-file-system&quot;&gt;Building the kernel and root file system&lt;/h2&gt;
+&lt;h2&gt;Building the kernel and root file system&lt;/h2&gt;
 
 &lt;p&gt;I grabbed the latest version of buildroot off http://buildroot.uclibc.org/downloads/.&lt;/p&gt;
 
-&lt;p&gt;The version I got was &lt;code&gt;2015.02&lt;/code&gt;. I managed to get Linux 3.18.6 working on the mini2440, but you might want the newest version at the point you’re doing this.&lt;/p&gt;
+&lt;p&gt;The version I got was &lt;code&gt;2015.02&lt;/code&gt;. I managed to get Linux 3.18.6 working on the mini2440, but you might want the newest version at the point you&amp;#39;re doing this.&lt;/p&gt;
 
 &lt;p&gt;Untar the tarball and go to the extracted directory.&lt;/p&gt;
 
 &lt;p&gt;Type &lt;code&gt;make menuconfig&lt;/code&gt;.&lt;/p&gt;
 
-&lt;p&gt;I tried using the mini2440 defconfig (as in default config), but I kinda tried so many different things that I don’t know which of those are still valid. If you’d like to try the mini2440 defconfig, or at least use that as a starting point, go to &lt;code&gt;&amp;lt; Load &amp;gt;&lt;/code&gt; and load &lt;code&gt;configs/mini2440_defconfig&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;I tried using the mini2440 defconfig (as in default config), but I kinda tried so many different things that I don&amp;#39;t know which of those are still valid. If you&amp;#39;d like to try the mini2440 defconfig, or at least use that as a starting point, go to &lt;code&gt;&amp;lt; Load &amp;gt;&lt;/code&gt; and load &lt;code&gt;configs/mini2440_defconfig&lt;/code&gt;.&lt;/p&gt;
 
-&lt;p&gt;If not, here’s my final configuration.&lt;/p&gt;
+&lt;p&gt;If not, here&amp;#39;s my final configuration.&lt;/p&gt;
 
 &lt;ul&gt;
-  &lt;li&gt;Target Architecture: ARM (little endian)&lt;/li&gt;
-  &lt;li&gt;Target Binary Format: ELF&lt;/li&gt;
-  &lt;li&gt;Target Architecture Variant: arm920t&lt;/li&gt;
-  &lt;li&gt;Target ABI: EABI&lt;/li&gt;
-  &lt;li&gt;Floating point strategy: Soft float&lt;/li&gt;
-  &lt;li&gt;ARM instruction set: ARM&lt;/li&gt;
+&lt;li&gt;Target Architecture: ARM (little endian)&lt;/li&gt;
+&lt;li&gt;Target Binary Format: ELF&lt;/li&gt;
+&lt;li&gt;Target Architecture Variant: arm920t&lt;/li&gt;
+&lt;li&gt;Target ABI: EABI&lt;/li&gt;
+&lt;li&gt;Floating point strategy: Soft float&lt;/li&gt;
+&lt;li&gt;ARM instruction set: ARM&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;p&gt;I changed the &lt;code&gt;System hostname&lt;/code&gt; and &lt;code&gt;System banner&lt;/code&gt; in &lt;code&gt;System configuration&lt;/code&gt;, but those are cosmetic.&lt;/p&gt;
@@ -67,38 +67,30 @@
 
 &lt;p&gt;I also selected &lt;code&gt;jffs2 root filesystem&lt;/code&gt; and for &lt;code&gt;Flash Type&lt;/code&gt;, I selected &lt;code&gt;NAND flash with 2kB Page and 128 kB erasesize&lt;/code&gt;&lt;/p&gt;
 
-&lt;p&gt;This version of buildroot doesn’t build U-Boot properly due to a missing defconfig, so I did not select any bootloader.&lt;/p&gt;
+&lt;p&gt;This version of buildroot doesn&amp;#39;t build U-Boot properly due to a missing defconfig, so I did not select any bootloader.&lt;/p&gt;
 
-&lt;p&gt;Then…&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;
-make
-&lt;/code&gt;&lt;/p&gt;
-
-&lt;h1 id=&quot;putting-u-boot-on-mini2440&quot;&gt;Putting U-boot on mini2440&lt;/h1&gt;
+&lt;p&gt;Then...&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;make
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h1&gt;Putting U-boot on mini2440&lt;/h1&gt;
 
 &lt;p&gt;I got a compiled version of U-boot from http://www.mech.tohoku-gakuin.ac.jp/rde/contents/tech/mini2440/archive/u-boot_20100701.zip, but just in case that file disappears, &lt;a href=&quot;/post_downloads/u-boot_20100701.zip&quot;&gt;u-boot_20100701.zip&lt;/a&gt;.&lt;/p&gt;
 
-&lt;p&gt;This zip file contains two tools that you might need to transfer files over USB to the mini2440. After you extract the files in the archive, they will be in the &lt;code&gt;tools/&lt;/code&gt; directory. I don’t think there is a difference between &lt;code&gt;s3c2410_boot_usb&lt;/code&gt; and &lt;code&gt;usbpush&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;This zip file contains two tools that you might need to transfer files over USB to the mini2440. After you extract the files in the archive, they will be in the &lt;code&gt;tools/&lt;/code&gt; directory. I don&amp;#39;t think there is a difference between &lt;code&gt;s3c2410_boot_usb&lt;/code&gt; and &lt;code&gt;usbpush&lt;/code&gt;.&lt;/p&gt;
 
-&lt;h2 id=&quot;hardware-connections&quot;&gt;Hardware connections&lt;/h2&gt;
+&lt;h2&gt;Hardware connections&lt;/h2&gt;
 
 &lt;ul&gt;
-  &lt;li&gt;Connect the mini2440 to power&lt;/li&gt;
-  &lt;li&gt;Connect the mini2440 to a USB port on your Linux PC using a Type A (male) to Type B (male) USB cable&lt;/li&gt;
-  &lt;li&gt;Connect the mini2440 to a serial port on your Linux PC using a serial cable&lt;/li&gt;
+&lt;li&gt;Connect the mini2440 to power&lt;/li&gt;
+&lt;li&gt;Connect the mini2440 to a USB port on your Linux PC using a Type A (male) to Type B (male) USB cable&lt;/li&gt;
+&lt;li&gt;Connect the mini2440 to a serial port on your Linux PC using a serial cable&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;p&gt;Start minicom&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;
-sudo minicom -s
-&lt;/code&gt;&lt;/p&gt;
-
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;sudo minicom -s
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;Here are my settings&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;
-    +-----------------------------------------------------------------------+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;    +-----------------------------------------------------------------------+
     | A -    Serial Device      : /dev/ttyS0                                |
     | B - Lockfile Location     : /var/lock                                 |
     | C -   Callin Program      :                                           |
@@ -115,12 +107,9 @@ sudo minicom -s
             | Exit                     |
             | Exit from Minicom        |
             +--------------------------+
-&lt;/code&gt;&lt;/p&gt;
-
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;If you set the NAND/NOR switch on the mini2440 to NOR and power up the mini2440, you should see something like this:&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;
-##### FriendlyARM BIOS 2.0 for 2440 #####
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;##### FriendlyARM BIOS 2.0 for 2440 #####
 [x] format NAND FLASH for Linux
 [v] Download vivi
 [k] Download linux kernel
@@ -139,41 +128,35 @@ sudo minicom -s
 [r] Restore NAND Flash from HOST through USB
 [q] Goto shell of vivi
 Enter your selection:
-&lt;/code&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;conceptually&quot;&gt;Conceptually,&lt;/h2&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h2&gt;Conceptually,&lt;/h2&gt;
 
 &lt;p&gt;You want to put U-Boot, a bootloader, into NAND flash, which will then load your linux kernel, which would in turn load your root filesystem.&lt;/p&gt;
 
-&lt;p&gt;Here’s the final layout you want to achieve&lt;/p&gt;
+&lt;p&gt;Here&amp;#39;s the final layout you want to achieve&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;MINI2440 # mtdparts
 
-&lt;p&gt;```
-MINI2440 # mtdparts&lt;/p&gt;
-
-&lt;p&gt;device nand0 &lt;mini2440-nand&gt;, # parts = 4
+device nand0 &amp;lt;mini2440-nand&amp;gt;, # parts = 4
  #: name                        size            offset          mask_flags
  0: u-boot              0x00040000      0x00000000      0
  1: u-boot_env          0x00020000      0x00040000      0
  2: kernel              0x00500000      0x00060000      0
- 3: rootfs              0x0faa0000      0x00560000      0&lt;/mini2440-nand&gt;&lt;/p&gt;
+ 3: rootfs              0x0faa0000      0x00560000      0
 
-&lt;p&gt;active partition: nand0,0 - (u-boot) 0x00040000 @ 0x00000000&lt;/p&gt;
+active partition: nand0,0 - (u-boot) 0x00040000 @ 0x00000000
 
-&lt;p&gt;defaults:
+defaults:
 mtdids  : nand0=mini2440-nand
-mtdparts: &lt;null&gt;
-```&lt;/null&gt;&lt;/p&gt;
+mtdparts: &amp;lt;NULL&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h2&gt;Putting U-Boot into NAND flash&lt;/h2&gt;
 
-&lt;h2 id=&quot;putting-u-boot-into-nand-flash&quot;&gt;Putting U-Boot into NAND flash&lt;/h2&gt;
-
-&lt;p&gt;In this section, you’re going to first put U-Boot onto mini2440’s ram, and then run U-Boot from ram to make it do some cleanup, and then get U-Boot to copy itself into NAND flash.&lt;/p&gt;
+&lt;p&gt;In this section, you&amp;#39;re going to first put U-Boot onto mini2440&amp;#39;s ram, and then run U-Boot from ram to make it do some cleanup, and then get U-Boot to copy itself into NAND flash.&lt;/p&gt;
 
 &lt;p&gt;Ask mini2440 to receive U-Boot:&lt;/p&gt;
 
 &lt;p&gt;In minicom:&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;
-##### FriendlyARM BIOS 2.0 for 2440 #####
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;##### FriendlyARM BIOS 2.0 for 2440 #####
 [x] format NAND FLASH for Linux
 [v] Download vivi
 [k] Download linux kernel
@@ -192,56 +175,35 @@ mtdparts: &lt;null&gt;
 [r] Restore NAND Flash from HOST through USB
 [q] Goto shell of vivi
 Enter your selection:
-&lt;/code&gt;&lt;/p&gt;
-
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;Press &lt;code&gt;q&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;
-Supervivi&amp;gt; load ram &amp;lt;destination-address-in-ram&amp;gt; &amp;lt;size-to-transfer&amp;gt; u
-&lt;/code&gt;&lt;/p&gt;
-
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;Supervivi&amp;gt; load ram &amp;lt;destination-address-in-ram&amp;gt; &amp;lt;size-to-transfer&amp;gt; u
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;What I used:&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;
-Supervivi&amp;gt; load ram 0x32000000 242360 u
-&lt;/code&gt;&lt;/p&gt;
-
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;Supervivi&amp;gt; load ram 0x32000000 242360 u
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;Send U-Boot over USB to mini2440. I used &lt;code&gt;u-boot-256M.bin&lt;/code&gt;, because my mini2440 had a flash size of 256M. Many sites say that there should be no difference between using &lt;code&gt;u-boot-256M.bin&lt;/code&gt; and &lt;code&gt;u-boot-128M.bin&lt;/code&gt;, but I used &lt;code&gt;u-boot-256M.bin&lt;/code&gt; anyway. On Linux PC:&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;
-$ sudo ./tools/s3c2410_boot_usb u-boot_20100701/u-boot-256M.bin
-&lt;/code&gt;
-(Ignore the error if you get one)&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;$ sudo ./tools/s3c2410_boot_usb u-boot_20100701/u-boot-256M.bin
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;(Ignore the error if you get one)&lt;/p&gt;
 
 &lt;p&gt;Start U-Boot&lt;/p&gt;
 
 &lt;p&gt;In minicom:&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;
-Supervivi&amp;gt; go 0x32000000
-&lt;/code&gt;&lt;/p&gt;
-
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;Supervivi&amp;gt; go 0x32000000
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;Clear everything in NAND flash&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;
-MINI2440 # nand scrub
-&lt;/code&gt;&lt;/p&gt;
-
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;MINI2440 # nand scrub
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;Create bad block table (This took quite a while for me, be patient)&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;
-MINI2440 # nand createbbt
-&lt;/code&gt;&lt;/p&gt;
-
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;MINI2440 # nand createbbt
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;Create/view partitions&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;
-MINI2440 # mtdparts
-&lt;/code&gt;&lt;/p&gt;
-
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;MINI2440 # mtdparts
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;Write uboot to NAND flash. You have some options here.&lt;/p&gt;
 
-&lt;p&gt;Raw write, doesn’t look for bad blocks, data might get written to bad block. This will copy the full size of the nand partition, beginning with the address in ram provided.
+&lt;p&gt;Raw write, doesn&amp;#39;t look for bad blocks, data might get written to bad block. This will copy the full size of the nand partition, beginning with the address in ram provided.
 &lt;code&gt;
 MINI2440 # nand write &amp;lt;address-in-ram-in-hex&amp;gt; &amp;lt;partition-in-nand&amp;gt;
 &lt;/code&gt;&lt;/p&gt;
@@ -252,92 +214,60 @@ MINI2440 # nand write.e &amp;lt;source-in-hex&amp;gt; &amp;lt;destination-in-hex
 &lt;/code&gt;&lt;/p&gt;
 
 &lt;p&gt;I used&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;
-MINI2440 # nand write 0x32000000 u-boot
-&lt;/code&gt;&lt;/p&gt;
-
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;MINI2440 # nand write 0x32000000 u-boot
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;Partition the NAND&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;
-MINI2440# dynpart
-&lt;/code&gt;&lt;/p&gt;
-
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;MINI2440# dynpart
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;Create the dynamic environment space for u-boot&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;
-MINI2440# dynenv set u-boot_env
-&lt;/code&gt;&lt;/p&gt;
-
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;MINI2440# dynenv set u-boot_env
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;Save the environment to NAND.&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;
-MINI2440# saveenv
-&lt;/code&gt;&lt;/p&gt;
-
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;MINI2440# saveenv
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;Switch off the mini2440, flip the NAND/NOR switch to NAND, and switch on the mini2440.&lt;/p&gt;
 
-&lt;p&gt;You should get to a &lt;code&gt;MINI2440# &lt;/code&gt; prompt. If you don’t, try pressing enter a few times in minicom, the prompt might show up then.&lt;/p&gt;
+&lt;p&gt;You should get to a &lt;code&gt;MINI2440#&lt;/code&gt; prompt. If you don&amp;#39;t, try pressing enter a few times in minicom, the prompt might show up then.&lt;/p&gt;
 
-&lt;h2 id=&quot;transferring-uimage-into-nand-flash&quot;&gt;Transferring uImage into NAND flash&lt;/h2&gt;
+&lt;h2&gt;Transferring uImage into NAND flash&lt;/h2&gt;
 
 &lt;p&gt;I transferred using tftp, but you might be able to do it using USB like above.&lt;/p&gt;
 
 &lt;p&gt;Find the address of the kernel partition:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;MINI2440 # mtdparts
 
-&lt;p&gt;```
-MINI2440 # mtdparts&lt;/p&gt;
-
-&lt;p&gt;device nand0 &lt;mini2440-nand&gt;, # parts = 4
+device nand0 &amp;lt;mini2440-nand&amp;gt;, # parts = 4
  #: name                        size            offset          mask_flags
  0: u-boot              0x00040000      0x00000000      0
  1: u-boot_env          0x00020000      0x00040000      0
  2: kernel              0x00500000      0x00060000      0
- 3: rootfs              0x0faa0000      0x00560000      0&lt;/mini2440-nand&gt;&lt;/p&gt;
+ 3: rootfs              0x0faa0000      0x00560000      0
 
-&lt;p&gt;active partition: nand0,0 - (u-boot) 0x00040000 @ 0x00000000&lt;/p&gt;
+active partition: nand0,0 - (u-boot) 0x00040000 @ 0x00000000
 
-&lt;p&gt;defaults:
+defaults:
 mtdids  : nand0=mini2440-nand
-mtdparts: &lt;null&gt;
-```&lt;/null&gt;&lt;/p&gt;
-
+mtdparts: &amp;lt;NULL&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;Erase the kernel partition:&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;
-MINI2440# nand erase 60000 500000
-&lt;/code&gt;&lt;/p&gt;
-
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;MINI2440# nand erase 60000 500000
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;Set up your network. I connected the mini2440 to my router, and the Linux PC to the router at 192.168.1.50&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;
-MINI2440# setenv ipaddr 192.168.1.60
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;MINI2440# setenv ipaddr 192.168.1.60
 MINI2440# setenv serverip 192.168.1.50
-&lt;/code&gt;&lt;/p&gt;
-
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;Download uImage from Linux PC over LAN into RAM, at 0x32000000 again. First place &lt;code&gt;uImage&lt;/code&gt; into &lt;code&gt;/tftpboot&lt;/code&gt; (Google how to set up tftp).&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;
-MINI2440# tftp 32000000 uImage
-&lt;/code&gt;&lt;/p&gt;
-
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;MINI2440# tftp 32000000 uImage
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;Copy uImage from ram into NAND&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;
-MINI2440# nand write.e 32000000 60000 &amp;lt;size-of-uImage-in-hex&amp;gt;
-&lt;/code&gt;&lt;/p&gt;
-
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;MINI2440# nand write.e 32000000 60000 &amp;lt;size-of-uImage-in-hex&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;Set the boot command to load kernel image from NAND flash.&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;
-MINI2440# setenv bootcmd &#39;nboot.e kernel;bootm&#39;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;MINI2440# setenv bootcmd &amp;#39;nboot.e kernel;bootm&amp;#39;
 MINI2440# saveenv
-&lt;/code&gt;&lt;/p&gt;
-
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;Power cycle the mini2440, and it should boot into Linux.&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;
-Loading from NAND 256MiB 3,3V 8-bit, offset 0x60000
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;Loading from NAND 256MiB 3,3V 8-bit, offset 0x60000
    Image Name:   Linux-3.18.6
    Created:      2015-04-05   4:34:50 UTC
    Image Type:   ARM Linux Kernel Image (uncompressed)
@@ -354,12 +284,9 @@ Loading from NAND 256MiB 3,3V 8-bit, offset 0x60000
    Verifying Checksum ... OK
    Loading Kernel Image ...
 ...
-&lt;/code&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;heres-my-entire-u-boot-environment-just-in-case&quot;&gt;Here’s my entire U-Boot environment, just in case…&lt;/h2&gt;
-
-&lt;p&gt;```
-MINI2440 # printenv
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h2&gt;Here&amp;#39;s my entire U-Boot environment, just in case...&lt;/h2&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;MINI2440 # printenv
 bootargs=root=/dev/mtdblock3 rootfstype=jffs2 console=ttySAC0,115200
 bootdelay=3
 baudrate=115200
@@ -386,18 +313,17 @@ ipaddr=192.168.1.60
 serverip=192.168.1.50
 partition=nand0,0
 mtddevnum=0
-mtddevname=u-boot&lt;/p&gt;
+mtddevname=u-boot
 
-&lt;p&gt;Environment size: 1151/131068 bytes
-```&lt;/p&gt;
-
-&lt;h1 id=&quot;references&quot;&gt;References&lt;/h1&gt;
+Environment size: 1151/131068 bytes
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h1&gt;References&lt;/h1&gt;
 
 &lt;ul&gt;
-  &lt;li&gt;http://geekwentfreak-raviteja.rhcloud.com/blog/2010/07/27/flashing-uboot-onto-nand-mini2440/&lt;/li&gt;
-  &lt;li&gt;http://geekwentfreak-raviteja.rhcloud.com/blog/2010/09/19/mini2440-flashing-linux-uimage-into-nand/&lt;/li&gt;
-  &lt;li&gt;http://bill.station51.net/?post/2010/01/16/U-Boot-on-Mini2440&lt;/li&gt;
-  &lt;li&gt;http://e2e.ti.com/support/dsp/davinci_digital_media_processors/f/100/p/210595/745675&lt;/li&gt;
+&lt;li&gt;http://geekwentfreak-raviteja.rhcloud.com/blog/2010/07/27/flashing-uboot-onto-nand-mini2440/&lt;/li&gt;
+&lt;li&gt;http://geekwentfreak-raviteja.rhcloud.com/blog/2010/09/19/mini2440-flashing-linux-uimage-into-nand/&lt;/li&gt;
+&lt;li&gt;http://bill.station51.net/?post/2010/01/16/U-Boot-on-Mini2440&lt;/li&gt;
+&lt;li&gt;http://e2e.ti.com/support/dsp/davinci&lt;em&gt;digital&lt;/em&gt;media_processors/f/100/p/210595/745675&lt;/li&gt;
 &lt;/ul&gt;
 
   &lt;p&gt;&lt;a href=&quot;http://ackerleytng.github.io/uboot-mini2440/&quot;&gt;Putting U-boot on mini2440&lt;/a&gt; was originally published by Ackerley Tng at &lt;a href=&quot;http://ackerleytng.github.io&quot;&gt;Ackerley's Blog&lt;/a&gt; on April 05, 2015.&lt;/p&gt;</content>
@@ -418,11 +344,11 @@ mtddevname=u-boot&lt;/p&gt;
   </author>
   <content type="html">&lt;p&gt;First try:&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;http://ackerleytng.github.io/post_images/fried-okra-0.jpg&quot; alt=&quot;fried-okra-0&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://ackerleytng.github.io/post_images/fried-okra-0.jpg&quot; alt=&quot;fried-okra-0&quot;&gt;&lt;/p&gt;
 
 &lt;p&gt;Second try:&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;http://ackerleytng.github.io/post_images/fried-okra-1.jpg&quot; alt=&quot;fried-okra-1&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://ackerleytng.github.io/post_images/fried-okra-1.jpg&quot; alt=&quot;fried-okra-1&quot;&gt;&lt;/p&gt;
 
   &lt;p&gt;&lt;a href=&quot;http://ackerleytng.github.io/fried-okra/&quot;&gt;Fried Okra!&lt;/a&gt; was originally published by Ackerley Tng at &lt;a href=&quot;http://ackerleytng.github.io&quot;&gt;Ackerley's Blog&lt;/a&gt; on November 19, 2014.&lt;/p&gt;</content>
 </entry>
@@ -440,7 +366,7 @@ mtddevname=u-boot&lt;/p&gt;
     <uri>http://ackerleytng.github.io</uri>
     <email>ackerleytng@gmail.com</email>
   </author>
-  <content type="html">&lt;p&gt;&lt;img src=&quot;http://ackerleytng.github.io/post_images/pan-fried-chicken-potatoes.jpg&quot; alt=&quot;fried-okra-0&quot; /&gt;&lt;/p&gt;
+  <content type="html">&lt;p&gt;&lt;img src=&quot;http://ackerleytng.github.io/post_images/pan-fried-chicken-potatoes.jpg&quot; alt=&quot;fried-okra-0&quot;&gt;&lt;/p&gt;
 
   &lt;p&gt;&lt;a href=&quot;http://ackerleytng.github.io/sunday-dinner/&quot;&gt;Sunday Special Dinner&lt;/a&gt; was originally published by Ackerley Tng at &lt;a href=&quot;http://ackerleytng.github.io&quot;&gt;Ackerley's Blog&lt;/a&gt; on November 16, 2014.&lt;/p&gt;</content>
 </entry>
@@ -460,7 +386,7 @@ mtddevname=u-boot&lt;/p&gt;
   </author>
   <content type="html">&lt;p&gt;This is the first step towards sewing my own bag!&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;http://ackerleytng.github.io/post_images/pencil-case.jpg&quot; alt=&quot;pencil-case&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://ackerleytng.github.io/post_images/pencil-case.jpg&quot; alt=&quot;pencil-case&quot;&gt;&lt;/p&gt;
 
   &lt;p&gt;&lt;a href=&quot;http://ackerleytng.github.io/sewing-pencil-case/&quot;&gt;Making My Own Pencilcase&lt;/a&gt; was originally published by Ackerley Tng at &lt;a href=&quot;http://ackerleytng.github.io&quot;&gt;Ackerley's Blog&lt;/a&gt; on October 12, 2014.&lt;/p&gt;</content>
 </entry>
@@ -478,113 +404,85 @@ mtddevname=u-boot&lt;/p&gt;
     <uri>http://ackerleytng.github.io</uri>
     <email>ackerleytng@gmail.com</email>
   </author>
-  <content type="html">&lt;h2 id=&quot;to-disable-minifying-of-the-js-file-comment-this-line-out&quot;&gt;To disable minifying of the js file, comment this line out&lt;/h2&gt;
-
-&lt;pre&gt;&lt;code&gt;user@ubuntu:/opt/gitlab/embedded$ sudo vim ./service/gitlab-rails/config/environments/production.rb
+  <content type="html">&lt;h2&gt;To disable minifying of the js file, comment this line out&lt;/h2&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;user@ubuntu:/opt/gitlab/embedded$ sudo vim ./service/gitlab-rails/config/environments/production.rb
 #config.assets.js_compressor = :uglifier
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&quot;gitlab-rake-is-a-script-that-sets-a-default-user-and-does-bundle-exec-rake&quot;&gt;gitlab-rake is a script that sets a default user and does bundle exec rake&lt;/h2&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h2&gt;gitlab-rake is a script that sets a default user and does bundle exec rake&lt;/h2&gt;
 
 &lt;p&gt;Needs permission to write, so change permissions for public folder&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;sudo chmod a+w public
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;sudo chmod a+w public
 cd public
 sudo chmod a+w assets
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&quot;to-recompile-fully&quot;&gt;To recompile fully&lt;/h2&gt;
-
-&lt;pre&gt;&lt;code&gt;sudo gitlab-rake assets:clobber --trace # this step is sort of optional if you don&#39;t want to completely clean it out
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h2&gt;To recompile fully&lt;/h2&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;sudo gitlab-rake assets:clobber --trace # this step is sort of optional if you don&amp;#39;t want to completely clean it out
 sudo gitlab-rake assets:precompile --trace
 sudo gitlab-ctl restart
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&quot;add-all-accepted-mimetypes-to-this-file&quot;&gt;Add all accepted mimetypes to this file&lt;/h2&gt;
-
-&lt;pre&gt;&lt;code&gt;/opt/gitlab/embedded$ sudo vim service/gitlab-rails/app/assets/javascripts/markdown_area.js.coffee
-acceptedFiles: &quot;image/*,audio/*,video/*,application/*,text/*&quot;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&quot;disable-checking-of-extensions&quot;&gt;Disable checking of extensions&lt;/h2&gt;
-
-&lt;pre&gt;&lt;code&gt;/opt/gitlab/embedded$ sudo vim service/gitlab-rails/app/services/projects/image_service.rb
-&lt;/code&gt;&lt;/pre&gt;
-
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h2&gt;Add all accepted mimetypes to this file&lt;/h2&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;/opt/gitlab/embedded$ sudo vim service/gitlab-rails/app/assets/javascripts/markdown_area.js.coffee
+acceptedFiles: &amp;quot;image/*,audio/*,video/*,application/*,text/*&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h2&gt;Disable checking of extensions&lt;/h2&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;/opt/gitlab/embedded$ sudo vim service/gitlab-rails/app/services/projects/image_service.rb
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;Replace&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;if image &amp;amp;&amp;amp; correct_mime_type?(image)
-&lt;/code&gt;&lt;/pre&gt;
-
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;if image &amp;amp;&amp;amp; correct_mime_type?(image)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;with&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;if image
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h2&gt;Change the function formatLink&lt;/h2&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;/opt/gitlab/embedded$ sudo vim service/gitlab-rails/app/assets/javascripts/markdown_area.js.coffee
 
-&lt;pre&gt;&lt;code&gt;if image
-&lt;/code&gt;&lt;/pre&gt;
+String::endsWith = (s) -&amp;gt; s is &amp;#39;&amp;#39; or @[-s.length..] is s
 
-&lt;h2 id=&quot;change-the-function-formatlink&quot;&gt;Change the function formatLink&lt;/h2&gt;
-
-&lt;pre&gt;&lt;code&gt;/opt/gitlab/embedded$ sudo vim service/gitlab-rails/app/assets/javascripts/markdown_area.js.coffee
-  
-String::endsWith = (s) -&amp;gt; s is &#39;&#39; or @[-s.length..] is s
-  
 formatLink = (str) -&amp;gt;
-  image_extensions = [&#39;jpg&#39;, &#39;gif&#39;, &#39;jpeg&#39;, &#39;png&#39;]
-  
+  image_extensions = [&amp;#39;jpg&amp;#39;, &amp;#39;gif&amp;#39;, &amp;#39;jpeg&amp;#39;, &amp;#39;png&amp;#39;]
+
   is_image = false
   for ext in image_extensions
     is_image = is_image | str.url.toLowerCase().endsWith(ext)
-  
-  if is_image
-    &quot;![&quot; + str.alt + &quot;](&quot; + str.url + &quot;)&quot;
-  else
-    &quot;[&quot; + str.alt + &quot;](&quot; + str.url + &quot;)&quot;
-&lt;/code&gt;&lt;/pre&gt;
 
-&lt;h2 id=&quot;changing-html-in-views-changing-the-text&quot;&gt;Changing html in views (changing the text)&lt;/h2&gt;
+  if is_image
+    &amp;quot;![&amp;quot; + str.alt + &amp;quot;](&amp;quot; + str.url + &amp;quot;)&amp;quot;
+  else
+    &amp;quot;[&amp;quot; + str.alt + &amp;quot;](&amp;quot; + str.url + &amp;quot;)&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h2&gt;Changing html in views (changing the text)&lt;/h2&gt;
 
 &lt;p&gt;Go to /opt/gitlab/embedded/service/gitlab-rails/app/views/projects/wikis
 Modify the .haml files.
 Restart server to see effects&lt;/p&gt;
 
 &lt;p&gt;Replace &lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;.pull-right Attach images (JPG, PNG, GIF) by dragging &amp;amp; dropping or #{link_to &quot;selecting them&quot;, &#39;#&#39;, class: &#39;markdown-selector&#39; }.
-&lt;/code&gt;&lt;/pre&gt;
-
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;.pull-right Attach images (JPG, PNG, GIF) by dragging &amp;amp; dropping or #{link_to &amp;quot;selecting them&amp;quot;, &amp;#39;#&amp;#39;, class: &amp;#39;markdown-selector&amp;#39; }.
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;with&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;.pull-right Attach files by dragging &amp;amp; dropping.
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&quot;change-maximum-filesize-for-uploads&quot;&gt;Change maximum filesize for uploads&lt;/h2&gt;
-
-&lt;pre&gt;&lt;code&gt;/opt/gitlab/embedded$ sudo vim service/gitlab-rails/app/assets/javascripts/markdown_area.js.coffee
-&lt;/code&gt;&lt;/pre&gt;
-
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;.pull-right Attach files by dragging &amp;amp; dropping.
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h2&gt;Change maximum filesize for uploads&lt;/h2&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;/opt/gitlab/embedded$ sudo vim service/gitlab-rails/app/assets/javascripts/markdown_area.js.coffee
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;Change line 29. The unit of memory for that value is MiB.&lt;/p&gt;
 
-&lt;h2 id=&quot;remove-dropzones-check&quot;&gt;Remove dropzone’s check&lt;/h2&gt;
-
-&lt;pre&gt;&lt;code&gt;/opt/gitlab/embedded$ sudo vim service/gem/ruby/2.1.0/gems/dropzonejs-rails-0.4.14/vendor/assets/javascripts/dropzone.js
+&lt;h2&gt;Remove dropzone&amp;#39;s check&lt;/h2&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;/opt/gitlab/embedded$ sudo vim service/gem/ruby/2.1.0/gems/dropzonejs-rails-0.4.14/vendor/assets/javascripts/dropzone.js
 
 } else if (!Dropzone.isValidFile(file, this.options.acceptedFiles)) {
   return done(this.options.dictInvalidFileType);
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&quot;clear-out-acceptedimages&quot;&gt;Clear out accepted_images&lt;/h2&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h2&gt;Clear out accepted_images&lt;/h2&gt;
 
 &lt;p&gt;I think this makes the FileUploader class not check extensions&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;/opt/gitlab/embedded$ sudo vim service/gitlab-rails/app/services/projects/image_service.rb
-&lt;/code&gt;&lt;/pre&gt;
-
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;/opt/gitlab/embedded$ sudo vim service/gitlab-rails/app/services/projects/image_service.rb
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;Make accepted_images return nothing&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;def accepted_images
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;def accepted_images
   #%w(png jpg jpeg gif pdf zip tar.gz txt)
 end
-&lt;/code&gt;&lt;/pre&gt;
-
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
   &lt;p&gt;&lt;a href=&quot;http://ackerleytng.github.io/gitlab-hacking/&quot;&gt;GitLab Hacking&lt;/a&gt; was originally published by Ackerley Tng at &lt;a href=&quot;http://ackerleytng.github.io&quot;&gt;Ackerley's Blog&lt;/a&gt; on October 03, 2014.&lt;/p&gt;</content>
 </entry>
 
@@ -603,7 +501,7 @@ end
   </author>
   <content type="html">&lt;p&gt;The oxymoron. Well but this is actually eryngii mushrooms, sliced and coated with egg, stir fried.&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;http://ackerleytng.github.io/post_images/vegetarian-pork.jpg&quot; alt=&quot;vegetarian-pork&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://ackerleytng.github.io/post_images/vegetarian-pork.jpg&quot; alt=&quot;vegetarian-pork&quot;&gt;&lt;/p&gt;
 
   &lt;p&gt;&lt;a href=&quot;http://ackerleytng.github.io/vegetarian-pork/&quot;&gt;Vegetarian Pork!&lt;/a&gt; was originally published by Ackerley Tng at &lt;a href=&quot;http://ackerleytng.github.io&quot;&gt;Ackerley's Blog&lt;/a&gt; on September 28, 2014.&lt;/p&gt;</content>
 </entry>
@@ -629,28 +527,28 @@ end
 
 &lt;p&gt;Japanese began as a spoken language, and then Chinese characters were borrowed and adapted to represent sounds as well as meaning, which eventually resulted in three sets of characters: hiragana, katakana and kanji.&lt;/p&gt;
 
-&lt;p&gt;So at some point I was listening to 王菲’s 致青春. And then from the links on the side of the youtube page I found out that she sang the 大悲咒 at one of her concerts! Then I clicked around and found a recording of a CO playing accompaniment for a group of monks chanting the 大悲咒. I found multiple versions of the sutra before finding the one that they were reciting as a comment on the youtube page. Then I realized that the Chinese characters actually have no meaning - they merely provide a sound similar to the original sutra.&lt;/p&gt;
+&lt;p&gt;So at some point I was listening to 王菲&amp;#39;s 致青春. And then from the links on the side of the youtube page I found out that she sang the 大悲咒 at one of her concerts! Then I clicked around and found a recording of a CO playing accompaniment for a group of monks chanting the 大悲咒. I found multiple versions of the sutra before finding the one that they were reciting as a comment on the youtube page. Then I realized that the Chinese characters actually have no meaning - they merely provide a sound similar to the original sutra.&lt;/p&gt;
 
-&lt;p&gt;(Information mainly from Wikipedia. I hope they’re right for now.)&lt;/p&gt;
+&lt;p&gt;(Information mainly from Wikipedia. I hope they&amp;#39;re right for now.)&lt;/p&gt;
 
-&lt;h2 id=&quot;so-what-language-are-the-original-sutras-written-in&quot;&gt;So what language are the original sutras written in?&lt;/h2&gt;
+&lt;h2&gt;So what language are the original sutras written in?&lt;/h2&gt;
 
 &lt;p&gt;First, we want to know how Buddhism developed.&lt;/p&gt;
 
 &lt;ul&gt;
-  &lt;li&gt;Siddhartha Gautama was the historical founder of Buddhism, born in Lumbini, Nepal&lt;/li&gt;
-  &lt;li&gt;Discovered the Middle Way through asceticism and meditation&lt;/li&gt;
-  &lt;li&gt;Attained enlightenment sitting under the Bodhi tree in Bodh Gaya, India&lt;/li&gt;
-  &lt;li&gt;At the Deer Park near Varanasi in Northern India Buddha delivered his first sermon&lt;/li&gt;
-  &lt;li&gt;Buddha reportedly told his followers that after his death, the Dharma (doctrine, teaching) would be their leader&lt;/li&gt;
-  &lt;li&gt;Early arhants took great pains to formulate and transmit his teachings accurately, but no ungarnished collection of his sayings has survived&lt;/li&gt;
+&lt;li&gt;Siddhartha Gautama was the historical founder of Buddhism, born in Lumbini, Nepal&lt;/li&gt;
+&lt;li&gt;Discovered the Middle Way through asceticism and meditation&lt;/li&gt;
+&lt;li&gt;Attained enlightenment sitting under the Bodhi tree in Bodh Gaya, India&lt;/li&gt;
+&lt;li&gt;At the Deer Park near Varanasi in Northern India Buddha delivered his first sermon&lt;/li&gt;
+&lt;li&gt;Buddha reportedly told his followers that after his death, the Dharma (doctrine, teaching) would be their leader&lt;/li&gt;
+&lt;li&gt;Early arhants took great pains to formulate and transmit his teachings accurately, but no ungarnished collection of his sayings has survived&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;p&gt;1st Buddhist Council
-- Objective was to record all of Buddha’s teachings into the sutra and to codify monastic rules (vinaya)
+- Objective was to record all of Buddha&amp;#39;s teachings into the sutra and to codify monastic rules (vinaya)
 - This became the basis of the Tripitaka, which is preserved only in Pali.&lt;/p&gt;
 
-&lt;p&gt;Asoka’s edicts
+&lt;p&gt;Asoka&amp;#39;s edicts
 - Were the first tangible evidence of Buddhism
 - Written in the Magadhi language in the Brahmi script&lt;/p&gt;
 
@@ -667,10 +565,9 @@ end
 
 &lt;p&gt;TL;DR: The earliest written version of Buddhist teachings were in Pali, and were written in Sri Lanka.&lt;/p&gt;
 
-&lt;h2 id=&quot;sanskrit&quot;&gt;Sanskrit&lt;/h2&gt;
+&lt;h2&gt;Sanskrit&lt;/h2&gt;
 
 &lt;p&gt;Buddha forbade translation of his discourses into elitist religious languages such as Sanskrit, though eventually these translations were made. Pali became a scholarly and elitist language eventually, which is opposite to what Buddha had explicitly commanded.&lt;/p&gt;
-
 
   &lt;p&gt;&lt;a href=&quot;http://ackerleytng.github.io/buddhist-script-pali-sanskrit/&quot;&gt;Buddhist Scripture&lt;/a&gt; was originally published by Ackerley Tng at &lt;a href=&quot;http://ackerleytng.github.io&quot;&gt;Ackerley's Blog&lt;/a&gt; on September 08, 2014.&lt;/p&gt;</content>
 </entry>
@@ -688,7 +585,7 @@ end
     <uri>http://ackerleytng.github.io</uri>
     <email>ackerleytng@gmail.com</email>
   </author>
-  <content type="html">&lt;h2 id=&quot;wages&quot;&gt;Wages&lt;/h2&gt;
+  <content type="html">&lt;h2&gt;Wages&lt;/h2&gt;
 
 &lt;p&gt;Wages = remuneration in money due or given to an employee in respect of his employment
 Includes
@@ -708,7 +605,7 @@ Includes
 
 &lt;p&gt;Total wages = (Ordinary wages + Additional wages) for that month&lt;/p&gt;
 
-&lt;p&gt;For my age, (assuming I’m non-pensionable)
+&lt;p&gt;For my age, (assuming I&amp;#39;m non-pensionable)
 Contribution by employer = 16% of wage
 Contribution by employee = 20% of wage&lt;/p&gt;
 
@@ -717,11 +614,11 @@ Credited to special account = 6% of wage
 Credited to medisaveaccount = 7% of wage
 (23 + 6 + 7 = 36 = 16 + 20)&lt;/p&gt;
 
-&lt;h2 id=&quot;cpf-for-education&quot;&gt;CPF for Education&lt;/h2&gt;
+&lt;h2&gt;CPF for Education&lt;/h2&gt;
 
-&lt;p&gt;Education Scheme is a loan scheme which allows members to use CPF savings from their OA to pay for children’s, spouse’s or own tuition fees.&lt;/p&gt;
+&lt;p&gt;Education Scheme is a loan scheme which allows members to use CPF savings from their OA to pay for children&amp;#39;s, spouse&amp;#39;s or own tuition fees.&lt;/p&gt;
 
-&lt;p&gt;Student has to repay the amount + interest, using cash, into the lender’s OA. This interest is the interest that the lender would have earned if the money had remained with CPF. Interest is calculated on monthly basis, compounded yearly. Rate is the CPF OA interest rate.&lt;/p&gt;
+&lt;p&gt;Student has to repay the amount + interest, using cash, into the lender&amp;#39;s OA. This interest is the interest that the lender would have earned if the money had remained with CPF. Interest is calculated on monthly basis, compounded yearly. Rate is the CPF OA interest rate.&lt;/p&gt;
 
 &lt;p&gt;Repayment commences 1 year after student leaves the educational institution&lt;/p&gt;
 
@@ -750,25 +647,25 @@ After 55, must first meet MS and MMS conditions before withdrawing money for edu
   </author>
   <content type="html">&lt;p&gt;This is a really messy set of reading notes. Might just be easier to go and re-read from the website in future.&lt;/p&gt;
 
-&lt;h2 id=&quot;definitions&quot;&gt;Definitions&lt;/h2&gt;
+&lt;h2&gt;Definitions&lt;/h2&gt;
 
 &lt;p&gt;Annuity: Any continuing payment with a fixed total annual amount.
 Life annuity: Insurance schemes that secure you a steady cash flow for retirement years&lt;/p&gt;
 
 &lt;p&gt;Source: &lt;a href=&quot;http://mycpf.cpf.gov.sg/CPF/About-Us/Intro/Intro.htm&quot;&gt;CPF&lt;/a&gt;&lt;/p&gt;
 
-&lt;h2 id=&quot;cpf&quot;&gt;CPF&lt;/h2&gt;
+&lt;h2&gt;CPF&lt;/h2&gt;
 
 &lt;p&gt;Central Provident Fund (CPF) is a comprehensive social security savings plan.&lt;/p&gt;
 
 &lt;p&gt;Scope and benefits of CPF are&lt;/p&gt;
 
 &lt;ul&gt;
-  &lt;li&gt;Retirement &lt;/li&gt;
-  &lt;li&gt;Healthcare &lt;/li&gt;
-  &lt;li&gt;Home Ownership &lt;/li&gt;
-  &lt;li&gt;Family Protection &lt;/li&gt;
-  &lt;li&gt;Asset Enhancement&lt;/li&gt;
+&lt;li&gt;Retirement &lt;/li&gt;
+&lt;li&gt;Healthcare &lt;/li&gt;
+&lt;li&gt;Home Ownership &lt;/li&gt;
+&lt;li&gt;Family Protection &lt;/li&gt;
+&lt;li&gt;Asset Enhancement&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;p&gt;Both Singaporeans and their employers make monthly contributions to the CPF and these contributions go into three accounts:
@@ -777,17 +674,17 @@ Life annuity: Insurance schemes that secure you a steady cash flow for retiremen
 - Medisave (MA): hospitalization expenses and approved medical insurance&lt;/p&gt;
 
 &lt;ul&gt;
-  &lt;li&gt;Retirement (RA): created on the 55th birthday by transferring savings from SA and OA.&lt;/li&gt;
+&lt;li&gt;Retirement (RA): created on the 55th birthday by transferring savings from SA and OA.&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;&amp;lt;TODO after this transfer happens, does the SA and OA cease to exist? (Seems like the answer is no)&amp;gt;&lt;/p&gt;
+&lt;p&gt;&lt;TODO after this transfer happens, does the SA and OA cease to exist? (Seems like the answer is no)&gt;&lt;/p&gt;
 
 &lt;p&gt;CPF savings earn a minimum risk-free interest of 2.5% guaranteed by the government.
-The first $60,000 in your combined CPF balances, with up to $20,000 from your Ordinary Account, will earn an extra 1% interest &amp;lt;TODO How exactly does this 20k work?&amp;gt;&lt;/p&gt;
+The first $60,000 in your combined CPF balances, with up to $20,000 from your Ordinary Account, will earn an extra 1% interest &lt;TODO How exactly does this 20k work?&gt;&lt;/p&gt;
 
 &lt;p&gt;When the savings are transferred from SA and OA to RA, this forms the minimum sum (MS).&lt;/p&gt;
 
-&lt;h2 id=&quot;minimum-sum-ms-scheme&quot;&gt;Minimum Sum (MS) Scheme&lt;/h2&gt;
+&lt;h2&gt;Minimum Sum (MS) Scheme&lt;/h2&gt;
 
 &lt;p&gt;The MS Scheme provides CPF members a monthly income to support a basic standard of living during retirement for about 20 years.&lt;/p&gt;
 
@@ -798,7 +695,7 @@ The first $60,000 in your combined CPF balances, with up to $20,000 from your Or
 
 &lt;p&gt;At age 55, SA, followed by OA will be transferred to RA to meet MS. If SA, OA are not enough for MS, property purchased using CPF savings will be automatically pledged for up to half of your MS. Pledge amount will be the amount of CPF used for the property or the MS shortfall, whichever is lower.&lt;/p&gt;
 
-&lt;p&gt;If you sell the property &amp;lt;TODO that was pledged? Or any property bought using money from OA?&amp;gt; you need to refund CPF used to buy it, and accrued interest. &amp;lt;TODO accrued interest based on what? and at what interest rate?&amp;gt; This refunded amount will count towards the MS and MMS.&lt;/p&gt;
+&lt;p&gt;If you sell the property &lt;TODO that was pledged? Or any property bought using money from OA?&gt; you need to refund CPF used to buy it, and accrued interest. &lt;TODO accrued interest based on what? and at what interest rate?&gt; This refunded amount will count towards the MS and MMS.&lt;/p&gt;
 
 &lt;p&gt;If after 55, amount in RA &amp;lt; MS, any new inflows will count towards that shortfall.&lt;/p&gt;
 
@@ -806,7 +703,7 @@ The first $60,000 in your combined CPF balances, with up to $20,000 from your Or
 
 &lt;p&gt;You can use the MS to join the CPF LIFE annuity scheme.&lt;/p&gt;
 
-&lt;h3 id=&quot;my-numerical-example&quot;&gt;My numerical example&lt;/h3&gt;
+&lt;h3&gt;My numerical example&lt;/h3&gt;
 
 &lt;p&gt;(Arbitrary units)&lt;/p&gt;
 
@@ -814,7 +711,7 @@ The first $60,000 in your combined CPF balances, with up to $20,000 from your Or
 SA: 9u
 OA: 8u
 MS: 20u
-Property purchased using CPF: 6u &amp;lt;TODO why do we use the amount that was spent on the property? the property might have appreciated (or depreciated. If MS is meant for retirement then the actual value of the property should be taken into account.)&amp;gt;&lt;/p&gt;
+Property purchased using CPF: 6u &lt;TODO why do we use the amount that was spent on the property? the property might have appreciated (or depreciated. If MS is meant for retirement then the actual value of the property should be taken into account.)&gt;&lt;/p&gt;
 
 &lt;p&gt;9u + 8u &amp;lt; 20u, hence property automatically pledged for up to half of MS.
 Half of MS = 10u
@@ -823,9 +720,9 @@ Pledged value from property = 20
 
 &lt;p&gt;Can withdraw 3u at 55 years of age.&lt;/p&gt;
 
-&lt;p&gt;&amp;lt;TODO Is this correct?&amp;gt;&lt;/p&gt;
+&lt;p&gt;&lt;TODO Is this correct?&gt;&lt;/p&gt;
 
-&lt;h3 id=&quot;receiving-the-ms-monthly-payment&quot;&gt;Receiving the MS monthly payment&lt;/h3&gt;
+&lt;h3&gt;Receiving the MS monthly payment&lt;/h3&gt;
 
 &lt;p&gt;Apply to receive MS monthly payment when you reach DDA.&lt;/p&gt;
 
@@ -833,75 +730,52 @@ Pledged value from property = 20
 
 &lt;p&gt;Example: 4% interest, pa. for person with $39500 at age 55, will get $351 per month for 20 years&lt;/p&gt;
 
-&lt;p&gt;If you do not wish to start monthly payments at DDA, then you will receive payouts over a longer period of time. &amp;lt;TODO Why is this the case? is it because interest will allow the sum in the RA to grow and hence you can spread the amount over a wider time period?&amp;gt;&lt;/p&gt;
+&lt;p&gt;If you do not wish to start monthly payments at DDA, then you will receive payouts over a longer period of time. &lt;TODO Why is this the case? is it because interest will allow the sum in the RA to grow and hence you can spread the amount over a wider time period?&gt;&lt;/p&gt;
 
-&lt;h3 id=&quot;topping-up-cpf&quot;&gt;Topping up CPF&lt;/h3&gt;
+&lt;h3&gt;Topping up CPF&lt;/h3&gt;
 
 &lt;p&gt;You can top-up SA or RA savings using cash (yourself or loved ones) if and enjoy a tax relief of up to $7000 ($7000 more for the rest).&lt;/p&gt;
 
 &lt;p&gt;You can also top up CPF MS using your CPF, only if you meet the MS requirement.&lt;/p&gt;
 
-&lt;h4 id=&quot;maximum-top-ups&quot;&gt;Maximum top-ups&lt;/h4&gt;
+&lt;h4&gt;Maximum top-ups&lt;/h4&gt;
 
-&lt;p&gt;&amp;lt;TODO Why is there a maximum for top-ups?&amp;gt;&lt;/p&gt;
+&lt;p&gt;&lt;TODO Why is there a maximum for top-ups?&gt;&lt;/p&gt;
 
 &lt;p&gt;Recipient &amp;lt; 55 years old:
 MS - (SA balance + amounts withdrawn from SA under CPF-IS)&lt;/p&gt;
 
 &lt;p&gt;Recipient &amp;gt;= 55 years old:
 MS - RA - interest earned on RA since 55 years - govt grants - amts withdrawn
-&amp;lt;TODO RA balance is the same as RA balance less amounts withdrawn right?&amp;gt;&lt;/p&gt;
+&lt;TODO RA balance is the same as RA balance less amounts withdrawn right?&gt;&lt;/p&gt;
 
-&lt;h4 id=&quot;drawdown-age-dda&quot;&gt;Drawdown Age (DDA)&lt;/h4&gt;
+&lt;h4&gt;Drawdown Age (DDA)&lt;/h4&gt;
 
-&lt;table&gt;
-  &lt;thead&gt;
-    &lt;tr&gt;
-      &lt;th&gt;Year of Birth&lt;/th&gt;
-      &lt;th&gt;Drawdown Age&lt;/th&gt;
-    &lt;/tr&gt;
-  &lt;/thead&gt;
-  &lt;tbody&gt;
-    &lt;tr&gt;
-      &lt;td&gt;&amp;lt;= 1943&lt;/td&gt;
-      &lt;td&gt;60&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;1944 -&amp;gt; 1949&lt;/td&gt;
-      &lt;td&gt;62&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;1950, 1951&lt;/td&gt;
-      &lt;td&gt;63&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;1952, 1953&lt;/td&gt;
-      &lt;td&gt;64&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;&amp;gt;= 1954&lt;/td&gt;
-      &lt;td&gt;65&lt;/td&gt;
-    &lt;/tr&gt;
-  &lt;/tbody&gt;
-&lt;/table&gt;
+&lt;p&gt;| Year of Birth | Drawdown Age |
+|---------------|--------------|
+| &amp;lt;= 1943       | 60           |
+| 1944 -&amp;gt; 1949  | 62           |
+| 1950, 1951    | 63           |
+| 1952, 1953    | 64           |
+| &amp;gt;= 1954       | 65           |&lt;/p&gt;
 
-&lt;h3 id=&quot;exemption-from-ms&quot;&gt;Exemption from MS&lt;/h3&gt;
+&lt;h3&gt;Exemption from MS&lt;/h3&gt;
 
 &lt;p&gt;May apply for exemption from MS if:
 - have your own life annuity bought using cash. The monthly payment you receive from the life annuity &amp;gt;= MS monthly payment.
 - are a pensioner receiving a monthly pension &amp;gt;= MS monthly payment&lt;/p&gt;
 
-&lt;h3 id=&quot;medisave-minimum-sum-mms-scheme&quot;&gt;Medisave Minimum Sum (MMS) Scheme&lt;/h3&gt;
+&lt;h3&gt;Medisave Minimum Sum (MMS) Scheme&lt;/h3&gt;
 
-&lt;p&gt;The Medisave Minimum Sum (MMS) is the amount you need to retain in your MA for healthcare needs. You may choose to withdraw any excess Medisave savings on or after 55 subject to the applicable withdrawal rules &amp;lt;TODO which are?&amp;gt; after meeting CPF MS requirement. Otherwise, transfer money from SA then OA to MA to meet MMS, then withdraw the rest.&lt;/p&gt;
+&lt;p&gt;The Medisave Minimum Sum (MMS) is the amount you need to retain in your MA for healthcare needs. You may choose to withdraw any excess Medisave savings on or after 55 subject to the applicable withdrawal rules &lt;TODO which are?&gt; after meeting CPF MS requirement. Otherwise, transfer money from SA then OA to MA to meet MMS, then withdraw the rest.&lt;/p&gt;
 
 &lt;p&gt;Current MMS is $43,500.&lt;/p&gt;
 
-&lt;h2 id=&quot;cpf-life&quot;&gt;CPF LIFE&lt;/h2&gt;
+&lt;h2&gt;CPF LIFE&lt;/h2&gt;
 
-&lt;p&gt;CPF LIFE = CPF Lifelong Income For the Elderly. Is an annuity scheme that Provides citizens and PRs with a monthly payout from your drawdown age (DDA) for as long as you &lt;em&gt;live&lt;/em&gt; (for the rest of your life). &lt;requirements abstracted=&quot;&quot;&gt; Will be placed on CPF life if you have at least $40,000 in your RA at age 55 or $60,000 in RA at DDA. Can apply to join CPF LIFE anytime between age 55 and 80 if you&#39;re not placed on CPF LIFE.&lt;/requirements&gt;&lt;/p&gt;
+&lt;p&gt;CPF LIFE = CPF Lifelong Income For the Elderly. Is an annuity scheme that Provides citizens and PRs with a monthly payout from your drawdown age (DDA) for as long as you &lt;em&gt;live&lt;/em&gt; (for the rest of your life). &lt;Requirements abstracted&gt; Will be placed on CPF life if you have at least $40,000 in your RA at age 55 or $60,000 in RA at DDA. Can apply to join CPF LIFE anytime between age 55 and 80 if you&amp;#39;re not placed on CPF LIFE.&lt;/p&gt;
 
-&lt;p&gt;&amp;lt;TODO What is the reason for automatically placing some people on the scheme and not some other people, based on the amount they have in the RA when they reach 55?&amp;gt;&lt;/p&gt;
+&lt;p&gt;&lt;TODO What is the reason for automatically placing some people on the scheme and not some other people, based on the amount they have in the RA when they reach 55?&gt;&lt;/p&gt;
 
 &lt;p&gt;Two LIFE plans:
 - LIFE Standard plan: higher monthly payouts, lower bequests (default)
@@ -913,11 +787,11 @@ MS - RA - interest earned on RA since 55 years - govt grants - amts withdrawn
 
 &lt;p&gt;Savings used for CPF LIFE will continue to earn interest. Interest will be added every January.
 Interest earned on annuity premium will be added to annuity fund. Annuity fund is also known as the Lifelong Income Fund.
-Annuity fund = Annuity premium + interest earned on premium + 1% more interest if you’re on the LIFE Standard Plan &amp;lt;TODO does the CPF LIFE Standard plan really give you 1% more interest?&amp;gt;.&lt;/p&gt;
+Annuity fund = Annuity premium + interest earned on premium + 1% more interest if you&amp;#39;re on the LIFE Standard Plan &lt;TODO does the CPF LIFE Standard plan really give you 1% more interest?&gt;.&lt;/p&gt;
 
-&lt;p&gt;If you’re above DDA and there is extra money in your RA &lt;todo i=&quot;&quot; suppose=&quot;&quot; extra=&quot;&quot; means=&quot;&quot;&gt; MS?&amp;gt;, then you have two options
+&lt;p&gt;If you&amp;#39;re above DDA and there is extra money in your RA &lt;TODO I suppose extra means &gt; MS?&amp;gt;, then you have two options
 1. Leave the money in RA and have it paid out as AMP
-2. Choose to buy another annuity for higher annuity payout&lt;/todo&gt;&lt;/p&gt;
+2. Choose to buy another annuity for higher annuity payout&lt;/p&gt;
 
 &lt;p&gt;There will be 1% extra interest paid on the first $60,000 of combined balances, from all of SMRA accounts + the annuity premium.
 1% extra interest:
@@ -934,15 +808,16 @@ Monthly payouts go to bank account by GIRO, every 4th of the month. If payouts a
 
 &lt;p&gt;MSCC = 0.5 MS&lt;/p&gt;
 
-&lt;h2 id=&quot;premium-payment&quot;&gt;Premium Payment&lt;/h2&gt;
+&lt;h2&gt;Premium Payment&lt;/h2&gt;
 
 &lt;p&gt;No minimum for joining CPF LIFE, but amount in RA used for CPF LIFE is positively correlated with monthly payout.
 Max amount that you can commit to CPF LIFE = MS.
 Can pledge property to meet the MS, can withdraw RA savings above MSCC. (Payouts will be affected by pledging of property)&lt;/p&gt;
 
-&lt;h3 id=&quot;life-standard-plan-premium-payment&quot;&gt;LIFE Standard Plan Premium Payment&lt;/h3&gt;
+&lt;h3&gt;LIFE Standard Plan Premium Payment&lt;/h3&gt;
+
 &lt;p&gt;Annuity premium taken from RA in 2 instalments.
-1. At 55: deduct RA savings up to Minimum Sum Cash Component (MSCC). The rest of the RA savings stay in the RA. &amp;lt;TODO what is the point of having the money in the RA stay in the RA? What can I do with RA money anyway, other than start to draw it out at DDA?&amp;gt;
+1. At 55: deduct RA savings up to Minimum Sum Cash Component (MSCC). The rest of the RA savings stay in the RA. &lt;TODO what is the point of having the money in the RA stay in the RA? What can I do with RA money anyway, other than start to draw it out at DDA?&gt;
 2. 1 to 2 months before DDA: deduct the rest of RA savings. Will include
    - Top-ups
    - Transferral of funds from other accounts into RA
@@ -951,14 +826,15 @@ Can pledge property to meet the MS, can withdraw RA savings above MSCC. (Payouts
 
 &lt;p&gt;From DDA: monthly payouts from the annuity fund.&lt;/p&gt;
 
-&lt;h3 id=&quot;life-basic-plan-premium-payment&quot;&gt;LIFE Basic Plan Premium Payment&lt;/h3&gt;
+&lt;h3&gt;LIFE Basic Plan Premium Payment&lt;/h3&gt;
+
 &lt;p&gt;Annuity premium taken from RA in 2 instalments.
 1. At 55: small portion of RA as first instalment: About 10%
 2. 1 to 2 months before DDA: A small portion of new money that was built up&lt;/p&gt;
 
 &lt;p&gt;From DDA: monthly payouts, paid from RA until 1 month before 90 years of age. After 90, monthly for life&lt;/p&gt;
 
-&lt;h3 id=&quot;payouts&quot;&gt;Payouts&lt;/h3&gt;
+&lt;h3&gt;Payouts&lt;/h3&gt;
 
 &lt;p&gt;Not fixed, reviewed every year or when the money from RA is used to buy property.&lt;/p&gt;
 
@@ -975,48 +851,48 @@ Can pledge property to meet the MS, can withdraw RA savings above MSCC. (Payouts
 (/ 155000.0 1200.0) = 129.2 months
 (/ 129.2 12) = 10.76 years&lt;/p&gt;
 
-&lt;h3 id=&quot;higher-payouts&quot;&gt;Higher Payouts&lt;/h3&gt;
+&lt;h3&gt;Higher Payouts&lt;/h3&gt;
 
 &lt;p&gt;Make cash or CPF top-ups into RA if you have not reached your topping-up limit.
 Topping-up limit = difference between current MS and RA balance.
 RA balance = cash set aside in RA, not including interest earned, govt grants received, amounts withdrawn&lt;/p&gt;
 
-&lt;h3 id=&quot;bequests&quot;&gt;Bequests&lt;/h3&gt;
+&lt;h3&gt;Bequests&lt;/h3&gt;
 
 &lt;p&gt;All unused annuity premium and RA savings will be refunded to CPF OA, which will then be paid to beneficiaries along with savings.&lt;/p&gt;
 
-&lt;h3 id=&quot;leaving-cpf-life&quot;&gt;Leaving CPF LIFE&lt;/h3&gt;
+&lt;h3&gt;Leaving CPF LIFE&lt;/h3&gt;
 
 &lt;p&gt;Can only leave CPF LIFE if
 - Medical condition that causes you to
-  - be permanently unfit for employment &lt;?! - you aren&#39;t supposed to be working anyway right?&gt;
+  - be permanently unfit for employment &amp;lt;?! - you aren&amp;#39;t supposed to be working anyway right?&amp;gt;
   - have a severly reduced life expectancy
-  - be terminally ill &lt;second two=&quot;&quot; points=&quot;&quot; are=&quot;&quot; the=&quot;&quot; same=&quot;&quot; thing=&quot;&quot;&gt;
+  - be terminally ill &lt;second two points are the same thing&gt;
 - You will leave Singapore or West Malaysia permanently with no intention of returning for work or to live
-- You are fully exempted from the MS scheme because you are receiving a monthly pension or annuity payout&lt;/second&gt;&lt;/p&gt;
+- You are fully exempted from the MS scheme because you are receiving a monthly pension or annuity payout&lt;/p&gt;
 
-&lt;h3 id=&quot;refund&quot;&gt;Refund&lt;/h3&gt;
+&lt;h3&gt;Refund&lt;/h3&gt;
 
 &lt;p&gt;Refund is your unused annuity premium.
-If you are already receiving a monthly pension or payout under a personal annuity, you may apply to be exempted from the MS Scheme &amp;lt;TODO exempted from MS scheme or CPF LIFE?&amp;gt;.
+If you are already receiving a monthly pension or payout under a personal annuity, you may apply to be exempted from the MS Scheme &lt;TODO exempted from MS scheme or CPF LIFE?&gt;.
 If the MS scheme does not apply to you, you may choose to leave CPF LIFE.&lt;/p&gt;
 
-&lt;h2 id=&quot;medisave-account&quot;&gt;Medisave Account&lt;/h2&gt;
+&lt;h2&gt;Medisave Account&lt;/h2&gt;
 
 &lt;p&gt;Monthly contributions to MA for healthcare needs.&lt;/p&gt;
 
 &lt;p&gt;Using money in Medisave Account:
-- Pay for your own or your dependants’ hospitalization expenses
+- Pay for your own or your dependants&amp;#39; hospitalization expenses
 - Pay for outpatient treatments like chemotherapy or radiotherapy
 - Pay premiums for Medishield or insurance plans under the Private Medical Insurance Scheme (PMIS)
-  - These help to pay for expenses arising from the insured’s hospitalizations and certain outpatient treatments at certain medical institutions
+  - These help to pay for expenses arising from the insured&amp;#39;s hospitalizations and certain outpatient treatments at certain medical institutions
 - Eldershield: a severe disability insurance scheme that provides insurance coverage to those who require long term care&lt;/p&gt;
 
 &lt;p&gt;Medifund is available to help the poor and needy with medical bills&lt;/p&gt;
 
-&lt;p&gt;&amp;lt;TODO follow links under this section on http://mycpf.cpf.gov.sg/Members/Gen-Info/Sch-Svc/S-and-S.htm&amp;gt;&lt;/p&gt;
+&lt;p&gt;&lt;TODO follow links under this section on http://mycpf.cpf.gov.sg/Members/Gen-Info/Sch-Svc/S-and-S.htm&gt;&lt;/p&gt;
 
-&lt;h2 id=&quot;property&quot;&gt;Property&lt;/h2&gt;
+&lt;h2&gt;Property&lt;/h2&gt;
 
 &lt;p&gt;Your OA savings can be used to buy a home under CPF housing schemes
 - HDB under Public Housing Scheme
@@ -1028,42 +904,41 @@ If you already own property bought with CPF savings and wish to buy another prop
 -  &amp;lt; 55: You keep half the MS
 - &amp;gt;= 55: All of MS&lt;/p&gt;
 
-&lt;h2 id=&quot;cpf-investments&quot;&gt;CPF Investments&lt;/h2&gt;
+&lt;h2&gt;CPF Investments&lt;/h2&gt;
 
 &lt;p&gt;Money from OA and SA can be invested in CPF Investment Schemes&lt;/p&gt;
 
-&lt;h2 id=&quot;education-scheme&quot;&gt;Education Scheme&lt;/h2&gt;
+&lt;h2&gt;Education Scheme&lt;/h2&gt;
 
 &lt;p&gt;Loan scheme that allows CPF savings to be used for full-time tertiary education&lt;/p&gt;
 
-&lt;h2 id=&quot;transferring-savings-from-oa-to-sa&quot;&gt;Transferring Savings from OA to SA&lt;/h2&gt;
+&lt;h2&gt;Transferring Savings from OA to SA&lt;/h2&gt;
 
 &lt;p&gt;Can only transfer when you are &amp;lt; 55 years old.&lt;/p&gt;
 
 &lt;p&gt;Amount in SA must not exceed the CPF MS after the transfer. This allows higher interest rate of SA.&lt;/p&gt;
 
-&lt;h2 id=&quot;supplementary-retirement-scheme-srs&quot;&gt;Supplementary Retirement Scheme (SRS)&lt;/h2&gt;
+&lt;h2&gt;Supplementary Retirement Scheme (SRS)&lt;/h2&gt;
 
 &lt;ul&gt;
-  &lt;li&gt;Voluntary scheme that complements the CPF.&lt;/li&gt;
-  &lt;li&gt;Contribute to the SRS at your own discretion.&lt;/li&gt;
-  &lt;li&gt;Contributions may be used to purchase various investment instruments.&lt;/li&gt;
-  &lt;li&gt;SRS has attractive tax benefits.
-    &lt;ul&gt;
-      &lt;li&gt;Contributions are eligible for tax relief&lt;/li&gt;
-      &lt;li&gt;Investment returns are tax-free (except for Singapore dividends)&lt;/li&gt;
-      &lt;li&gt;Only 50% of withdrawals from SRS are taxable at retirement &amp;lt;TODO taxed at retirement, or withdrawn at retirement?&amp;gt;&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
+&lt;li&gt;Voluntary scheme that complements the CPF.&lt;/li&gt;
+&lt;li&gt;Contribute to the SRS at your own discretion.&lt;/li&gt;
+&lt;li&gt;Contributions may be used to purchase various investment instruments.&lt;/li&gt;
+&lt;li&gt;SRS has attractive tax benefits.
+
+&lt;ul&gt;
+&lt;li&gt;Contributions are eligible for tax relief&lt;/li&gt;
+&lt;li&gt;Investment returns are tax-free (except for Singapore dividends)&lt;/li&gt;
+&lt;li&gt;Only 50% of withdrawals from SRS are taxable at retirement &lt;TODO taxed at retirement, or withdrawn at retirement?&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h2 id=&quot;voluntary-contributions&quot;&gt;Voluntary Contributions&lt;/h2&gt;
+&lt;h2&gt;Voluntary Contributions&lt;/h2&gt;
 
-&lt;p&gt;Voluntary contributions to CPF allowed, to all three accounts. Contributions to the MA is tax-deductible. Voluntary contributions are subject to the CPF Annual Limit. Above that, contributions will be refunded without interest &amp;lt;TODO refunded immediately, or when?&amp;gt;. Contributions to the MA are subject to the Medisave Contribution Ceiling (MCC).&lt;/p&gt;
+&lt;p&gt;Voluntary contributions to CPF allowed, to all three accounts. Contributions to the MA is tax-deductible. Voluntary contributions are subject to the CPF Annual Limit. Above that, contributions will be refunded without interest &lt;TODO refunded immediately, or when?&gt;. Contributions to the MA are subject to the Medisave Contribution Ceiling (MCC).&lt;/p&gt;
 
 &lt;p&gt;CPF Annual Limit is $30,600. From 2015, the Annual Limit will be $31,450.
 Voluntary contributions = CPF Annual Limit - Mandatory contributions&lt;/p&gt;
-
 
   &lt;p&gt;&lt;a href=&quot;http://ackerleytng.github.io/cpf-reading/&quot;&gt;CPF Reading&lt;/a&gt; was originally published by Ackerley Tng at &lt;a href=&quot;http://ackerleytng.github.io&quot;&gt;Ackerley's Blog&lt;/a&gt; on August 25, 2014.&lt;/p&gt;</content>
 </entry>
@@ -1081,38 +956,32 @@ Voluntary contributions = CPF Annual Limit - Mandatory contributions&lt;/p&gt;
     <uri>http://ackerleytng.github.io</uri>
     <email>ackerleytng@gmail.com</email>
   </author>
-  <content type="html">&lt;p&gt;iTerm2 has a feature called &lt;a href=&quot;http://iterm2.com/triggers.html&quot;&gt;Triggers&lt;/a&gt; which doesn’t seem to exist in any of the Linux terminal emulators.&lt;/p&gt;
+  <content type="html">&lt;p&gt;iTerm2 has a feature called &lt;a href=&quot;http://iterm2.com/triggers.html&quot;&gt;Triggers&lt;/a&gt; which doesn&amp;#39;t seem to exist in any of the Linux terminal emulators.&lt;/p&gt;
 
-&lt;p&gt;Terminator has a plugin system, so I hacked together something that would parse emacs-formatted ‘urls’ and open those urls in Emacs over Tramp. The concept of tying triggers with the terminal emulator is borrowed from my ECE MEng advisor, Prof. (Christopher Batten)[http://www.csl.cornell.edu/~cbatten/].&lt;/p&gt;
+&lt;p&gt;Terminator has a plugin system, so I hacked together something that would parse emacs-formatted &amp;#39;urls&amp;#39; and open those urls in Emacs over Tramp. The concept of tying triggers with the terminal emulator is borrowed from my ECE MEng advisor, Prof. (Christopher Batten)[http://www.csl.cornell.edu/~cbatten/].&lt;/p&gt;
 
-&lt;h2 id=&quot;concept&quot;&gt;Concept&lt;/h2&gt;
+&lt;h2&gt;Concept&lt;/h2&gt;
 
 &lt;p&gt;The idea is as follows. ssh into the research server to access source code there. Instead of customizing Emacs on every server you work with, customize only one - the one on the computer that you ssh from.&lt;/p&gt;
 
 &lt;p&gt;Generate a string containing information about the current user and server IP address, and the path to the file you want to edit.&lt;/p&gt;
 
 &lt;p&gt;I do this using a bash function added to .bashrc on the remote server:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;# Remote emacsclient trigger
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;# Remote emacsclient trigger
 function oe() {
     user=$(whoami)
-    file=$(echo &quot;$1&quot; | tr -d &#39; &#39;)
-    hostname=$(hostname -I | tr -d &#39; &#39;)
-    workingdir=$(pwd | tr -d &#39; &#39;)
-    echo &quot;remote-emacsclient-trigger[[[/$user@${hostname}:${workingdir}/${file}]]]&quot;
+    file=$(echo &amp;quot;$1&amp;quot; | tr -d &amp;#39; &amp;#39;)
+    hostname=$(hostname -I | tr -d &amp;#39; &amp;#39;)
+    workingdir=$(pwd | tr -d &amp;#39; &amp;#39;)
+    echo &amp;quot;remote-emacsclient-trigger[[[/$user@${hostname}:${workingdir}/${file}]]]&amp;quot;
 }
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;So say I’m in /home/user/ on the remote server and I’m working on blah.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;oe blah
-&lt;/code&gt;&lt;/pre&gt;
-
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;So say I&amp;#39;m in /home/user/ on the remote server and I&amp;#39;m working on blah.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;oe blah
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;will cause the remote server to echo&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;remote-emacsclient-trigger[[[/user@123.123.123.123:/home/user/blah]]]
-&lt;/code&gt;&lt;/pre&gt;
-
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;remote-emacsclient-trigger[[[/user@123.123.123.123:/home/user/blah]]]
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;In iTerm2, the trigger can pick up the string and in turn start a coprocess with the line &lt;code&gt;emacsclient -c -n &amp;lt;the content between [[[ and ]]]&amp;gt;&lt;/code&gt;, using regex matches.&lt;/p&gt;
 
 &lt;p&gt;The following plugin, written for Terminator, will give you a similar effect, except you have to right click on the part between &lt;code&gt;[[[&lt;/code&gt; and &lt;code&gt;]]]&lt;/code&gt;, and click open link.&lt;/p&gt;
@@ -1121,15 +990,15 @@ function oe() {
 
 &lt;p&gt;Place that file in /usr/share/terminator/terminatorlib/plugins/activate_emacs.py and restart Terminator, then right click and click Preferences, go to the Plugins tab and check the ActivateEmacs plugin.&lt;/p&gt;
 
-&lt;h2 id=&quot;the-process&quot;&gt;The process&lt;/h2&gt;
+&lt;h2&gt;The process&lt;/h2&gt;
 
-&lt;p&gt;There’s little documentation on plugin writing, so it took a while to look through the examples and other plugins to start. Fortunately Terminator’s code could mostly be found in /usr/share/terminator/, but unfortunately it still takes time to scan through all the code.&lt;/p&gt;
+&lt;p&gt;There&amp;#39;s little documentation on plugin writing, so it took a while to look through the examples and other plugins to start. Fortunately Terminator&amp;#39;s code could mostly be found in /usr/share/terminator/, but unfortunately it still takes time to scan through all the code.&lt;/p&gt;
 
-&lt;p&gt;There are lots of functions in terminator’s code to do with matching, but I believe those are only activated on mouseovers rather than as they appear in the terminal.&lt;/p&gt;
+&lt;p&gt;There are lots of functions in terminator&amp;#39;s code to do with matching, but I believe those are only activated on mouseovers rather than as they appear in the terminal.&lt;/p&gt;
 
-&lt;p&gt;The URLHandler plugin sounds like it could parse any text or string - it can, but only on mouseovers. The &lt;code&gt;callback()&lt;/code&gt; function is something that is meant to transform the ‘url’ that matched to another url for a web browser to open; it does not perform actions on the matched string directly.&lt;/p&gt;
+&lt;p&gt;The URLHandler plugin sounds like it could parse any text or string - it can, but only on mouseovers. The &lt;code&gt;callback()&lt;/code&gt; function is something that is meant to transform the &amp;#39;url&amp;#39; that matched to another url for a web browser to open; it does not perform actions on the matched string directly.&lt;/p&gt;
 
-&lt;p&gt;&lt;a href=&quot;http://www.tenshu.net/2010/04/writing-terminator-plugins.html?showComment=1350573521137#c3847139789739776267&quot;&gt;Jocelyn’s comment&lt;/a&gt; was so super useful in writing this plugin!&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;http://www.tenshu.net/2010/04/writing-terminator-plugins.html?showComment=1350573521137#c3847139789739776267&quot;&gt;Jocelyn&amp;#39;s comment&lt;/a&gt; was so super useful in writing this plugin!&lt;/p&gt;
 
   &lt;p&gt;&lt;a href=&quot;http://ackerleytng.github.io/emacs-tramp-terminator-integration/&quot;&gt;Emacs-Tramp-Terminator-Integration&lt;/a&gt; was originally published by Ackerley Tng at &lt;a href=&quot;http://ackerleytng.github.io&quot;&gt;Ackerley's Blog&lt;/a&gt; on August 23, 2014.&lt;/p&gt;</content>
 </entry>
@@ -1150,11 +1019,11 @@ function oe() {
   <content type="html">&lt;p&gt;This describes how to use WinAVR with the AVRISP mkII Programmer &lt;em&gt;without&lt;/em&gt; using Atmel Studio. This has been tried on Windows 7.&lt;/p&gt;
 
 &lt;ol&gt;
-  &lt;li&gt;Install WinAVR from &lt;a href=&quot;http://sourceforge.net/projects/winavr/files/&quot;&gt;SourceForge&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;Download libusb-win32 from &lt;a href=&quot;http://sourceforge.net/p/libusb-win32/wiki/Home/&quot;&gt;SourceForge&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;Unzip and open the libusb-win32-bin-1.2.6.0/bin/ folder&lt;/li&gt;
-  &lt;li&gt;Run inf-wizard.exe with the AVRISP mkII Programmer plugged in&lt;/li&gt;
-  &lt;li&gt;Follow the instructions and allow the wizard to do the driver installation for you.&lt;/li&gt;
+&lt;li&gt;Install WinAVR from &lt;a href=&quot;http://sourceforge.net/projects/winavr/files/&quot;&gt;SourceForge&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Download libusb-win32 from &lt;a href=&quot;http://sourceforge.net/p/libusb-win32/wiki/Home/&quot;&gt;SourceForge&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Unzip and open the libusb-win32-bin-1.2.6.0/bin/ folder&lt;/li&gt;
+&lt;li&gt;Run inf-wizard.exe with the AVRISP mkII Programmer plugged in&lt;/li&gt;
+&lt;li&gt;Follow the instructions and allow the wizard to do the driver installation for you.&lt;/li&gt;
 &lt;/ol&gt;
 
   &lt;p&gt;&lt;a href=&quot;http://ackerleytng.github.io/pure-winavr/&quot;&gt;A Pure WinAVR Setup&lt;/a&gt; was originally published by Ackerley Tng at &lt;a href=&quot;http://ackerleytng.github.io&quot;&gt;Ackerley's Blog&lt;/a&gt; on July 31, 2014.&lt;/p&gt;</content>
@@ -1173,11 +1042,11 @@ function oe() {
     <uri>http://ackerleytng.github.io</uri>
     <email>ackerleytng@gmail.com</email>
   </author>
-  <content type="html">&lt;p&gt;I wonder if anyone else still uses Wireless@SGx, but anyway…&lt;/p&gt;
+  <content type="html">&lt;p&gt;I wonder if anyone else still uses Wireless@SGx, but anyway...&lt;/p&gt;
 
 &lt;ol&gt;
-  &lt;li&gt;Go &lt;a href=&quot;http://pas.singtel.com/wsg_connect/index.php&quot;&gt;here&lt;/a&gt; to generate your username. I used my Singnet account, which is of the form &lt;code&gt;blahblah@singnet&lt;/code&gt;. The username generated should be &lt;code&gt;blahblah|???????????????????????@singnet&lt;/code&gt;.&lt;/li&gt;
-  &lt;li&gt;Use the generated username as the username when connecting to Wireless@SGx. The password is the same password you use for Singnet. You can ignore all the other instructions about PEAP etc - those should come automatically on today’s devices.&lt;/li&gt;
+&lt;li&gt;Go &lt;a href=&quot;http://pas.singtel.com/wsg_connect/index.php&quot;&gt;here&lt;/a&gt; to generate your username. I used my Singnet account, which is of the form &lt;code&gt;blahblah@singnet&lt;/code&gt;. The username generated should be &lt;code&gt;blahblah|???????????????????????@singnet&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Use the generated username as the username when connecting to Wireless@SGx. The password is the same password you use for Singnet. You can ignore all the other instructions about PEAP etc - those should come automatically on today&amp;#39;s devices.&lt;/li&gt;
 &lt;/ol&gt;
 
   &lt;p&gt;&lt;a href=&quot;http://ackerleytng.github.io/wireless-at-sgx/&quot;&gt;Wireless@SGx&lt;/a&gt; was originally published by Ackerley Tng at &lt;a href=&quot;http://ackerleytng.github.io&quot;&gt;Ackerley's Blog&lt;/a&gt; on July 25, 2014.&lt;/p&gt;</content>
@@ -1196,112 +1065,88 @@ function oe() {
     <uri>http://ackerleytng.github.io</uri>
     <email>ackerleytng@gmail.com</email>
   </author>
-  <content type="html">&lt;h1 id=&quot;what-is-coe&quot;&gt;What is COE?&lt;/h1&gt;
+  <content type="html">&lt;h1&gt;What is COE?&lt;/h1&gt;
 
 &lt;ul&gt;
-  &lt;li&gt;COE = Certificate of Entitlement&lt;/li&gt;
-  &lt;li&gt;Required for registration of new vehicles in Singapore&lt;/li&gt;
-  &lt;li&gt;Valid for 10 years&lt;/li&gt;
-  &lt;li&gt;After 10 years, pay Prevailing Quota Premium ( = three-month moving average of the Quota Premium) to revalidate COE for either 5 or 10 years
-    &lt;ul&gt;
-      &lt;li&gt;5-year COEs cannot be revalidated (vehicle is automatically deregistered after that 5 years.&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h1 id=&quot;bidding-system&quot;&gt;Bidding system&lt;/h1&gt;
+&lt;li&gt;COE = Certificate of Entitlement&lt;/li&gt;
+&lt;li&gt;Required for registration of new vehicles in Singapore&lt;/li&gt;
+&lt;li&gt;Valid for 10 years&lt;/li&gt;
+&lt;li&gt;After 10 years, pay Prevailing Quota Premium ( = three-month moving average of the Quota Premium) to revalidate COE for either 5 or 10 years
 
 &lt;ul&gt;
-  &lt;li&gt;Bid through the COE Open Bidding System&lt;/li&gt;
-  &lt;li&gt;Twice a month
-    &lt;ul&gt;
-      &lt;li&gt;First and third Monday at 12pm&lt;/li&gt;
-      &lt;li&gt;Ends on the Wednesday at 4pm&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;Quota available for bidding is announced before session starts&lt;/li&gt;
+&lt;li&gt;5-year COEs cannot be revalidated (vehicle is automatically deregistered after that 5 years.&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h1 id=&quot;bidding&quot;&gt;Bidding&lt;/h1&gt;
+&lt;h1&gt;Bidding system&lt;/h1&gt;
 
 &lt;ul&gt;
-  &lt;li&gt;Specify reserve price on COE Open Bidding System&lt;/li&gt;
-  &lt;li&gt;Bid automatically increases until reserve price is reached&lt;/li&gt;
-  &lt;li&gt;Current COE Price (CCP) must be equal or higher than the reserve price for bid to be in the running&lt;/li&gt;
-  &lt;li&gt;CCP = highest unsuccessful bid + 1&lt;/li&gt;
-  &lt;li&gt;At the time that the bidding closes, the CCP becomes the Quota Premium&lt;/li&gt;
-  &lt;li&gt;All successful bidders pay the Quota Premium&lt;/li&gt;
-  &lt;li&gt;There is a bid deposit (refunded on unsuccessful bid) of $10000 for categories A, B, C and E. Deposit is $200 for category D.&lt;/li&gt;
-  &lt;li&gt;There is an admin fee of between $2 and $10 (varies by bank - DBS, OCBC, UOB, MayBank)&lt;/li&gt;
-  &lt;li&gt;Can revise reserve price upward (not downward). Admin fee applies for each revision.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h1 id=&quot;rebate&quot;&gt;Rebate&lt;/h1&gt;
+&lt;li&gt;Bid through the COE Open Bidding System&lt;/li&gt;
+&lt;li&gt;Twice a month
 
 &lt;ul&gt;
-  &lt;li&gt;COE Rebates are available if vehicle is de-registered before COE expires (pro-rated)&lt;/li&gt;
+&lt;li&gt;First and third Monday at 12pm&lt;/li&gt;
+&lt;li&gt;Ends on the Wednesday at 4pm&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;Quota available for bidding is announced before session starts&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h1 id=&quot;categories&quot;&gt;Categories&lt;/h1&gt;
-
-&lt;table&gt;
-  &lt;thead&gt;
-    &lt;tr&gt;
-      &lt;th style=&quot;text-align: center&quot;&gt;Category&lt;/th&gt;
-      &lt;th style=&quot;text-align: center&quot;&gt;Description&lt;/th&gt;
-    &lt;/tr&gt;
-  &lt;/thead&gt;
-  &lt;tbody&gt;
-    &lt;tr&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;A&lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;Cars with engine capacity up to 1600cc and Maximum Power Output up to 97kW (130bhp)&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;B&lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;Cars with engine capacity above 1600cc or Maximum Power Output above 97kW (130bhp)&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;C&lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;Goods vehicles or buses&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;D&lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;Motorcycles&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;E&lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;Open&lt;/td&gt;
-    &lt;/tr&gt;
-  &lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;h1 id=&quot;validity&quot;&gt;Validity&lt;/h1&gt;
+&lt;h1&gt;Bidding&lt;/h1&gt;
 
 &lt;ul&gt;
-  &lt;li&gt;Bids in category A, B, D are valid for 6 months. Bids in category C and E are valid for 3 months. If bid is not used, bid deposit is forfeited.&lt;/li&gt;
+&lt;li&gt;Specify reserve price on COE Open Bidding System&lt;/li&gt;
+&lt;li&gt;Bid automatically increases until reserve price is reached&lt;/li&gt;
+&lt;li&gt;Current COE Price (CCP) must be equal or higher than the reserve price for bid to be in the running&lt;/li&gt;
+&lt;li&gt;CCP = highest unsuccessful bid + 1&lt;/li&gt;
+&lt;li&gt;At the time that the bidding closes, the CCP becomes the Quota Premium&lt;/li&gt;
+&lt;li&gt;All successful bidders pay the Quota Premium&lt;/li&gt;
+&lt;li&gt;There is a bid deposit (refunded on unsuccessful bid) of $10000 for categories A, B, C and E. Deposit is $200 for category D.&lt;/li&gt;
+&lt;li&gt;There is an admin fee of between $2 and $10 (varies by bank - DBS, OCBC, UOB, MayBank)&lt;/li&gt;
+&lt;li&gt;Can revise reserve price upward (not downward). Admin fee applies for each revision.&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h1 id=&quot;breakdown-of-full-costs&quot;&gt;Breakdown of Full Costs&lt;/h1&gt;
+&lt;h1&gt;Rebate&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;COE Rebates are available if vehicle is de-registered before COE expires (pro-rated)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1&gt;Categories&lt;/h1&gt;
+
+&lt;p&gt;| Category |                                     Description                                     |
+|:--------:|:-----------------------------------------------------------------------------------:|
+|     A    | Cars with engine capacity up to 1600cc and Maximum Power Output up to 97kW (130bhp) |
+|     B    |  Cars with engine capacity above 1600cc or Maximum Power Output above 97kW (130bhp) |
+|     C    |                               Goods vehicles or buses                               |
+|     D    |                                     Motorcycles                                     |
+|     E    |                                         Open                                        |&lt;/p&gt;
+
+&lt;h1&gt;Validity&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Bids in category A, B, D are valid for 6 months. Bids in category C and E are valid for 3 months. If bid is not used, bid deposit is forfeited.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1&gt;Breakdown of Full Costs&lt;/h1&gt;
 
 &lt;ol&gt;
-  &lt;li&gt;Registration Fees&lt;/li&gt;
-  &lt;li&gt;Open Market Value (OMV) ( = Determined by )&lt;/li&gt;
-  &lt;li&gt;Excise Duty (20% on OMV)&lt;/li&gt;
-  &lt;li&gt;GST (7% on Excise Duty + OMV)&lt;/li&gt;
-  &lt;li&gt;Additional Registration Fee (ARF) (Tiered, minimum of 100% of OMV)&lt;/li&gt;
-  &lt;li&gt;Carbon Emissions (CEVS)&lt;/li&gt;
+&lt;li&gt;Registration Fees&lt;/li&gt;
+&lt;li&gt;Open Market Value (OMV) ( = Determined by )&lt;/li&gt;
+&lt;li&gt;Excise Duty (20% on OMV)&lt;/li&gt;
+&lt;li&gt;GST (7% on Excise Duty + OMV)&lt;/li&gt;
+&lt;li&gt;Additional Registration Fee (ARF) (Tiered, minimum of 100% of OMV)&lt;/li&gt;
+&lt;li&gt;Carbon Emissions (CEVS)&lt;/li&gt;
 &lt;/ol&gt;
 
-&lt;p&gt;More to come…&lt;/p&gt;
+&lt;p&gt;More to come...&lt;/p&gt;
 
-&lt;h1 id=&quot;references&quot;&gt;References&lt;/h1&gt;
+&lt;h1&gt;References&lt;/h1&gt;
 
 &lt;ul&gt;
-  &lt;li&gt;&lt;a href=&quot;http://www.lta.gov.sg/content/ltaweb/en/roads-and-motoring/owning-a-vehicle/vehicle-quota-system/certificate-of-entitlement-coe.html&quot;&gt;Overview from LTA&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;http://ifaqs.flexanswer.com/cfp/pages/Themes/LTA/Answers.aspx?MesId=9738718&amp;amp;From=Show&amp;amp;TOPV=YES&amp;amp;VMesID=2288405&quot;&gt;Description of Categories&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;http://www.sgcarmart.com/news/writeup.php?AID=171&amp;amp;PN=2&quot;&gt;Breakdown of Car Costs&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://www.lta.gov.sg/content/ltaweb/en/roads-and-motoring/owning-a-vehicle/vehicle-quota-system/certificate-of-entitlement-coe.html&quot;&gt;Overview from LTA&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://ifaqs.flexanswer.com/cfp/pages/Themes/LTA/Answers.aspx?MesId=9738718&amp;amp;From=Show&amp;amp;TOPV=YES&amp;amp;VMesID=2288405&quot;&gt;Description of Categories&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://www.sgcarmart.com/news/writeup.php?AID=171&amp;amp;PN=2&quot;&gt;Breakdown of Car Costs&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
-
 
   &lt;p&gt;&lt;a href=&quot;http://ackerleytng.github.io/understanding-coe/&quot;&gt;Understanding COE&lt;/a&gt; was originally published by Ackerley Tng at &lt;a href=&quot;http://ackerleytng.github.io&quot;&gt;Ackerley's Blog&lt;/a&gt; on July 24, 2014.&lt;/p&gt;</content>
 </entry>
@@ -1321,11 +1166,11 @@ function oe() {
   </author>
   <content type="html">&lt;p&gt;Learnt this from youtube!&lt;/p&gt;
 
-&lt;p&gt;I didn’t have mirin so I put apple cider vinegar; added sugar, salt, soy sauce, didn’t have dashi so it was left out.&lt;/p&gt;
+&lt;p&gt;I didn&amp;#39;t have mirin so I put apple cider vinegar; added sugar, salt, soy sauce, didn&amp;#39;t have dashi so it was left out.&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;http://ackerleytng.github.io/post_images/tamagoyaki-0.jpg&quot; alt=&quot;tamagoyaki-0&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://ackerleytng.github.io/post_images/tamagoyaki-0.jpg&quot; alt=&quot;tamagoyaki-0&quot;&gt;&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;http://ackerleytng.github.io/post_images/tamagoyaki-1.jpg&quot; alt=&quot;tamagoyaki-1&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://ackerleytng.github.io/post_images/tamagoyaki-1.jpg&quot; alt=&quot;tamagoyaki-1&quot;&gt;&lt;/p&gt;
 
   &lt;p&gt;&lt;a href=&quot;http://ackerleytng.github.io/tamagoyaki/&quot;&gt;Tamagoyaki!&lt;/a&gt; was originally published by Ackerley Tng at &lt;a href=&quot;http://ackerleytng.github.io&quot;&gt;Ackerley's Blog&lt;/a&gt; on July 21, 2014.&lt;/p&gt;</content>
 </entry>
@@ -1345,9 +1190,8 @@ function oe() {
   </author>
   <content type="html">&lt;p&gt;I used MacPorts to handle all of these installations. I guess I should have tried php54 or even php55, but I was partially following instructions &lt;a href=&quot;http://dsheiko.com/weblog/my-lovely-mac-os-x-web-development-environment&quot;&gt;here&lt;/a&gt; and wanted to just get something working first.&lt;/p&gt;
 
-&lt;p&gt;Here’s a list of commands&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;sudo port -v selfupdate
+&lt;p&gt;Here&amp;#39;s a list of commands&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;sudo port -v selfupdate
 sudo port upgrade outdated
 sudo port install apache2
 sudo port install php56 +apache2
@@ -1356,43 +1200,33 @@ sudo port install mysql56-server
 sudo port install phpmyadmin +php56
 
 sudo port select mysql mysql56
-&lt;/code&gt;&lt;/pre&gt;
-
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;Setting up mysql&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;sudo /opt/local/lib/mysql56/bin/mysql_install_db --user mysql
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;sudo /opt/local/lib/mysql56/bin/mysql_install_db --user mysql
 sudo chown -R mysql:mysql /opt/local/var/db/mysql56/ 
 sudo chown -R mysql:mysql /opt/local/var/run/mysql56/ 
 sudo chown -R mysql:mysql /opt/local/var/log/mysql56/
 mysqladmin -u root -p password &amp;lt;new-password&amp;gt; 
-&lt;/code&gt;&lt;/pre&gt;
-
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;Setting up PHP to work with apache&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;sudo port install php56-apache2handler
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;sudo port install php56-apache2handler
 cd /opt/local/apache2/modules
 sudo /opt/local/apache2/bin/apxs -a -e -n php5 mod_php56.so
-&lt;/code&gt;&lt;/pre&gt;
-
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;Update Apache’s httpd.conf file. Search for and modify&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;DirectoryIndex index.php index.html
-&lt;/code&gt;&lt;/pre&gt;
-
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;DirectoryIndex index.php index.html
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;Add these lines to httpd.conf too&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;# For PHP
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;# For PHP
 Include conf/extra/mod_php56.conf
 
 # For phpMyAdmin
 Include conf/extra/httpd-phpmyadmin.conf
-&lt;/code&gt;&lt;/pre&gt;
-
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;Create /opt/local/apache2/conf/extra/httpd-phpmyadmin.conf and add the following as contents&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;AliasMatch ^/phpmyadmin(?:/)?(/.*)?$ &amp;quot;/opt/local/www/phpmyadmin$1&amp;quot;
 
-&lt;pre&gt;&lt;code&gt;AliasMatch ^/phpmyadmin(?:/)?(/.*)?$ &quot;/opt/local/www/phpmyadmin$1&quot;
-
-&amp;lt;Directory &quot;/opt/local/www/phpmyadmin&quot;&amp;gt;
+&amp;lt;Directory &amp;quot;/opt/local/www/phpmyadmin&amp;quot;&amp;gt;
     Options -Indexes
     AllowOverride None
     Order allow,deny
@@ -1400,30 +1234,22 @@ Include conf/extra/httpd-phpmyadmin.conf
     LanguagePriority en de es fr ja ko pt-br ru 
     ForceLanguagePriority Prefer Fallback
 &amp;lt;/Directory&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;Edit phpMyAdmin config file: /opt/local/www/phpmyadmin/config.inc.php&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;$cfg[&#39;Servers&#39;][$i][&#39;auth_type&#39;] = &#39;config&#39;;
-$cfg[&#39;Servers&#39;][$i][&#39;user&#39;] = &#39;root&#39;;
-$cfg[&#39;Servers&#39;][$i][&#39;password&#39;] = &#39;&amp;lt;new-password&amp;gt;&#39;;
-&lt;/code&gt;&lt;/pre&gt;
-
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;$cfg[&amp;#39;Servers&amp;#39;][$i][&amp;#39;auth_type&amp;#39;] = &amp;#39;config&amp;#39;;
+$cfg[&amp;#39;Servers&amp;#39;][$i][&amp;#39;user&amp;#39;] = &amp;#39;root&amp;#39;;
+$cfg[&amp;#39;Servers&amp;#39;][$i][&amp;#39;password&amp;#39;] = &amp;#39;&amp;lt;new-password&amp;gt;&amp;#39;;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;Edit this line to AllowNoPassword.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;$cfg[&#39;Servers&#39;][$i][&#39;AllowNoPassword&#39;] = true;
-&lt;/code&gt;&lt;/pre&gt;
-
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;$cfg[&amp;#39;Servers&amp;#39;][$i][&amp;#39;AllowNoPassword&amp;#39;] = true;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;PHP config files&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;cd /opt/local/etc/php5
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;cd /opt/local/etc/php5
 sudo cp php.ini-development php.ini
-&lt;/code&gt;&lt;/pre&gt;
-
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;Follow instructions from MacPorts&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;To use mysqlnd with a local MySQL server, edit /opt/local/etc/php5/php.ini and set mysql.default_socket,
-mysqli.default_socket and pdo_mysql.default_socket to the path to your MySQL server&#39;s socket file.
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;To use mysqlnd with a local MySQL server, edit /opt/local/etc/php5/php.ini and set mysql.default_socket,
+mysqli.default_socket and pdo_mysql.default_socket to the path to your MySQL server&amp;#39;s socket file.
 
 For mysql5, use /opt/local/var/run/mysql5/mysqld.sock
 For mysql51, use /opt/local/var/run/mysql51/mysqld.sock
@@ -1431,29 +1257,22 @@ For mysql55, use /opt/local/var/run/mysql55/mysqld.sock
 For mysql56, use /opt/local/var/run/mysql56/mysqld.sock
 For mariadb, use /opt/local/var/run/mariadb/mysqld.sock
 For percona, use /opt/local/var/run/percona/mysqld.sock
-&lt;/code&gt;&lt;/pre&gt;
-
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;To prevent auto-starting of the daemons on boot, I did&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;sudo launchctl unload /Library/LaunchDaemons/org.macports.apache2.plist
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;sudo launchctl unload /Library/LaunchDaemons/org.macports.apache2.plist
 sudo launchctl unload /Library/LaunchDaemons/org.macports.mysql56-server.plist
-&lt;/code&gt;&lt;/pre&gt;
-
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;But I believe you could use this too&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;sudo port unload apache2
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;sudo port unload apache2
 sudo port unload mysql-server
-&lt;/code&gt;&lt;/pre&gt;
-
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;Setting up aliases in ~/.bash_profile&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;alias apachestart=&quot;sudo /opt/local/apache2/bin/apachectl -k start&quot;
-alias apachestop=&quot;sudo /opt/local/apache2/bin/apachectl -k stop&quot;
-alias apacherestart=&quot;sudo /opt/local/apache2/bin/apachectl -k restart&quot;
-alias mysqlstart=&quot;sudo /opt/local/lib/mysql56/bin/mysqld_safe &amp;amp;&quot;
-alias mysqlstop=&quot;mysqladmin -u root -p shutdown&quot;
-&lt;/code&gt;&lt;/pre&gt;
-
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;alias apachestart=&amp;quot;sudo /opt/local/apache2/bin/apachectl -k start&amp;quot;
+alias apachestop=&amp;quot;sudo /opt/local/apache2/bin/apachectl -k stop&amp;quot;
+alias apacherestart=&amp;quot;sudo /opt/local/apache2/bin/apachectl -k restart&amp;quot;
+alias mysqlstart=&amp;quot;sudo /opt/local/lib/mysql56/bin/mysqld_safe &amp;amp;&amp;quot;
+alias mysqlstop=&amp;quot;mysqladmin -u root -p shutdown&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
   &lt;p&gt;&lt;a href=&quot;http://ackerleytng.github.io/web-server-setup/&quot;&gt;Web Server Setup on my Mac&lt;/a&gt; was originally published by Ackerley Tng at &lt;a href=&quot;http://ackerleytng.github.io&quot;&gt;Ackerley's Blog&lt;/a&gt; on July 17, 2014.&lt;/p&gt;</content>
 </entry>
 
@@ -1470,16 +1289,14 @@ alias mysqlstop=&quot;mysqladmin -u root -p shutdown&quot;
     <uri>http://ackerleytng.github.io</uri>
     <email>ackerleytng@gmail.com</email>
   </author>
-  <content type="html">&lt;p&gt;When installing crunchbang I’m pretty sure I chose to install the OpenSSH server but somehow I when I did this again, it still installed for me. Hope it isn’t installed twice for some stupid reason.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;sudo apt-get install openssh-server
-&lt;/code&gt;&lt;/pre&gt;
-
+  <content type="html">&lt;p&gt;When installing crunchbang I&amp;#39;m pretty sure I chose to install the OpenSSH server but somehow I when I did this again, it still installed for me. Hope it isn&amp;#39;t installed twice for some stupid reason.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;sudo apt-get install openssh-server
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;and that was it. I can ssh in from my mac after that.&lt;/p&gt;
 
 &lt;p&gt;Follow instructions from &lt;a href=&quot;http://crunchbanglinux.org/wiki/howto/ssh&quot;&gt;here&lt;/a&gt;&lt;/p&gt;
 
-&lt;p&gt;When setting up ssh keys, there’s no need to modify the sshd_config file as described on the page. It seems to work out of the box.&lt;/p&gt;
+&lt;p&gt;When setting up ssh keys, there&amp;#39;s no need to modify the sshd_config file as described on the page. It seems to work out of the box.&lt;/p&gt;
 
   &lt;p&gt;&lt;a href=&quot;http://ackerleytng.github.io/setting-up-openssh/&quot;&gt;Setting up OpenSSH on CrunchBang Linux&lt;/a&gt; was originally published by Ackerley Tng at &lt;a href=&quot;http://ackerleytng.github.io&quot;&gt;Ackerley's Blog&lt;/a&gt; on July 17, 2014.&lt;/p&gt;</content>
 </entry>
@@ -1497,22 +1314,18 @@ alias mysqlstop=&quot;mysqladmin -u root -p shutdown&quot;
     <uri>http://ackerleytng.github.io</uri>
     <email>ackerleytng@gmail.com</email>
   </author>
-  <content type="html">&lt;p&gt;I’m powering the Arduino Mega 2560 board using USB. However, I’m going to program the Arduino using an AVRISP mkii programmer. &lt;a href=&quot;http://allaboutee.com/2011/05/11/how-to-program-an-avr-microcontroller/&quot;&gt;This site&lt;/a&gt; shows the pinout of the programmer, and upon comparison with the &lt;a href=&quot;http://arduino.cc/en/uploads/Main/arduino-mega2560_R3-sch.pdf&quot;&gt;Arduino schematic&lt;/a&gt;, I’ve decided to use the programmer this way:&lt;/p&gt;
+  <content type="html">&lt;p&gt;I&amp;#39;m powering the Arduino Mega 2560 board using USB. However, I&amp;#39;m going to program the Arduino using an AVRISP mkii programmer. &lt;a href=&quot;http://allaboutee.com/2011/05/11/how-to-program-an-avr-microcontroller/&quot;&gt;This site&lt;/a&gt; shows the pinout of the programmer, and upon comparison with the &lt;a href=&quot;http://arduino.cc/en/uploads/Main/arduino-mega2560_R3-sch.pdf&quot;&gt;Arduino schematic&lt;/a&gt;, I&amp;#39;ve decided to use the programmer this way:&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;http://ackerleytng.github.io/post_images/arduino_setup.jpg&quot; alt=&quot;Arduino Setup&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://ackerleytng.github.io/post_images/arduino_setup.jpg&quot; alt=&quot;Arduino Setup&quot;&gt;&lt;/p&gt;
 
 &lt;p&gt;Use apt-get to install packages&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;sudo apt-get install gcc-avr binutils-avr gdb-avr avr-libc avrdude
-&lt;/code&gt;&lt;/pre&gt;
-
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;sudo apt-get install gcc-avr binutils-avr gdb-avr avr-libc avrdude
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;To use avr-gcc to compile&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;avr-gcc -DF_CPU=16000000UL -mmcu=atmega2560 -Os -o blink.out blink.c
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;avr-gcc -DF_CPU=16000000UL -mmcu=atmega2560 -Os -o blink.out blink.c
 avr-objcopy -O ihex -R .eeprom blink.out blink.hex
 sudo avrdude -V -F -c avrisp2 -p m2560 -P usb -U flash:w:blink.hex
-&lt;/code&gt;&lt;/pre&gt;
-
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
   &lt;p&gt;&lt;a href=&quot;http://ackerleytng.github.io/arduino-with-avrisp-mkii-crunchbang/&quot;&gt;Setting up Arduino with CrunchBang Linux for pure C projects&lt;/a&gt; was originally published by Ackerley Tng at &lt;a href=&quot;http://ackerleytng.github.io&quot;&gt;Ackerley's Blog&lt;/a&gt; on July 17, 2014.&lt;/p&gt;</content>
 </entry>
 
@@ -1529,11 +1342,11 @@ sudo avrdude -V -F -c avrisp2 -p m2560 -P usb -U flash:w:blink.hex
     <uri>http://ackerleytng.github.io</uri>
     <email>ackerleytng@gmail.com</email>
   </author>
-  <content type="html">&lt;p&gt;The Asus RT-AC66R is a rather popular router! But I guess instructions are lacking. Anyway, here’s a post to show that the RT-AC66R can indeed be used with Singtel’s mio TV.&lt;/p&gt;
+  <content type="html">&lt;p&gt;The Asus RT-AC66R is a rather popular router! But I guess instructions are lacking. Anyway, here&amp;#39;s a post to show that the RT-AC66R can indeed be used with Singtel&amp;#39;s mio TV.&lt;/p&gt;
 
-&lt;p&gt;Connect the Optical Network Terminal (ONT) to the Asus RT-AC66R’s WAN port. Then, connect the mio TV set-top box to the 4th LAN port of the RT-AC66R.&lt;/p&gt;
+&lt;p&gt;Connect the Optical Network Terminal (ONT) to the Asus RT-AC66R&amp;#39;s WAN port. Then, connect the mio TV set-top box to the 4th LAN port of the RT-AC66R.&lt;/p&gt;
 
-&lt;p&gt;Go to the RT-AC66R’s configuration page, and then on the “Advanced Settings” column on the left, select “LAN”. Select the “IPTV” tab at the top. For the ISP profile, select Singtel-MIO. (My firmware version is 3.0.0.4.374_979) The table entry for IPTV STB Port should say LAN4. I didn’t change the other entries in the “Special Applications” section.&lt;/p&gt;
+&lt;p&gt;Go to the RT-AC66R&amp;#39;s configuration page, and then on the &amp;quot;Advanced Settings&amp;quot; column on the left, select &amp;quot;LAN&amp;quot;. Select the &amp;quot;IPTV&amp;quot; tab at the top. For the ISP profile, select Singtel-MIO. (My firmware version is 3.0.0.4.374_979) The table entry for IPTV STB Port should say LAN4. I didn&amp;#39;t change the other entries in the &amp;quot;Special Applications&amp;quot; section.&lt;/p&gt;
 
 &lt;p&gt;Then, I had to restart my set-top box (like completely power off and start it again) and then it worked.&lt;/p&gt;
 
@@ -1553,41 +1366,41 @@ sudo avrdude -V -F -c avrisp2 -p m2560 -P usb -U flash:w:blink.hex
     <uri>http://ackerleytng.github.io</uri>
     <email>ackerleytng@gmail.com</email>
   </author>
-  <content type="html">&lt;p&gt;So. I’m not sure if this is just luck, but I managed to revive a connection to my WD Passport (Essential SE). There are so many forum threads on the Internet that discuss this topic, but most are just cliffhangers that don’t provide real solutions.&lt;/p&gt;
+  <content type="html">&lt;p&gt;So. I&amp;#39;m not sure if this is just luck, but I managed to revive a connection to my WD Passport (Essential SE). There are so many forum threads on the Internet that discuss this topic, but most are just cliffhangers that don&amp;#39;t provide real solutions.&lt;/p&gt;
 
 &lt;p&gt;It was neither being recognized on a Mac nor PC, even after:&lt;/p&gt;
 
 &lt;ul&gt;
-  &lt;li&gt;Trying different cables&lt;/li&gt;
-  &lt;li&gt;Using the USB ports at the back of the computer instead of those in the front&lt;/li&gt;
+&lt;li&gt;Trying different cables&lt;/li&gt;
+&lt;li&gt;Using the USB ports at the back of the computer instead of those in the front&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;p&gt;Here are some other suggestions that you might want to try if you have the resources or patience. I personally think that this is not an issue with power supply to the WD Passport, but you can still try:&lt;/p&gt;
 
 &lt;ul&gt;
-  &lt;li&gt;Using a Y-cable, which is something like &lt;a href=&quot;http://en.wikipedia.org/wiki/File:Y-shaped_USB_3.0_cable.jpg&quot;&gt;this&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;Returning it to Western Digital for a new unit&lt;/li&gt;
-  &lt;li&gt;Disconnecting all unnecessary USB devices so that all the power goes to the WD Passport&lt;/li&gt;
+&lt;li&gt;Using a Y-cable, which is something like &lt;a href=&quot;http://en.wikipedia.org/wiki/File:Y-shaped_USB_3.0_cable.jpg&quot;&gt;this&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Returning it to Western Digital for a new unit&lt;/li&gt;
+&lt;li&gt;Disconnecting all unnecessary USB devices so that all the power goes to the WD Passport&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h3 id=&quot;revival-procedure&quot;&gt;Revival Procedure&lt;/h3&gt;
+&lt;h3&gt;Revival Procedure&lt;/h3&gt;
 
 &lt;p&gt;I used a desktop PC running 64-bit Windows 7, eventually, to connect to the WD Passport. The WD Passport was never used with this desktop before, hence we know that the drivers for the WD Passport was never installed from the web.&lt;/p&gt;
 
 &lt;ol&gt;
-  &lt;li&gt;Connect the WD Passport to the USB ports at the &lt;em&gt;back&lt;/em&gt; of a &lt;em&gt;desktop&lt;/em&gt; PC. Windows will probably attempt to install the WD Passport, but will not find the right drivers, because it is unable to identify the device.&lt;/li&gt;
-  &lt;li&gt;Go to Device Manager. You should see a USB device that has a yellow triangle next to it, indicating that the drivers for the WD Passport were not installed properly.&lt;/li&gt;
-  &lt;li&gt;Download and install the appropriate WD Passport drivers from &lt;a href=&quot;http://wdc.custhelp.com/app/answers/detail/a_id/1708/related/1/session/L2F2LzEvdGltZS8xNDA0ODUwMTc4L3NpZC8zd0ExaE9ZbA%3D%3D&quot;&gt;here&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;Go back to Device Manager. Right-click on the Unknown Device, then select “Update Driver Software”.&lt;/li&gt;
-  &lt;li&gt;Choose to browse your computer for driver software.&lt;/li&gt;
-  &lt;li&gt;Pick from a list of device drivers on your computer.&lt;/li&gt;
-  &lt;li&gt;From the list, choose Western Digital, then select WD SES Device. Complete that installation procedure and the WD Passport should now be recognized as a “WD SES Device”. The drive, however, is probably still not working.&lt;/li&gt;
-  &lt;li&gt;Unplug the WD Passport. (I unplugged the USB cable on the side of the WD Passport (as opposed to the side plugged into the computer)&lt;/li&gt;
-  &lt;li&gt;Plug it back in, and it should auto-detect and install, and work this time.&lt;/li&gt;
-  &lt;li&gt;You should probably grab everything you can from the drive and not use it again.&lt;/li&gt;
+&lt;li&gt;Connect the WD Passport to the USB ports at the &lt;em&gt;back&lt;/em&gt; of a &lt;em&gt;desktop&lt;/em&gt; PC. Windows will probably attempt to install the WD Passport, but will not find the right drivers, because it is unable to identify the device.&lt;/li&gt;
+&lt;li&gt;Go to Device Manager. You should see a USB device that has a yellow triangle next to it, indicating that the drivers for the WD Passport were not installed properly.&lt;/li&gt;
+&lt;li&gt;Download and install the appropriate WD Passport drivers from &lt;a href=&quot;http://wdc.custhelp.com/app/answers/detail/a_id/1708/related/1/session/L2F2LzEvdGltZS8xNDA0ODUwMTc4L3NpZC8zd0ExaE9ZbA%3D%3D&quot;&gt;here&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Go back to Device Manager. Right-click on the Unknown Device, then select &amp;quot;Update Driver Software&amp;quot;.&lt;/li&gt;
+&lt;li&gt;Choose to browse your computer for driver software.&lt;/li&gt;
+&lt;li&gt;Pick from a list of device drivers on your computer.&lt;/li&gt;
+&lt;li&gt;From the list, choose Western Digital, then select WD SES Device. Complete that installation procedure and the WD Passport should now be recognized as a &amp;quot;WD SES Device&amp;quot;. The drive, however, is probably still not working.&lt;/li&gt;
+&lt;li&gt;Unplug the WD Passport. (I unplugged the USB cable on the side of the WD Passport (as opposed to the side plugged into the computer)&lt;/li&gt;
+&lt;li&gt;Plug it back in, and it should auto-detect and install, and work this time.&lt;/li&gt;
+&lt;li&gt;You should probably grab everything you can from the drive and not use it again.&lt;/li&gt;
 &lt;/ol&gt;
 
-&lt;h3 id=&quot;update-the-firmware&quot;&gt;Update the Firmware&lt;/h3&gt;
+&lt;h3&gt;Update the Firmware&lt;/h3&gt;
 
 &lt;p&gt;Update the firmware on the newly-revived Passport following instructions &lt;a href=&quot;http://www.wdc.com/wdproducts/wdsmartwareupdate/firmware.asp?id=wdfMyPassport&amp;amp;os=WIN&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
 
@@ -1610,20 +1423,20 @@ sudo avrdude -V -F -c avrisp2 -p m2560 -P usb -U flash:w:blink.hex
   <content type="html">&lt;p&gt;Installed from source&lt;/p&gt;
 
 &lt;ul&gt;
-  &lt;li&gt;None&lt;/li&gt;
+&lt;li&gt;None&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;p&gt;Installed from .pkg&lt;/p&gt;
 
 &lt;ul&gt;
-  &lt;li&gt;MacPorts&lt;/li&gt;
-  &lt;li&gt;Node.js&lt;/li&gt;
+&lt;li&gt;MacPorts&lt;/li&gt;
+&lt;li&gt;Node.js&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;p&gt;Installed from .dmg&lt;/p&gt;
 
 &lt;ul&gt;
-  &lt;li&gt;Look into /Applications&lt;/li&gt;
+&lt;li&gt;Look into /Applications&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;p&gt;Others are installed using MacPorts

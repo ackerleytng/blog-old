@@ -136,36 +136,36 @@
     
   </header>
   <div class="entry-content">
-    <h1 id="mini2440-setup-guide">mini2440 setup guide</h1>
+    <h1>mini2440 setup guide</h1>
 
 <p>I hope to make this</p>
 
 <ul>
-  <li>Pain free</li>
-  <li>As close to first principles as possible so when new versions come out you can still follow this guide</li>
+<li>Pain free</li>
+<li>As close to first principles as possible so when new versions come out you can still follow this guide</li>
 </ul>
 
-<h2 id="building-the-kernel-and-root-file-system">Building the kernel and root file system</h2>
+<h2>Building the kernel and root file system</h2>
 
 <p>I grabbed the latest version of buildroot off http://buildroot.uclibc.org/downloads/.</p>
 
-<p>The version I got was <code>2015.02</code>. I managed to get Linux 3.18.6 working on the mini2440, but you might want the newest version at the point you’re doing this.</p>
+<p>The version I got was <code>2015.02</code>. I managed to get Linux 3.18.6 working on the mini2440, but you might want the newest version at the point you&#39;re doing this.</p>
 
 <p>Untar the tarball and go to the extracted directory.</p>
 
 <p>Type <code>make menuconfig</code>.</p>
 
-<p>I tried using the mini2440 defconfig (as in default config), but I kinda tried so many different things that I don’t know which of those are still valid. If you’d like to try the mini2440 defconfig, or at least use that as a starting point, go to <code>&lt; Load &gt;</code> and load <code>configs/mini2440_defconfig</code>.</p>
+<p>I tried using the mini2440 defconfig (as in default config), but I kinda tried so many different things that I don&#39;t know which of those are still valid. If you&#39;d like to try the mini2440 defconfig, or at least use that as a starting point, go to <code>&lt; Load &gt;</code> and load <code>configs/mini2440_defconfig</code>.</p>
 
-<p>If not, here’s my final configuration.</p>
+<p>If not, here&#39;s my final configuration.</p>
 
 <ul>
-  <li>Target Architecture: ARM (little endian)</li>
-  <li>Target Binary Format: ELF</li>
-  <li>Target Architecture Variant: arm920t</li>
-  <li>Target ABI: EABI</li>
-  <li>Floating point strategy: Soft float</li>
-  <li>ARM instruction set: ARM</li>
+<li>Target Architecture: ARM (little endian)</li>
+<li>Target Binary Format: ELF</li>
+<li>Target Architecture Variant: arm920t</li>
+<li>Target ABI: EABI</li>
+<li>Floating point strategy: Soft float</li>
+<li>ARM instruction set: ARM</li>
 </ul>
 
 <p>I changed the <code>System hostname</code> and <code>System banner</code> in <code>System configuration</code>, but those are cosmetic.</p>
@@ -178,38 +178,30 @@
 
 <p>I also selected <code>jffs2 root filesystem</code> and for <code>Flash Type</code>, I selected <code>NAND flash with 2kB Page and 128 kB erasesize</code></p>
 
-<p>This version of buildroot doesn’t build U-Boot properly due to a missing defconfig, so I did not select any bootloader.</p>
+<p>This version of buildroot doesn&#39;t build U-Boot properly due to a missing defconfig, so I did not select any bootloader.</p>
 
-<p>Then…</p>
-
-<p><code>
-make
-</code></p>
-
-<h1 id="putting-u-boot-on-mini2440">Putting U-boot on mini2440</h1>
+<p>Then...</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">make
+</code></pre></div>
+<h1>Putting U-boot on mini2440</h1>
 
 <p>I got a compiled version of U-boot from http://www.mech.tohoku-gakuin.ac.jp/rde/contents/tech/mini2440/archive/u-boot_20100701.zip, but just in case that file disappears, <a href="/post_downloads/u-boot_20100701.zip">u-boot_20100701.zip</a>.</p>
 
-<p>This zip file contains two tools that you might need to transfer files over USB to the mini2440. After you extract the files in the archive, they will be in the <code>tools/</code> directory. I don’t think there is a difference between <code>s3c2410_boot_usb</code> and <code>usbpush</code>.</p>
+<p>This zip file contains two tools that you might need to transfer files over USB to the mini2440. After you extract the files in the archive, they will be in the <code>tools/</code> directory. I don&#39;t think there is a difference between <code>s3c2410_boot_usb</code> and <code>usbpush</code>.</p>
 
-<h2 id="hardware-connections">Hardware connections</h2>
+<h2>Hardware connections</h2>
 
 <ul>
-  <li>Connect the mini2440 to power</li>
-  <li>Connect the mini2440 to a USB port on your Linux PC using a Type A (male) to Type B (male) USB cable</li>
-  <li>Connect the mini2440 to a serial port on your Linux PC using a serial cable</li>
+<li>Connect the mini2440 to power</li>
+<li>Connect the mini2440 to a USB port on your Linux PC using a Type A (male) to Type B (male) USB cable</li>
+<li>Connect the mini2440 to a serial port on your Linux PC using a serial cable</li>
 </ul>
 
 <p>Start minicom</p>
-
-<p><code>
-sudo minicom -s
-</code></p>
-
+<div class="highlight"><pre><code class="language-text" data-lang="text">sudo minicom -s
+</code></pre></div>
 <p>Here are my settings</p>
-
-<p><code>
-    +-----------------------------------------------------------------------+
+<div class="highlight"><pre><code class="language-text" data-lang="text">    +-----------------------------------------------------------------------+
     | A -    Serial Device      : /dev/ttyS0                                |
     | B - Lockfile Location     : /var/lock                                 |
     | C -   Callin Program      :                                           |
@@ -226,12 +218,9 @@ sudo minicom -s
             | Exit                     |
             | Exit from Minicom        |
             +--------------------------+
-</code></p>
-
+</code></pre></div>
 <p>If you set the NAND/NOR switch on the mini2440 to NOR and power up the mini2440, you should see something like this:</p>
-
-<p><code>
-##### FriendlyARM BIOS 2.0 for 2440 #####
+<div class="highlight"><pre><code class="language-text" data-lang="text">##### FriendlyARM BIOS 2.0 for 2440 #####
 [x] format NAND FLASH for Linux
 [v] Download vivi
 [k] Download linux kernel
@@ -250,41 +239,35 @@ sudo minicom -s
 [r] Restore NAND Flash from HOST through USB
 [q] Goto shell of vivi
 Enter your selection:
-</code></p>
-
-<h2 id="conceptually">Conceptually,</h2>
+</code></pre></div>
+<h2>Conceptually,</h2>
 
 <p>You want to put U-Boot, a bootloader, into NAND flash, which will then load your linux kernel, which would in turn load your root filesystem.</p>
 
-<p>Here’s the final layout you want to achieve</p>
+<p>Here&#39;s the final layout you want to achieve</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">MINI2440 # mtdparts
 
-<p>```
-MINI2440 # mtdparts</p>
-
-<p>device nand0 <mini2440-nand>, # parts = 4
+device nand0 &lt;mini2440-nand&gt;, # parts = 4
  #: name                        size            offset          mask_flags
  0: u-boot              0x00040000      0x00000000      0
  1: u-boot_env          0x00020000      0x00040000      0
  2: kernel              0x00500000      0x00060000      0
- 3: rootfs              0x0faa0000      0x00560000      0</mini2440-nand></p>
+ 3: rootfs              0x0faa0000      0x00560000      0
 
-<p>active partition: nand0,0 - (u-boot) 0x00040000 @ 0x00000000</p>
+active partition: nand0,0 - (u-boot) 0x00040000 @ 0x00000000
 
-<p>defaults:
+defaults:
 mtdids  : nand0=mini2440-nand
-mtdparts: <null>
-```</null></p>
+mtdparts: &lt;NULL&gt;
+</code></pre></div>
+<h2>Putting U-Boot into NAND flash</h2>
 
-<h2 id="putting-u-boot-into-nand-flash">Putting U-Boot into NAND flash</h2>
-
-<p>In this section, you’re going to first put U-Boot onto mini2440’s ram, and then run U-Boot from ram to make it do some cleanup, and then get U-Boot to copy itself into NAND flash.</p>
+<p>In this section, you&#39;re going to first put U-Boot onto mini2440&#39;s ram, and then run U-Boot from ram to make it do some cleanup, and then get U-Boot to copy itself into NAND flash.</p>
 
 <p>Ask mini2440 to receive U-Boot:</p>
 
 <p>In minicom:</p>
-
-<p><code>
-##### FriendlyARM BIOS 2.0 for 2440 #####
+<div class="highlight"><pre><code class="language-text" data-lang="text">##### FriendlyARM BIOS 2.0 for 2440 #####
 [x] format NAND FLASH for Linux
 [v] Download vivi
 [k] Download linux kernel
@@ -303,56 +286,35 @@ mtdparts: <null>
 [r] Restore NAND Flash from HOST through USB
 [q] Goto shell of vivi
 Enter your selection:
-</code></p>
-
+</code></pre></div>
 <p>Press <code>q</code></p>
-
-<p><code>
-Supervivi&gt; load ram &lt;destination-address-in-ram&gt; &lt;size-to-transfer&gt; u
-</code></p>
-
+<div class="highlight"><pre><code class="language-text" data-lang="text">Supervivi&gt; load ram &lt;destination-address-in-ram&gt; &lt;size-to-transfer&gt; u
+</code></pre></div>
 <p>What I used:</p>
-
-<p><code>
-Supervivi&gt; load ram 0x32000000 242360 u
-</code></p>
-
+<div class="highlight"><pre><code class="language-text" data-lang="text">Supervivi&gt; load ram 0x32000000 242360 u
+</code></pre></div>
 <p>Send U-Boot over USB to mini2440. I used <code>u-boot-256M.bin</code>, because my mini2440 had a flash size of 256M. Many sites say that there should be no difference between using <code>u-boot-256M.bin</code> and <code>u-boot-128M.bin</code>, but I used <code>u-boot-256M.bin</code> anyway. On Linux PC:</p>
-
-<p><code>
-$ sudo ./tools/s3c2410_boot_usb u-boot_20100701/u-boot-256M.bin
-</code>
-(Ignore the error if you get one)</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">$ sudo ./tools/s3c2410_boot_usb u-boot_20100701/u-boot-256M.bin
+</code></pre></div>
+<p>(Ignore the error if you get one)</p>
 
 <p>Start U-Boot</p>
 
 <p>In minicom:</p>
-
-<p><code>
-Supervivi&gt; go 0x32000000
-</code></p>
-
+<div class="highlight"><pre><code class="language-text" data-lang="text">Supervivi&gt; go 0x32000000
+</code></pre></div>
 <p>Clear everything in NAND flash</p>
-
-<p><code>
-MINI2440 # nand scrub
-</code></p>
-
+<div class="highlight"><pre><code class="language-text" data-lang="text">MINI2440 # nand scrub
+</code></pre></div>
 <p>Create bad block table (This took quite a while for me, be patient)</p>
-
-<p><code>
-MINI2440 # nand createbbt
-</code></p>
-
+<div class="highlight"><pre><code class="language-text" data-lang="text">MINI2440 # nand createbbt
+</code></pre></div>
 <p>Create/view partitions</p>
-
-<p><code>
-MINI2440 # mtdparts
-</code></p>
-
+<div class="highlight"><pre><code class="language-text" data-lang="text">MINI2440 # mtdparts
+</code></pre></div>
 <p>Write uboot to NAND flash. You have some options here.</p>
 
-<p>Raw write, doesn’t look for bad blocks, data might get written to bad block. This will copy the full size of the nand partition, beginning with the address in ram provided.
+<p>Raw write, doesn&#39;t look for bad blocks, data might get written to bad block. This will copy the full size of the nand partition, beginning with the address in ram provided.
 <code>
 MINI2440 # nand write &lt;address-in-ram-in-hex&gt; &lt;partition-in-nand&gt;
 </code></p>
@@ -363,92 +325,60 @@ MINI2440 # nand write.e &lt;source-in-hex&gt; &lt;destination-in-hex&gt; &lt;byt
 </code></p>
 
 <p>I used</p>
-
-<p><code>
-MINI2440 # nand write 0x32000000 u-boot
-</code></p>
-
+<div class="highlight"><pre><code class="language-text" data-lang="text">MINI2440 # nand write 0x32000000 u-boot
+</code></pre></div>
 <p>Partition the NAND</p>
-
-<p><code>
-MINI2440# dynpart
-</code></p>
-
+<div class="highlight"><pre><code class="language-text" data-lang="text">MINI2440# dynpart
+</code></pre></div>
 <p>Create the dynamic environment space for u-boot</p>
-
-<p><code>
-MINI2440# dynenv set u-boot_env
-</code></p>
-
+<div class="highlight"><pre><code class="language-text" data-lang="text">MINI2440# dynenv set u-boot_env
+</code></pre></div>
 <p>Save the environment to NAND.</p>
-
-<p><code>
-MINI2440# saveenv
-</code></p>
-
+<div class="highlight"><pre><code class="language-text" data-lang="text">MINI2440# saveenv
+</code></pre></div>
 <p>Switch off the mini2440, flip the NAND/NOR switch to NAND, and switch on the mini2440.</p>
 
-<p>You should get to a <code>MINI2440# </code> prompt. If you don’t, try pressing enter a few times in minicom, the prompt might show up then.</p>
+<p>You should get to a <code>MINI2440#</code> prompt. If you don&#39;t, try pressing enter a few times in minicom, the prompt might show up then.</p>
 
-<h2 id="transferring-uimage-into-nand-flash">Transferring uImage into NAND flash</h2>
+<h2>Transferring uImage into NAND flash</h2>
 
 <p>I transferred using tftp, but you might be able to do it using USB like above.</p>
 
 <p>Find the address of the kernel partition:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">MINI2440 # mtdparts
 
-<p>```
-MINI2440 # mtdparts</p>
-
-<p>device nand0 <mini2440-nand>, # parts = 4
+device nand0 &lt;mini2440-nand&gt;, # parts = 4
  #: name                        size            offset          mask_flags
  0: u-boot              0x00040000      0x00000000      0
  1: u-boot_env          0x00020000      0x00040000      0
  2: kernel              0x00500000      0x00060000      0
- 3: rootfs              0x0faa0000      0x00560000      0</mini2440-nand></p>
+ 3: rootfs              0x0faa0000      0x00560000      0
 
-<p>active partition: nand0,0 - (u-boot) 0x00040000 @ 0x00000000</p>
+active partition: nand0,0 - (u-boot) 0x00040000 @ 0x00000000
 
-<p>defaults:
+defaults:
 mtdids  : nand0=mini2440-nand
-mtdparts: <null>
-```</null></p>
-
+mtdparts: &lt;NULL&gt;
+</code></pre></div>
 <p>Erase the kernel partition:</p>
-
-<p><code>
-MINI2440# nand erase 60000 500000
-</code></p>
-
+<div class="highlight"><pre><code class="language-text" data-lang="text">MINI2440# nand erase 60000 500000
+</code></pre></div>
 <p>Set up your network. I connected the mini2440 to my router, and the Linux PC to the router at 192.168.1.50</p>
-
-<p><code>
-MINI2440# setenv ipaddr 192.168.1.60
+<div class="highlight"><pre><code class="language-text" data-lang="text">MINI2440# setenv ipaddr 192.168.1.60
 MINI2440# setenv serverip 192.168.1.50
-</code></p>
-
+</code></pre></div>
 <p>Download uImage from Linux PC over LAN into RAM, at 0x32000000 again. First place <code>uImage</code> into <code>/tftpboot</code> (Google how to set up tftp).</p>
-
-<p><code>
-MINI2440# tftp 32000000 uImage
-</code></p>
-
+<div class="highlight"><pre><code class="language-text" data-lang="text">MINI2440# tftp 32000000 uImage
+</code></pre></div>
 <p>Copy uImage from ram into NAND</p>
-
-<p><code>
-MINI2440# nand write.e 32000000 60000 &lt;size-of-uImage-in-hex&gt;
-</code></p>
-
+<div class="highlight"><pre><code class="language-text" data-lang="text">MINI2440# nand write.e 32000000 60000 &lt;size-of-uImage-in-hex&gt;
+</code></pre></div>
 <p>Set the boot command to load kernel image from NAND flash.</p>
-
-<p><code>
-MINI2440# setenv bootcmd 'nboot.e kernel;bootm'
+<div class="highlight"><pre><code class="language-text" data-lang="text">MINI2440# setenv bootcmd &#39;nboot.e kernel;bootm&#39;
 MINI2440# saveenv
-</code></p>
-
+</code></pre></div>
 <p>Power cycle the mini2440, and it should boot into Linux.</p>
-
-<p><code>
-Loading from NAND 256MiB 3,3V 8-bit, offset 0x60000
+<div class="highlight"><pre><code class="language-text" data-lang="text">Loading from NAND 256MiB 3,3V 8-bit, offset 0x60000
    Image Name:   Linux-3.18.6
    Created:      2015-04-05   4:34:50 UTC
    Image Type:   ARM Linux Kernel Image (uncompressed)
@@ -465,12 +395,9 @@ Loading from NAND 256MiB 3,3V 8-bit, offset 0x60000
    Verifying Checksum ... OK
    Loading Kernel Image ...
 ...
-</code></p>
-
-<h2 id="heres-my-entire-u-boot-environment-just-in-case">Here’s my entire U-Boot environment, just in case…</h2>
-
-<p>```
-MINI2440 # printenv
+</code></pre></div>
+<h2>Here&#39;s my entire U-Boot environment, just in case...</h2>
+<div class="highlight"><pre><code class="language-text" data-lang="text">MINI2440 # printenv
 bootargs=root=/dev/mtdblock3 rootfstype=jffs2 console=ttySAC0,115200
 bootdelay=3
 baudrate=115200
@@ -497,18 +424,17 @@ ipaddr=192.168.1.60
 serverip=192.168.1.50
 partition=nand0,0
 mtddevnum=0
-mtddevname=u-boot</p>
+mtddevname=u-boot
 
-<p>Environment size: 1151/131068 bytes
-```</p>
-
-<h1 id="references">References</h1>
+Environment size: 1151/131068 bytes
+</code></pre></div>
+<h1>References</h1>
 
 <ul>
-  <li>http://geekwentfreak-raviteja.rhcloud.com/blog/2010/07/27/flashing-uboot-onto-nand-mini2440/</li>
-  <li>http://geekwentfreak-raviteja.rhcloud.com/blog/2010/09/19/mini2440-flashing-linux-uimage-into-nand/</li>
-  <li>http://bill.station51.net/?post/2010/01/16/U-Boot-on-Mini2440</li>
-  <li>http://e2e.ti.com/support/dsp/davinci_digital_media_processors/f/100/p/210595/745675</li>
+<li>http://geekwentfreak-raviteja.rhcloud.com/blog/2010/07/27/flashing-uboot-onto-nand-mini2440/</li>
+<li>http://geekwentfreak-raviteja.rhcloud.com/blog/2010/09/19/mini2440-flashing-linux-uimage-into-nand/</li>
+<li>http://bill.station51.net/?post/2010/01/16/U-Boot-on-Mini2440</li>
+<li>http://e2e.ti.com/support/dsp/davinci<em>digital</em>media_processors/f/100/p/210595/745675</li>
 </ul>
 
   </div><!-- /.entry-content -->
@@ -533,11 +459,11 @@ mtddevname=u-boot</p>
   <div class="entry-content">
     <p>First try:</p>
 
-<p><img src="http://ackerleytng.github.io/post_images/fried-okra-0.jpg" alt="fried-okra-0" /></p>
+<p><img src="http://ackerleytng.github.io/post_images/fried-okra-0.jpg" alt="fried-okra-0"></p>
 
 <p>Second try:</p>
 
-<p><img src="http://ackerleytng.github.io/post_images/fried-okra-1.jpg" alt="fried-okra-1" /></p>
+<p><img src="http://ackerleytng.github.io/post_images/fried-okra-1.jpg" alt="fried-okra-1"></p>
 
   </div><!-- /.entry-content -->
 </article><!-- /.hentry -->
@@ -559,7 +485,7 @@ mtddevname=u-boot</p>
     
   </header>
   <div class="entry-content">
-    <p><img src="http://ackerleytng.github.io/post_images/pan-fried-chicken-potatoes.jpg" alt="fried-okra-0" /></p>
+    <p><img src="http://ackerleytng.github.io/post_images/pan-fried-chicken-potatoes.jpg" alt="fried-okra-0"></p>
 
   </div><!-- /.entry-content -->
 </article><!-- /.hentry -->
@@ -583,7 +509,7 @@ mtddevname=u-boot</p>
   <div class="entry-content">
     <p>This is the first step towards sewing my own bag!</p>
 
-<p><img src="http://ackerleytng.github.io/post_images/pencil-case.jpg" alt="pencil-case" /></p>
+<p><img src="http://ackerleytng.github.io/post_images/pencil-case.jpg" alt="pencil-case"></p>
 
   </div><!-- /.entry-content -->
 </article><!-- /.hentry -->
@@ -605,113 +531,85 @@ mtddevname=u-boot</p>
     
   </header>
   <div class="entry-content">
-    <h2 id="to-disable-minifying-of-the-js-file-comment-this-line-out">To disable minifying of the js file, comment this line out</h2>
-
-<pre><code>user@ubuntu:/opt/gitlab/embedded$ sudo vim ./service/gitlab-rails/config/environments/production.rb
+    <h2>To disable minifying of the js file, comment this line out</h2>
+<div class="highlight"><pre><code class="language-text" data-lang="text">user@ubuntu:/opt/gitlab/embedded$ sudo vim ./service/gitlab-rails/config/environments/production.rb
 #config.assets.js_compressor = :uglifier
-</code></pre>
-
-<h2 id="gitlab-rake-is-a-script-that-sets-a-default-user-and-does-bundle-exec-rake">gitlab-rake is a script that sets a default user and does bundle exec rake</h2>
+</code></pre></div>
+<h2>gitlab-rake is a script that sets a default user and does bundle exec rake</h2>
 
 <p>Needs permission to write, so change permissions for public folder</p>
-
-<pre><code>sudo chmod a+w public
+<div class="highlight"><pre><code class="language-text" data-lang="text">sudo chmod a+w public
 cd public
 sudo chmod a+w assets
-</code></pre>
-
-<h2 id="to-recompile-fully">To recompile fully</h2>
-
-<pre><code>sudo gitlab-rake assets:clobber --trace # this step is sort of optional if you don't want to completely clean it out
+</code></pre></div>
+<h2>To recompile fully</h2>
+<div class="highlight"><pre><code class="language-text" data-lang="text">sudo gitlab-rake assets:clobber --trace # this step is sort of optional if you don&#39;t want to completely clean it out
 sudo gitlab-rake assets:precompile --trace
 sudo gitlab-ctl restart
-</code></pre>
-
-<h2 id="add-all-accepted-mimetypes-to-this-file">Add all accepted mimetypes to this file</h2>
-
-<pre><code>/opt/gitlab/embedded$ sudo vim service/gitlab-rails/app/assets/javascripts/markdown_area.js.coffee
-acceptedFiles: "image/*,audio/*,video/*,application/*,text/*"
-</code></pre>
-
-<h2 id="disable-checking-of-extensions">Disable checking of extensions</h2>
-
-<pre><code>/opt/gitlab/embedded$ sudo vim service/gitlab-rails/app/services/projects/image_service.rb
-</code></pre>
-
+</code></pre></div>
+<h2>Add all accepted mimetypes to this file</h2>
+<div class="highlight"><pre><code class="language-text" data-lang="text">/opt/gitlab/embedded$ sudo vim service/gitlab-rails/app/assets/javascripts/markdown_area.js.coffee
+acceptedFiles: &quot;image/*,audio/*,video/*,application/*,text/*&quot;
+</code></pre></div>
+<h2>Disable checking of extensions</h2>
+<div class="highlight"><pre><code class="language-text" data-lang="text">/opt/gitlab/embedded$ sudo vim service/gitlab-rails/app/services/projects/image_service.rb
+</code></pre></div>
 <p>Replace</p>
-
-<pre><code>if image &amp;&amp; correct_mime_type?(image)
-</code></pre>
-
+<div class="highlight"><pre><code class="language-text" data-lang="text">if image &amp;&amp; correct_mime_type?(image)
+</code></pre></div>
 <p>with</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">if image
+</code></pre></div>
+<h2>Change the function formatLink</h2>
+<div class="highlight"><pre><code class="language-text" data-lang="text">/opt/gitlab/embedded$ sudo vim service/gitlab-rails/app/assets/javascripts/markdown_area.js.coffee
 
-<pre><code>if image
-</code></pre>
+String::endsWith = (s) -&gt; s is &#39;&#39; or @[-s.length..] is s
 
-<h2 id="change-the-function-formatlink">Change the function formatLink</h2>
-
-<pre><code>/opt/gitlab/embedded$ sudo vim service/gitlab-rails/app/assets/javascripts/markdown_area.js.coffee
-  
-String::endsWith = (s) -&gt; s is '' or @[-s.length..] is s
-  
 formatLink = (str) -&gt;
-  image_extensions = ['jpg', 'gif', 'jpeg', 'png']
-  
+  image_extensions = [&#39;jpg&#39;, &#39;gif&#39;, &#39;jpeg&#39;, &#39;png&#39;]
+
   is_image = false
   for ext in image_extensions
     is_image = is_image | str.url.toLowerCase().endsWith(ext)
-  
-  if is_image
-    "![" + str.alt + "](" + str.url + ")"
-  else
-    "[" + str.alt + "](" + str.url + ")"
-</code></pre>
 
-<h2 id="changing-html-in-views-changing-the-text">Changing html in views (changing the text)</h2>
+  if is_image
+    &quot;![&quot; + str.alt + &quot;](&quot; + str.url + &quot;)&quot;
+  else
+    &quot;[&quot; + str.alt + &quot;](&quot; + str.url + &quot;)&quot;
+</code></pre></div>
+<h2>Changing html in views (changing the text)</h2>
 
 <p>Go to /opt/gitlab/embedded/service/gitlab-rails/app/views/projects/wikis
 Modify the .haml files.
 Restart server to see effects</p>
 
 <p>Replace </p>
-
-<pre><code>.pull-right Attach images (JPG, PNG, GIF) by dragging &amp; dropping or #{link_to "selecting them", '#', class: 'markdown-selector' }.
-</code></pre>
-
+<div class="highlight"><pre><code class="language-text" data-lang="text">.pull-right Attach images (JPG, PNG, GIF) by dragging &amp; dropping or #{link_to &quot;selecting them&quot;, &#39;#&#39;, class: &#39;markdown-selector&#39; }.
+</code></pre></div>
 <p>with</p>
-
-<pre><code>.pull-right Attach files by dragging &amp; dropping.
-</code></pre>
-
-<h2 id="change-maximum-filesize-for-uploads">Change maximum filesize for uploads</h2>
-
-<pre><code>/opt/gitlab/embedded$ sudo vim service/gitlab-rails/app/assets/javascripts/markdown_area.js.coffee
-</code></pre>
-
+<div class="highlight"><pre><code class="language-text" data-lang="text">.pull-right Attach files by dragging &amp; dropping.
+</code></pre></div>
+<h2>Change maximum filesize for uploads</h2>
+<div class="highlight"><pre><code class="language-text" data-lang="text">/opt/gitlab/embedded$ sudo vim service/gitlab-rails/app/assets/javascripts/markdown_area.js.coffee
+</code></pre></div>
 <p>Change line 29. The unit of memory for that value is MiB.</p>
 
-<h2 id="remove-dropzones-check">Remove dropzone’s check</h2>
-
-<pre><code>/opt/gitlab/embedded$ sudo vim service/gem/ruby/2.1.0/gems/dropzonejs-rails-0.4.14/vendor/assets/javascripts/dropzone.js
+<h2>Remove dropzone&#39;s check</h2>
+<div class="highlight"><pre><code class="language-text" data-lang="text">/opt/gitlab/embedded$ sudo vim service/gem/ruby/2.1.0/gems/dropzonejs-rails-0.4.14/vendor/assets/javascripts/dropzone.js
 
 } else if (!Dropzone.isValidFile(file, this.options.acceptedFiles)) {
   return done(this.options.dictInvalidFileType);
-</code></pre>
-
-<h2 id="clear-out-acceptedimages">Clear out accepted_images</h2>
+</code></pre></div>
+<h2>Clear out accepted_images</h2>
 
 <p>I think this makes the FileUploader class not check extensions</p>
-
-<pre><code>/opt/gitlab/embedded$ sudo vim service/gitlab-rails/app/services/projects/image_service.rb
-</code></pre>
-
+<div class="highlight"><pre><code class="language-text" data-lang="text">/opt/gitlab/embedded$ sudo vim service/gitlab-rails/app/services/projects/image_service.rb
+</code></pre></div>
 <p>Make accepted_images return nothing</p>
-
-<pre><code>def accepted_images
+<div class="highlight"><pre><code class="language-text" data-lang="text">def accepted_images
   #%w(png jpg jpeg gif pdf zip tar.gz txt)
 end
-</code></pre>
-
+</code></pre></div>
   </div><!-- /.entry-content -->
 </article><!-- /.hentry -->
 
