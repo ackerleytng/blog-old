@@ -135,8 +135,7 @@
 
 <p>The version I got was 24.3.1.</p>
 
-<div class="highlight"><pre><code class="bash">sudo port install emacs-app
-</code></pre></div>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">sudo port install emacs-app</code></pre></div>
 
 <h2 id="running-emacs-as-a-daemon">2. Running Emacs as a Daemon</h2>
 
@@ -150,7 +149,7 @@
 
 <p>OSX can be configured to read plist files on startup and start the Emacs daemon. Find out more about writing the plist file from <a href="https://developer.apple.com/library/mac/documentation/MacOSX/Conceptual/BPSystemStartup/Chapters/CreatingLaunchdJobs.html">Apple</a>.</p>
 
-<div class="highlight"><pre><code class="xml"><span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span>
+<div class="highlight"><pre><code class="language-xml" data-lang="xml"><span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span>
 <span class="cp">&lt;!DOCTYPE plist PUBLIC &quot;-//Apple//DTD PLIST 1.0//EN&quot; &quot;http://www.apple.com/DTDs/PropertyList-1.0.dtd&quot;&gt;</span>
 <span class="nt">&lt;plist</span> <span class="na">version=</span><span class="s">&quot;1.0&quot;</span><span class="nt">&gt;</span>
 <span class="nt">&lt;dict&gt;</span>
@@ -168,8 +167,7 @@
   <span class="nt">&lt;key&gt;</span>UserName<span class="nt">&lt;/key&gt;</span>
   <span class="nt">&lt;string&gt;</span>[Your Username]<span class="nt">&lt;/string&gt;</span>
 <span class="nt">&lt;/dict&gt;</span>
-<span class="nt">&lt;/plist&gt;</span>
-</code></pre></div>
+<span class="nt">&lt;/plist&gt;</span></code></pre></div>
 
 <p>The above plist file was named gnu.emacs.daemon.plist and was placed in the ~/Library/LaunchAgents/ directory.</p>
 
@@ -181,27 +179,23 @@
 
 <p>After restarting, to check that the daemon is running, open a Terminal window and do</p>
 
-<div class="highlight"><pre><code class="bash">ps aux <span class="p">|</span> grep Emacs
-</code></pre></div>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">ps aux <span class="p">|</span> grep Emacs</code></pre></div>
 
 <p>If it is running, you should see a process with this name</p>
 
-<div class="highlight"><pre><code class="bash">/Applications/MacPorts/Emacs.app/Contents/MacOS/Emacs --daemon
-</code></pre></div>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">/Applications/MacPorts/Emacs.app/Contents/MacOS/Emacs --daemon</code></pre></div>
 
 <h3 id="configuring-terminal-to-work-with-the-daemon">Configuring Terminal to work with the daemon</h3>
 
 <p>To do this simply, I set up two aliases in ~/.bash_profile</p>
 
-<div class="highlight"><pre><code class="bash"><span class="nb">alias </span><span class="nv">oe</span><span class="o">=</span><span class="s2">&quot;/Applications/MacPorts/Emacs.app/Contents/MacOS/bin/emacsclient -c -n&quot;</span>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nb">alias </span><span class="nv">oe</span><span class="o">=</span><span class="s2">&quot;/Applications/MacPorts/Emacs.app/Contents/MacOS/bin/emacsclient -c -n&quot;</span>
 <span class="nb">alias </span><span class="nv">oie</span><span class="o">=</span><span class="s2">&quot;/Applications/MacPorts/Emacs.app/Contents/MacOS/bin/emacsclient -n&quot;</span>
-<span class="nb">alias </span><span class="nv">ed</span><span class="o">=</span><span class="s2">&quot;/Applications/MacPorts/Emacs.app/Contents/MacOS/Emacs --daemon&quot;</span>
-</code></pre></div>
+<span class="nb">alias </span><span class="nv">ed</span><span class="o">=</span><span class="s2">&quot;/Applications/MacPorts/Emacs.app/Contents/MacOS/Emacs --daemon&quot;</span></code></pre></div>
 
 <p>oe is the command I use to open files, such as</p>
 
-<div class="highlight"><pre><code class="bash">oe foobar.txt
-</code></pre></div>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">oe foobar.txt</code></pre></div>
 
 <p>and ed is used to start the daemon again in case the daemon was shut down.</p>
 
@@ -223,16 +217,14 @@
 
 <h3 id="setting-default-window-size">Setting default window size</h3>
 
-<div class="highlight"><pre><code class="lisp"><span class="p">(</span><span class="nv">add-to-list</span> <span class="ss">&#39;default-frame-alist</span> <span class="o">&#39;</span><span class="p">(</span><span class="nv">height</span> <span class="o">.</span> <span class="mi">58</span><span class="p">))</span>
-<span class="p">(</span><span class="nv">add-to-list</span> <span class="ss">&#39;default-frame-alist</span> <span class="o">&#39;</span><span class="p">(</span><span class="nv">width</span> <span class="o">.</span> <span class="mi">144</span><span class="p">))</span>
-</code></pre></div>
+<div class="highlight"><pre><code class="language-lisp" data-lang="lisp"><span class="p">(</span><span class="nv">add-to-list</span> <span class="ss">&#39;default-frame-alist</span> <span class="o">&#39;</span><span class="p">(</span><span class="nv">height</span> <span class="o">.</span> <span class="mi">58</span><span class="p">))</span>
+<span class="p">(</span><span class="nv">add-to-list</span> <span class="ss">&#39;default-frame-alist</span> <span class="o">&#39;</span><span class="p">(</span><span class="nv">width</span> <span class="o">.</span> <span class="mi">144</span><span class="p">))</span></code></pre></div>
 
 <h3 id="moving-all-backups-to-trash">Moving all backups to Trash</h3>
 
 <p>To remove clutter:</p>
 
-<div class="highlight"><pre><code class="lisp"><span class="p">(</span><span class="k">setq</span> <span class="nv">backup-directory-alist</span> <span class="o">&#39;</span><span class="p">((</span><span class="s">&quot;.&quot;</span> <span class="o">.</span> <span class="s">&quot;~/.Trash&quot;</span><span class="p">)))</span>
-</code></pre></div>
+<div class="highlight"><pre><code class="language-lisp" data-lang="lisp"><span class="p">(</span><span class="k">setq</span> <span class="nv">backup-directory-alist</span> <span class="o">&#39;</span><span class="p">((</span><span class="s">&quot;.&quot;</span> <span class="o">.</span> <span class="s">&quot;~/.Trash&quot;</span><span class="p">)))</span></code></pre></div>
 
 <h3 id="multiple-cursorshttpsgithubcomemacsmirrormultiple-cursors"><a href="https://github.com/emacsmirror/multiple-cursors">Multiple Cursors</a>!</h3>
 
