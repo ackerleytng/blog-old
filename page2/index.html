@@ -122,6 +122,105 @@
 <article class="hentry">
   <header>
     <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2014-10-03T00:00:00+08:00"><a href="http://ackerleytng.github.io/gitlab-hacking/">October 03, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://ackerleytng.github.io/about/" title="About Ackerley Tng">Ackerley Tng</a></span></span>&nbsp; &bull; &nbsp;<span class="entry-comments"><a href="http://ackerleytng.github.io/gitlab-hacking/#disqus_thread">Comment</a></span>
+      
+      <span class="entry-reading-time pull-right">
+        <i class="fa fa-clock-o"></i>
+        
+        Reading time ~1 minute
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="http://ackerleytng.github.io/gitlab-hacking/" rel="bookmark" title="GitLab Hacking" itemprop="url">GitLab Hacking</a></h1>
+    
+  </header>
+  <div class="entry-content">
+    <h2>To disable minifying of the js file, comment this line out</h2>
+<div class="highlight"><pre><code class="language-text" data-lang="text">user@ubuntu:/opt/gitlab/embedded$ sudo vim ./service/gitlab-rails/config/environments/production.rb
+#config.assets.js_compressor = :uglifier
+</code></pre></div>
+<h2>gitlab-rake is a script that sets a default user and does bundle exec rake</h2>
+
+<p>Needs permission to write, so change permissions for public folder</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">sudo chmod a+w public
+cd public
+sudo chmod a+w assets
+</code></pre></div>
+<h2>To recompile fully</h2>
+<div class="highlight"><pre><code class="language-text" data-lang="text">sudo gitlab-rake assets:clobber --trace # this step is sort of optional if you don&#39;t want to completely clean it out
+sudo gitlab-rake assets:precompile --trace
+sudo gitlab-ctl restart
+</code></pre></div>
+<h2>Add all accepted mimetypes to this file</h2>
+<div class="highlight"><pre><code class="language-text" data-lang="text">/opt/gitlab/embedded$ sudo vim service/gitlab-rails/app/assets/javascripts/markdown_area.js.coffee
+acceptedFiles: &quot;image/*,audio/*,video/*,application/*,text/*&quot;
+</code></pre></div>
+<h2>Disable checking of extensions</h2>
+<div class="highlight"><pre><code class="language-text" data-lang="text">/opt/gitlab/embedded$ sudo vim service/gitlab-rails/app/services/projects/image_service.rb
+</code></pre></div>
+<p>Replace</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">if image &amp;&amp; correct_mime_type?(image)
+</code></pre></div>
+<p>with</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">if image
+</code></pre></div>
+<h2>Change the function formatLink</h2>
+<div class="highlight"><pre><code class="language-text" data-lang="text">/opt/gitlab/embedded$ sudo vim service/gitlab-rails/app/assets/javascripts/markdown_area.js.coffee
+
+String::endsWith = (s) -&gt; s is &#39;&#39; or @[-s.length..] is s
+
+formatLink = (str) -&gt;
+  image_extensions = [&#39;jpg&#39;, &#39;gif&#39;, &#39;jpeg&#39;, &#39;png&#39;]
+
+  is_image = false
+  for ext in image_extensions
+    is_image = is_image | str.url.toLowerCase().endsWith(ext)
+
+  if is_image
+    &quot;![&quot; + str.alt + &quot;](&quot; + str.url + &quot;)&quot;
+  else
+    &quot;[&quot; + str.alt + &quot;](&quot; + str.url + &quot;)&quot;
+</code></pre></div>
+<h2>Changing html in views (changing the text)</h2>
+
+<p>Go to /opt/gitlab/embedded/service/gitlab-rails/app/views/projects/wikis
+Modify the .haml files.
+Restart server to see effects</p>
+
+<p>Replace </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">.pull-right Attach images (JPG, PNG, GIF) by dragging &amp; dropping or #{link_to &quot;selecting them&quot;, &#39;#&#39;, class: &#39;markdown-selector&#39; }.
+</code></pre></div>
+<p>with</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">.pull-right Attach files by dragging &amp; dropping.
+</code></pre></div>
+<h2>Change maximum filesize for uploads</h2>
+<div class="highlight"><pre><code class="language-text" data-lang="text">/opt/gitlab/embedded$ sudo vim service/gitlab-rails/app/assets/javascripts/markdown_area.js.coffee
+</code></pre></div>
+<p>Change line 29. The unit of memory for that value is MiB.</p>
+
+<h2>Remove dropzone&#39;s check</h2>
+<div class="highlight"><pre><code class="language-text" data-lang="text">/opt/gitlab/embedded$ sudo vim service/gem/ruby/2.1.0/gems/dropzonejs-rails-0.4.14/vendor/assets/javascripts/dropzone.js
+
+} else if (!Dropzone.isValidFile(file, this.options.acceptedFiles)) {
+  return done(this.options.dictInvalidFileType);
+</code></pre></div>
+<h2>Clear out accepted_images</h2>
+
+<p>I think this makes the FileUploader class not check extensions</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">/opt/gitlab/embedded$ sudo vim service/gitlab-rails/app/services/projects/image_service.rb
+</code></pre></div>
+<p>Make accepted_images return nothing</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">def accepted_images
+  #%w(png jpg jpeg gif pdf zip tar.gz txt)
+end
+</code></pre></div>
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
+
+<article class="hentry">
+  <header>
+    <div class="entry-meta">
       <span class="entry-date date published updated"><time datetime="2014-09-28T00:00:00+08:00"><a href="http://ackerleytng.github.io/vegetarian-pork/">September 28, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://ackerleytng.github.io/about/" title="About Ackerley Tng">Ackerley Tng</a></span></span>&nbsp; &bull; &nbsp;<span class="entry-comments"><a href="http://ackerleytng.github.io/vegetarian-pork/#disqus_thread">Comment</a></span>
       
       <span class="entry-reading-time pull-right">
@@ -588,70 +687,6 @@ If you already own property bought with CPF savings and wish to buy another prop
 
 <p>CPF Annual Limit is $30,600. From 2015, the Annual Limit will be $31,450.
 Voluntary contributions = CPF Annual Limit - Mandatory contributions</p>
-
-  </div><!-- /.entry-content -->
-</article><!-- /.hentry -->
-
-<article class="hentry">
-  <header>
-    <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2014-08-23T00:00:00+08:00"><a href="http://ackerleytng.github.io/emacs-tramp-terminator-integration/">August 23, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://ackerleytng.github.io/about/" title="About Ackerley Tng">Ackerley Tng</a></span></span>&nbsp; &bull; &nbsp;<span class="entry-comments"><a href="http://ackerleytng.github.io/emacs-tramp-terminator-integration/#disqus_thread">Comment</a></span>
-      
-      <span class="entry-reading-time pull-right">
-        <i class="fa fa-clock-o"></i>
-        
-        Reading time ~2 minutes
-      </span><!-- /.entry-reading-time -->
-      
-    </div><!-- /.entry-meta -->
-    
-      <h1 class="entry-title"><a href="http://ackerleytng.github.io/emacs-tramp-terminator-integration/" rel="bookmark" title="Emacs-Tramp-Terminator-Integration" itemprop="url">Emacs-Tramp-Terminator-Integration</a></h1>
-    
-  </header>
-  <div class="entry-content">
-    <p>iTerm2 has a feature called <a href="http://iterm2.com/triggers.html">Triggers</a> which doesn&#39;t seem to exist in any of the Linux terminal emulators.</p>
-
-<p>Terminator has a plugin system, so I hacked together something that would parse emacs-formatted &#39;urls&#39; and open those urls in Emacs over Tramp. The concept of tying triggers with the terminal emulator is borrowed from my ECE MEng advisor, Prof. (Christopher Batten)[http://www.csl.cornell.edu/~cbatten/].</p>
-
-<h2>Concept</h2>
-
-<p>The idea is as follows. ssh into the research server to access source code there. Instead of customizing Emacs on every server you work with, customize only one - the one on the computer that you ssh from.</p>
-
-<p>Generate a string containing information about the current user and server IP address, and the path to the file you want to edit.</p>
-
-<p>I do this using a bash function added to .bashrc on the remote server:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text"># Remote emacsclient trigger
-function oe() {
-    user=$(whoami)
-    file=$(echo &quot;$1&quot; | tr -d &#39; &#39;)
-    hostname=$(hostname -I | tr -d &#39; &#39;)
-    workingdir=$(pwd | tr -d &#39; &#39;)
-    echo &quot;remote-emacsclient-trigger[[[/$user@${hostname}:${workingdir}/${file}]]]&quot;
-}
-</code></pre></div>
-<p>So say I&#39;m in /home/user/ on the remote server and I&#39;m working on blah.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">oe blah
-</code></pre></div>
-<p>will cause the remote server to echo</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">remote-emacsclient-trigger[[[/user@123.123.123.123:/home/user/blah]]]
-</code></pre></div>
-<p>In iTerm2, the trigger can pick up the string and in turn start a coprocess with the line <code>emacsclient -c -n &lt;the content between [[[ and ]]]&gt;</code>, using regex matches.</p>
-
-<p>The following plugin, written for Terminator, will give you a similar effect, except you have to right click on the part between <code>[[[</code> and <code>]]]</code>, and click open link.</p>
-
-<p><a href="http://ackerleytng.github.io/post_downloads/activate_emacs.py">Download</a></p>
-
-<p>Place that file in /usr/share/terminator/terminatorlib/plugins/activate_emacs.py and restart Terminator, then right click and click Preferences, go to the Plugins tab and check the ActivateEmacs plugin.</p>
-
-<h2>The process</h2>
-
-<p>There&#39;s little documentation on plugin writing, so it took a while to look through the examples and other plugins to start. Fortunately Terminator&#39;s code could mostly be found in /usr/share/terminator/, but unfortunately it still takes time to scan through all the code.</p>
-
-<p>There are lots of functions in terminator&#39;s code to do with matching, but I believe those are only activated on mouseovers rather than as they appear in the terminal.</p>
-
-<p>The URLHandler plugin sounds like it could parse any text or string - it can, but only on mouseovers. The <code>callback()</code> function is something that is meant to transform the &#39;url&#39; that matched to another url for a web browser to open; it does not perform actions on the matched string directly.</p>
-
-<p><a href="http://www.tenshu.net/2010/04/writing-terminator-plugins.html?showComment=1350573521137#c3847139789739776267">Jocelyn&#39;s comment</a> was so super useful in writing this plugin!</p>
 
   </div><!-- /.entry-content -->
 </article><!-- /.hentry -->

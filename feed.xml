@@ -4,7 +4,7 @@
 <generator uri="https://github.com/mojombo/jekyll">Jekyll</generator>
 <link rel="self" type="application/atom+xml" href="http://ackerleytng.github.io/feed.xml" />
 <link rel="alternate" type="text/html" href="http://ackerleytng.github.io" />
-<updated>2015-04-05T19:57:58+08:00</updated>
+<updated>2015-04-06T22:37:19+08:00</updated>
 <id>http://ackerleytng.github.io/</id>
 <author>
   <name>Ackerley Tng</name>
@@ -14,9 +14,104 @@
 
 
 <entry>
-  <title type="html"><![CDATA[Putting U-boot on mini2440]]></title>
- <link rel="alternate" type="text/html" href="http://ackerleytng.github.io/uboot-mini2440/" />
-  <id>http://ackerleytng.github.io/uboot-mini2440</id>
+  <title type="html"><![CDATA[Putting Linux on mini2440 with jffs2 filesystem]]></title>
+ <link rel="alternate" type="text/html" href="http://ackerleytng.github.io/linux-jffs-mini2440/" />
+  <id>http://ackerleytng.github.io/linux-jffs-mini2440</id>
+  <updated>2015-04-06T00:00:00-00:00</updated>
+  <published>2015-04-06T00:00:00+08:00</published>
+  
+  <author>
+    <name>Ackerley Tng</name>
+    <uri>http://ackerleytng.github.io</uri>
+    <email>ackerleytng@gmail.com</email>
+  </author>
+  <content type="html">&lt;h1&gt;Putting Linux on a mini2440 with a jffs2 filesystem&lt;/h1&gt;
+
+&lt;p&gt;The &lt;a href=&quot;/linux-mini2440/&quot;&gt;previous post&lt;/a&gt; showed how to put Linux on the mini2440.&lt;/p&gt;
+
+&lt;p&gt;If you log in at the login prompt by entering the username root, you would be taken to &lt;code&gt;/root&lt;/code&gt;. If you try writing to the filesystem,&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;# touch test
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;and you restart the device&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;# reboot
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;you will find that the file is not saved. To be able to write to the flash, we can place a jffs2 filesystem on the mini2440.&lt;/p&gt;
+
+&lt;h2&gt;Building the kernel and root file system&lt;/h2&gt;
+
+&lt;p&gt;Using the same version of buildroot from the &lt;a href=&quot;/linux-mini2440/&quot;&gt;previous post&lt;/a&gt;, I did &lt;code&gt;make menuconfig&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;Deselect &lt;code&gt;initial RAM filesystem linked into linux kernel&lt;/code&gt; and deselect &lt;code&gt;cpio the root filesystem (for use as an initial RAM filesystem)&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;I also selected &lt;code&gt;jffs2 root filesystem&lt;/code&gt; and for &lt;code&gt;Flash Type&lt;/code&gt;, I selected &lt;code&gt;NAND flash with 2kB Page and 128 kB erasesize&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;Then...&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;make
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h2&gt;Conceptually,&lt;/h2&gt;
+
+&lt;p&gt;You want to put U-Boot, a bootloader, into NAND flash, which will then load your linux kernel, which would in turn load your root filesystem.&lt;/p&gt;
+
+&lt;p&gt;You can use the U-Boot bootloader if it is already on the mini2440&amp;#39;s NAND flash.&lt;/p&gt;
+
+&lt;h2&gt;Transferring uImage into NAND flash&lt;/h2&gt;
+
+&lt;p&gt;Find the address of the kernel partition:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;MINI2440 # mtdparts
+
+device nand0 &amp;lt;mini2440-nand&amp;gt;, # parts = 4
+ #: name                        size            offset          mask_flags
+ 0: u-boot              0x00040000      0x00000000      0
+ 1: u-boot_env          0x00020000      0x00040000      0
+ 2: kernel              0x00500000      0x00060000      0
+ 3: rootfs              0x0faa0000      0x00560000      0
+
+active partition: nand0,0 - (u-boot) 0x00040000 @ 0x00000000
+
+defaults:
+mtdids  : nand0=mini2440-nand
+mtdparts: &amp;lt;NULL&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Erase the kernel partition:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;MINI2440# nand erase 60000 500000
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Download uImage from Linux PC over LAN into RAM, at 0x32000000 again. First place &lt;code&gt;uImage&lt;/code&gt; into &lt;code&gt;/tftpboot&lt;/code&gt; (Google how to set up tftp).&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;MINI2440# tftp 32000000 uImage
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Copy uImage from ram into NAND&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;MINI2440# nand write.e 32000000 60000 &amp;lt;size-of-uImage-in-hex&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Set the boot command to load kernel image from NAND flash.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;MINI2440# setenv bootcmd &amp;#39;nboot.e kernel;bootm&amp;#39;
+MINI2440# saveenv
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h2&gt;Transferring &lt;code&gt;rootfs.jffs2&lt;/code&gt; into NAND flash&lt;/h2&gt;
+
+&lt;p&gt;Copy &lt;code&gt;rootfs.jffs2&lt;/code&gt; from &lt;code&gt;buildroot-2015.02/output/images/&lt;/code&gt; into &lt;code&gt;/tftpboot/&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;Erase the rootfs partition:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;MINI2440# nand erase rootfs
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Download &lt;code&gt;rootfs.jffs2&lt;/code&gt; from Linux PC over LAN into RAM, at 0x32000000 again.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;MINI2440# tftp 32000000 rootfs.jffs2
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Copy uImage from ram into NAND&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;MINI2440# nand write.e 32000000 560000 &amp;lt;size-of-rootfs.jffs2-in-hex&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Set the boot command to load kernel image from NAND flash.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;MINI2440# setenv bootcmd &amp;#39;nboot.e kernel;bootm&amp;#39;
+MINI2440# saveenv
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Power cycle the mini2440.&lt;/p&gt;
+
+  &lt;p&gt;&lt;a href=&quot;http://ackerleytng.github.io/linux-jffs-mini2440/&quot;&gt;Putting Linux on mini2440 with jffs2 filesystem&lt;/a&gt; was originally published by Ackerley Tng at &lt;a href=&quot;http://ackerleytng.github.io&quot;&gt;Ackerley's Blog&lt;/a&gt; on April 06, 2015.&lt;/p&gt;</content>
+</entry>
+
+
+<entry>
+  <title type="html"><![CDATA[Putting Linux on mini2440]]></title>
+ <link rel="alternate" type="text/html" href="http://ackerleytng.github.io/linux-mini2440/" />
+  <id>http://ackerleytng.github.io/linux-mini2440</id>
   <updated>2015-04-05T00:00:00-00:00</updated>
   <published>2015-04-05T00:00:00+08:00</published>
   
@@ -326,7 +421,7 @@ Environment size: 1151/131068 bytes
 &lt;li&gt;http://e2e.ti.com/support/dsp/davinci&lt;em&gt;digital&lt;/em&gt;media_processors/f/100/p/210595/745675&lt;/li&gt;
 &lt;/ul&gt;
 
-  &lt;p&gt;&lt;a href=&quot;http://ackerleytng.github.io/uboot-mini2440/&quot;&gt;Putting U-boot on mini2440&lt;/a&gt; was originally published by Ackerley Tng at &lt;a href=&quot;http://ackerleytng.github.io&quot;&gt;Ackerley's Blog&lt;/a&gt; on April 05, 2015.&lt;/p&gt;</content>
+  &lt;p&gt;&lt;a href=&quot;http://ackerleytng.github.io/linux-mini2440/&quot;&gt;Putting Linux on mini2440&lt;/a&gt; was originally published by Ackerley Tng at &lt;a href=&quot;http://ackerleytng.github.io&quot;&gt;Ackerley's Blog&lt;/a&gt; on April 05, 2015.&lt;/p&gt;</content>
 </entry>
 
 
@@ -1405,44 +1500,6 @@ sudo avrdude -V -F -c avrisp2 -p m2560 -P usb -U flash:w:blink.hex
 &lt;p&gt;Update the firmware on the newly-revived Passport following instructions &lt;a href=&quot;http://www.wdc.com/wdproducts/wdsmartwareupdate/firmware.asp?id=wdfMyPassport&amp;amp;os=WIN&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
 
   &lt;p&gt;&lt;a href=&quot;http://ackerleytng.github.io/reviving-wd-passport/&quot;&gt;Reviving the WD Passport&lt;/a&gt; was originally published by Ackerley Tng at &lt;a href=&quot;http://ackerleytng.github.io&quot;&gt;Ackerley's Blog&lt;/a&gt; on July 08, 2014.&lt;/p&gt;</content>
-</entry>
-
-
-<entry>
-  <title type="html"><![CDATA[Mac Setup Notes]]></title>
- <link rel="alternate" type="text/html" href="http://ackerleytng.github.io/mac-setup-notes/" />
-  <id>http://ackerleytng.github.io/mac-setup-notes</id>
-  <updated>2014-07-02T00:00:00-00:00</updated>
-  <published>2014-07-02T00:00:00+08:00</published>
-  
-  <author>
-    <name>Ackerley Tng</name>
-    <uri>http://ackerleytng.github.io</uri>
-    <email>ackerleytng@gmail.com</email>
-  </author>
-  <content type="html">&lt;p&gt;Installed from source&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;None&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Installed from .pkg&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;MacPorts&lt;/li&gt;
-&lt;li&gt;Node.js&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Installed from .dmg&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Look into /Applications&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Others are installed using MacPorts
-(Check using port installed)&lt;/p&gt;
-
-  &lt;p&gt;&lt;a href=&quot;http://ackerleytng.github.io/mac-setup-notes/&quot;&gt;Mac Setup Notes&lt;/a&gt; was originally published by Ackerley Tng at &lt;a href=&quot;http://ackerleytng.github.io&quot;&gt;Ackerley's Blog&lt;/a&gt; on July 02, 2014.&lt;/p&gt;</content>
 </entry>
 
 </feed>

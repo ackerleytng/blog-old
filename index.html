@@ -122,7 +122,106 @@
 <article class="hentry">
   <header>
     <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2015-04-05T00:00:00+08:00"><a href="http://ackerleytng.github.io/uboot-mini2440/">April 05, 2015</a></time></span><span class="author vcard"><span class="fn"><a href="http://ackerleytng.github.io/about/" title="About Ackerley Tng">Ackerley Tng</a></span></span>&nbsp; &bull; &nbsp;<span class="entry-comments"><a href="http://ackerleytng.github.io/uboot-mini2440/#disqus_thread">Comment</a></span>
+      <span class="entry-date date published updated"><time datetime="2015-04-06T00:00:00+08:00"><a href="http://ackerleytng.github.io/linux-jffs-mini2440/">April 06, 2015</a></time></span><span class="author vcard"><span class="fn"><a href="http://ackerleytng.github.io/about/" title="About Ackerley Tng">Ackerley Tng</a></span></span>&nbsp; &bull; &nbsp;<span class="entry-comments"><a href="http://ackerleytng.github.io/linux-jffs-mini2440/#disqus_thread">Comment</a></span>
+      
+      <span class="entry-reading-time pull-right">
+        <i class="fa fa-clock-o"></i>
+        
+        Reading time ~2 minutes
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="http://ackerleytng.github.io/linux-jffs-mini2440/" rel="bookmark" title="Putting Linux on mini2440 with jffs2 filesystem" itemprop="url">Putting Linux on mini2440 with jffs2 filesystem</a></h1>
+    
+  </header>
+  <div class="entry-content">
+    <h1>Putting Linux on a mini2440 with a jffs2 filesystem</h1>
+
+<p>The <a href="/linux-mini2440/">previous post</a> showed how to put Linux on the mini2440.</p>
+
+<p>If you log in at the login prompt by entering the username root, you would be taken to <code>/root</code>. If you try writing to the filesystem,</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text"># touch test
+</code></pre></div>
+<p>and you restart the device</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text"># reboot
+</code></pre></div>
+<p>you will find that the file is not saved. To be able to write to the flash, we can place a jffs2 filesystem on the mini2440.</p>
+
+<h2>Building the kernel and root file system</h2>
+
+<p>Using the same version of buildroot from the <a href="/linux-mini2440/">previous post</a>, I did <code>make menuconfig</code>.</p>
+
+<p>Deselect <code>initial RAM filesystem linked into linux kernel</code> and deselect <code>cpio the root filesystem (for use as an initial RAM filesystem)</code></p>
+
+<p>I also selected <code>jffs2 root filesystem</code> and for <code>Flash Type</code>, I selected <code>NAND flash with 2kB Page and 128 kB erasesize</code></p>
+
+<p>Then...</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">make
+</code></pre></div>
+<h2>Conceptually,</h2>
+
+<p>You want to put U-Boot, a bootloader, into NAND flash, which will then load your linux kernel, which would in turn load your root filesystem.</p>
+
+<p>You can use the U-Boot bootloader if it is already on the mini2440&#39;s NAND flash.</p>
+
+<h2>Transferring uImage into NAND flash</h2>
+
+<p>Find the address of the kernel partition:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">MINI2440 # mtdparts
+
+device nand0 &lt;mini2440-nand&gt;, # parts = 4
+ #: name                        size            offset          mask_flags
+ 0: u-boot              0x00040000      0x00000000      0
+ 1: u-boot_env          0x00020000      0x00040000      0
+ 2: kernel              0x00500000      0x00060000      0
+ 3: rootfs              0x0faa0000      0x00560000      0
+
+active partition: nand0,0 - (u-boot) 0x00040000 @ 0x00000000
+
+defaults:
+mtdids  : nand0=mini2440-nand
+mtdparts: &lt;NULL&gt;
+</code></pre></div>
+<p>Erase the kernel partition:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">MINI2440# nand erase 60000 500000
+</code></pre></div>
+<p>Download uImage from Linux PC over LAN into RAM, at 0x32000000 again. First place <code>uImage</code> into <code>/tftpboot</code> (Google how to set up tftp).</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">MINI2440# tftp 32000000 uImage
+</code></pre></div>
+<p>Copy uImage from ram into NAND</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">MINI2440# nand write.e 32000000 60000 &lt;size-of-uImage-in-hex&gt;
+</code></pre></div>
+<p>Set the boot command to load kernel image from NAND flash.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">MINI2440# setenv bootcmd &#39;nboot.e kernel;bootm&#39;
+MINI2440# saveenv
+</code></pre></div>
+<h2>Transferring <code>rootfs.jffs2</code> into NAND flash</h2>
+
+<p>Copy <code>rootfs.jffs2</code> from <code>buildroot-2015.02/output/images/</code> into <code>/tftpboot/</code>.</p>
+
+<p>Erase the rootfs partition:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">MINI2440# nand erase rootfs
+</code></pre></div>
+<p>Download <code>rootfs.jffs2</code> from Linux PC over LAN into RAM, at 0x32000000 again.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">MINI2440# tftp 32000000 rootfs.jffs2
+</code></pre></div>
+<p>Copy uImage from ram into NAND</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">MINI2440# nand write.e 32000000 560000 &lt;size-of-rootfs.jffs2-in-hex&gt;
+</code></pre></div>
+<p>Set the boot command to load kernel image from NAND flash.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">MINI2440# setenv bootcmd &#39;nboot.e kernel;bootm&#39;
+MINI2440# saveenv
+</code></pre></div>
+<p>Power cycle the mini2440.</p>
+
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
+
+<article class="hentry">
+  <header>
+    <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2015-04-05T00:00:00+08:00"><a href="http://ackerleytng.github.io/linux-mini2440/">April 05, 2015</a></time></span><span class="author vcard"><span class="fn"><a href="http://ackerleytng.github.io/about/" title="About Ackerley Tng">Ackerley Tng</a></span></span>&nbsp; &bull; &nbsp;<span class="entry-comments"><a href="http://ackerleytng.github.io/linux-mini2440/#disqus_thread">Comment</a></span>
       
       <span class="entry-reading-time pull-right">
         <i class="fa fa-clock-o"></i>
@@ -132,7 +231,7 @@
       
     </div><!-- /.entry-meta -->
     
-      <h1 class="entry-title"><a href="http://ackerleytng.github.io/uboot-mini2440/" rel="bookmark" title="Putting U-boot on mini2440" itemprop="url">Putting U-boot on mini2440</a></h1>
+      <h1 class="entry-title"><a href="http://ackerleytng.github.io/linux-mini2440/" rel="bookmark" title="Putting Linux on mini2440" itemprop="url">Putting Linux on mini2440</a></h1>
     
   </header>
   <div class="entry-content">
@@ -511,105 +610,6 @@ Environment size: 1151/131068 bytes
 
 <p><img src="http://ackerleytng.github.io/post_images/pencil-case.jpg" alt="pencil-case"></p>
 
-  </div><!-- /.entry-content -->
-</article><!-- /.hentry -->
-
-<article class="hentry">
-  <header>
-    <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2014-10-03T00:00:00+08:00"><a href="http://ackerleytng.github.io/gitlab-hacking/">October 03, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://ackerleytng.github.io/about/" title="About Ackerley Tng">Ackerley Tng</a></span></span>&nbsp; &bull; &nbsp;<span class="entry-comments"><a href="http://ackerleytng.github.io/gitlab-hacking/#disqus_thread">Comment</a></span>
-      
-      <span class="entry-reading-time pull-right">
-        <i class="fa fa-clock-o"></i>
-        
-        Reading time ~1 minute
-      </span><!-- /.entry-reading-time -->
-      
-    </div><!-- /.entry-meta -->
-    
-      <h1 class="entry-title"><a href="http://ackerleytng.github.io/gitlab-hacking/" rel="bookmark" title="GitLab Hacking" itemprop="url">GitLab Hacking</a></h1>
-    
-  </header>
-  <div class="entry-content">
-    <h2>To disable minifying of the js file, comment this line out</h2>
-<div class="highlight"><pre><code class="language-text" data-lang="text">user@ubuntu:/opt/gitlab/embedded$ sudo vim ./service/gitlab-rails/config/environments/production.rb
-#config.assets.js_compressor = :uglifier
-</code></pre></div>
-<h2>gitlab-rake is a script that sets a default user and does bundle exec rake</h2>
-
-<p>Needs permission to write, so change permissions for public folder</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">sudo chmod a+w public
-cd public
-sudo chmod a+w assets
-</code></pre></div>
-<h2>To recompile fully</h2>
-<div class="highlight"><pre><code class="language-text" data-lang="text">sudo gitlab-rake assets:clobber --trace # this step is sort of optional if you don&#39;t want to completely clean it out
-sudo gitlab-rake assets:precompile --trace
-sudo gitlab-ctl restart
-</code></pre></div>
-<h2>Add all accepted mimetypes to this file</h2>
-<div class="highlight"><pre><code class="language-text" data-lang="text">/opt/gitlab/embedded$ sudo vim service/gitlab-rails/app/assets/javascripts/markdown_area.js.coffee
-acceptedFiles: &quot;image/*,audio/*,video/*,application/*,text/*&quot;
-</code></pre></div>
-<h2>Disable checking of extensions</h2>
-<div class="highlight"><pre><code class="language-text" data-lang="text">/opt/gitlab/embedded$ sudo vim service/gitlab-rails/app/services/projects/image_service.rb
-</code></pre></div>
-<p>Replace</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">if image &amp;&amp; correct_mime_type?(image)
-</code></pre></div>
-<p>with</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">if image
-</code></pre></div>
-<h2>Change the function formatLink</h2>
-<div class="highlight"><pre><code class="language-text" data-lang="text">/opt/gitlab/embedded$ sudo vim service/gitlab-rails/app/assets/javascripts/markdown_area.js.coffee
-
-String::endsWith = (s) -&gt; s is &#39;&#39; or @[-s.length..] is s
-
-formatLink = (str) -&gt;
-  image_extensions = [&#39;jpg&#39;, &#39;gif&#39;, &#39;jpeg&#39;, &#39;png&#39;]
-
-  is_image = false
-  for ext in image_extensions
-    is_image = is_image | str.url.toLowerCase().endsWith(ext)
-
-  if is_image
-    &quot;![&quot; + str.alt + &quot;](&quot; + str.url + &quot;)&quot;
-  else
-    &quot;[&quot; + str.alt + &quot;](&quot; + str.url + &quot;)&quot;
-</code></pre></div>
-<h2>Changing html in views (changing the text)</h2>
-
-<p>Go to /opt/gitlab/embedded/service/gitlab-rails/app/views/projects/wikis
-Modify the .haml files.
-Restart server to see effects</p>
-
-<p>Replace </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">.pull-right Attach images (JPG, PNG, GIF) by dragging &amp; dropping or #{link_to &quot;selecting them&quot;, &#39;#&#39;, class: &#39;markdown-selector&#39; }.
-</code></pre></div>
-<p>with</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">.pull-right Attach files by dragging &amp; dropping.
-</code></pre></div>
-<h2>Change maximum filesize for uploads</h2>
-<div class="highlight"><pre><code class="language-text" data-lang="text">/opt/gitlab/embedded$ sudo vim service/gitlab-rails/app/assets/javascripts/markdown_area.js.coffee
-</code></pre></div>
-<p>Change line 29. The unit of memory for that value is MiB.</p>
-
-<h2>Remove dropzone&#39;s check</h2>
-<div class="highlight"><pre><code class="language-text" data-lang="text">/opt/gitlab/embedded$ sudo vim service/gem/ruby/2.1.0/gems/dropzonejs-rails-0.4.14/vendor/assets/javascripts/dropzone.js
-
-} else if (!Dropzone.isValidFile(file, this.options.acceptedFiles)) {
-  return done(this.options.dictInvalidFileType);
-</code></pre></div>
-<h2>Clear out accepted_images</h2>
-
-<p>I think this makes the FileUploader class not check extensions</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">/opt/gitlab/embedded$ sudo vim service/gitlab-rails/app/services/projects/image_service.rb
-</code></pre></div>
-<p>Make accepted_images return nothing</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">def accepted_images
-  #%w(png jpg jpeg gif pdf zip tar.gz txt)
-end
-</code></pre></div>
   </div><!-- /.entry-content -->
 </article><!-- /.hentry -->
 

@@ -52,7 +52,11 @@
 
     
     <url>
-        <loc>http://ackerleytng.github.io/uboot-mini2440/</loc>
+        <loc>http://ackerleytng.github.io/linux-jffs-mini2440/</loc>
+    </url>
+    
+    <url>
+        <loc>http://ackerleytng.github.io/linux-mini2440/</loc>
     </url>
     
     <url>
