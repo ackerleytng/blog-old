@@ -4,7 +4,7 @@
 <generator uri="https://github.com/mojombo/jekyll">Jekyll</generator>
 <link rel="self" type="application/atom+xml" href="http://ackerleytng.github.io/feed.xml" />
 <link rel="alternate" type="text/html" href="http://ackerleytng.github.io" />
-<updated>2015-04-06T22:40:00+08:00</updated>
+<updated>2015-04-06T22:52:56+08:00</updated>
 <id>http://ackerleytng.github.io/</id>
 <author>
   <name>Ackerley Tng</name>
@@ -98,10 +98,43 @@ MINI2440# saveenv
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;Set the boot command to load kernel image from NAND flash.&lt;/p&gt;
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;MINI2440# setenv bootcmd &amp;#39;nboot.e kernel;bootm&amp;#39;
+MINI2440# setenv bootargs &amp;#39;root=/dev/mtdblock3 rootfstype=jffs2 console=ttySAC0,115200&amp;#39;
 MINI2440# saveenv
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;Power cycle the mini2440.&lt;/p&gt;
 
+&lt;h2&gt;Full U-Boot environment for reference&lt;/h2&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;MINI2440 # printenv
+bootargs=root=/dev/mtdblock3 rootfstype=jffs2 console=ttySAC0,115200
+bootdelay=3
+baudrate=115200
+ethaddr=08:08:11:18:12:27
+usbtty=cdc_acm
+mini2440=mini2440=0tb
+bootargs_base=console=ttySAC0,115200 noinitrd
+bootargs_init=init=/sbin/init
+root_nand=root=/dev/mtdblock3 rootfstype=jffs2
+root_mmc=root=/dev/mmcblk0p2 rootdelay=2
+root_nfs=/mnt/nfs
+set_root_nfs=setenv root_nfs root=/dev/nfs rw nfsroot=${serverip}:${root_nfs}
+ifconfig_static=run setenv ifconfig ip=${ipaddr}:${serverip}::${netmask}:mini2440:eth0
+ifconfig_dhcp=run setenv ifconfig ip=dhcp
+ifconfig=ip=dhcp
+set_bootargs_mmc=setenv bootargs ${bootargs_base} ${bootargs_init} ${mini2440} ${root_mmc}
+set_bootargs_nand=setenv bootargs ${bootargs_base} ${bootargs_init} ${mini2440} ${root_nand}
+set_bootargs_nfs=run set_root_nfs; setenv bootargs ${bootargs_base} ${bootargs_init} ${mini2440} ${root_nfs} ${ifconfig}
+mtdids=nand0=mini2440-nand
+mtdparts=mtdparts=mini2440-nand:0x00040000(u-boot),0x00020000(u-boot_env),0x00500000(kernel),0x0faa0000(rootfs)
+bootcmd=nboot.e kernel;bootm
+filesize=51A630
+fileaddr=32000000
+netmask=255.255.255.0
+ipaddr=192.168.1.60
+serverip=192.168.1.50
+partition=nand0,0
+mtddevnum=0
+mtddevname=u-boot
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
   &lt;p&gt;&lt;a href=&quot;http://ackerleytng.github.io/linux-jffs-mini2440/&quot;&gt;Putting Linux on mini2440 with jffs2 filesystem&lt;/a&gt; was originally published by Ackerley Tng at &lt;a href=&quot;http://ackerleytng.github.io&quot;&gt;Ackerley's Blog&lt;/a&gt; on April 06, 2015.&lt;/p&gt;</content>
 </entry>
 
