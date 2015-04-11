@@ -5,25 +5,25 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
 <head>
 <meta charset="utf-8">
-<title>Vegetarian Pork! &#8211; Ackerley's Blog</title>
-<meta name="description" content="Vegetarian Pork">
-<meta name="keywords" content="cooking, vegetarian, eryngii, mushrooms, pork">
+<title>Putting Linux on mini2440 with nfs root filesystem &#8211; Ackerley's Blog</title>
+<meta name="description" content="Putting Linux on mini2440 with nfs root filesystem">
+<meta name="keywords" content="mini2440 nfs rootfs linux">
 
 
 
 <!-- Open Graph -->
 <meta property="og:locale" content="en_US">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Vegetarian Pork!">
-<meta property="og:description" content="Vegetarian Pork">
-<meta property="og:url" content="http://ackerleytng.github.io/vegetarian-pork/">
+<meta property="og:title" content="Putting Linux on mini2440 with nfs root filesystem">
+<meta property="og:description" content="Putting Linux on mini2440 with nfs root filesystem">
+<meta property="og:url" content="http://ackerleytng.github.io/linux-nfs-mini2440/">
 <meta property="og:site_name" content="Ackerley's Blog">
 
 
 
 
 
-<link rel="canonical" href="http://ackerleytng.github.io/vegetarian-pork/">
+<link rel="canonical" href="http://ackerleytng.github.io/linux-nfs-mini2440/">
 <link href="http://ackerleytng.github.io/feed.xml" type="application/atom+xml" rel="alternate" title="Ackerley's Blog Feed">
 
 
@@ -106,7 +106,7 @@
 <div class="entry-header">
   <div class="image-credit">Image source: <a href="http://www.dargadgetz.com/ios-7-abstract-wallpaper-pack-for-iphone-5-and-ipod-touch-retina/">dargadgetz</a></div><!-- /.image-credit -->
   <div class="entry-image">
-    <img src="http://ackerleytng.github.io/images/abstract-3.jpg" alt="Vegetarian Pork!">
+    <img src="http://ackerleytng.github.io/images/abstract-3.jpg" alt="Putting Linux on mini2440 with nfs root filesystem">
   </div><!-- /.entry-image -->
 </div><!-- /.entry-header -->
 
@@ -116,33 +116,104 @@
     <header class="header-title">
       <div class="header-title-wrap">
         
-          <h1 class="entry-title"><a href="http://ackerleytng.github.io/vegetarian-pork/" rel="bookmark" title="Vegetarian Pork!">Vegetarian Pork!</a></h1>
+          <h1 class="entry-title"><a href="http://ackerleytng.github.io/linux-nfs-mini2440/" rel="bookmark" title="Putting Linux on mini2440 with nfs root filesystem">Putting Linux on mini2440 with nfs root filesystem</a></h1>
         
-        <h2>September 28, 2014</h2>
+        <h2>April 11, 2015</h2>
         
         <p class="entry-reading-time">
           <i class="fa fa-clock-o"></i>
           
-          Reading time ~1 minute
+          Reading time ~2 minutes
         </p><!-- /.entry-reading-time -->
         
       </div><!-- /.header-title-wrap -->
     </header>
     <div class="entry-content">
-      <p>The oxymoron. Well but this is actually eryngii mushrooms, sliced and coated with egg, stir fried.</p>
+      <p>The <a href="/linux-mini2440/">previous post</a> showed how to put Linux on the mini2440.</p>
 
-<p><img src="http://ackerleytng.github.io/post_images/vegetarian-pork.jpg" alt="vegetarian-pork"></p>
+<p>To facilitate development on the mini2440, it is advantageous to have a network file system as a rootfs:</p>
+
+<ul>
+<li>Easily compile on the host and run it on the mini2440 without having to do troublesome transfers</li>
+<li>Won&#39;t be wasting write cycles on the flash</li>
+</ul>
+
+<h1>Setting up the nfs server</h1>
+<div class="highlight"><pre><code class="language-text" data-lang="text">sudo apt-get install nfs-kernel-server
+</code></pre></div>
+<p>You just need to add a single line to the configuration in <code>/etc/exports</code></p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">/export/fs 192.168.1.0/24(rw,fsid=0,insecure,no_subtree_check,async,no_root_squash)
+</code></pre></div>
+<p>Untar <code>output/images/rootfs.tar</code> into <code>/export/fs</code>.</p>
+
+<p>Your <code>/export/fs</code> should look like this:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">$ ls -al /export/fs/
+total 72
+drwxrwxr-x 18 root root 4096 Apr  6 23:21 .
+drwxr-xr-x  3 root root 4096 Apr  6 23:21 ..
+drwxrwxr-x  2 root root 4096 Apr  5 21:59 bin
+drwxr-xr-x  3 root root 4096 Apr 11 11:14 dev
+drwxr-xr-x  5 root root 4096 Apr 11 11:15 etc
+drwxrwxr-x  3 root root 4096 Mar  2 05:26 home
+drwxrwxr-x  3 root root 4096 Apr  5 21:59 lib
+lrwxrwxrwx  1 root root    3 Apr  5 21:11 lib32 -&gt; lib
+lrwxrwxrwx  1 root root   11 Apr  5 21:45 linuxrc -&gt; bin/busybox
+drwxrwxr-x  2 root root 4096 Mar  2 05:26 media
+drwxrwxr-x  2 root root 4096 Mar  2 05:26 mnt
+drwxrwxr-x  2 root root 4096 Mar  2 05:26 opt
+drwxrwxr-x  2 root root 4096 Mar  2 05:26 proc
+drwx------  2 root root 4096 Apr 11 11:16 root
+drwxrwxr-x  2 root root 4096 Apr 11 11:14 run
+drwxrwxr-x  2 root root 4096 Apr  5 21:59 sbin
+drwxrwxr-x  2 root root 4096 Mar  2 05:26 sys
+drwxrwxrwt  3 root root 4096 Apr  5 21:59 tmp
+drwxrwxr-x  6 root root 4096 Apr  5 21:45 usr
+drwxrwxr-x  4 root root 4096 Apr  5 22:01 var
+</code></pre></div>
+<p>Note that the symlinks should be there.</p>
+
+<p>You might need to turn off the firewall to enable access</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">sudo disable ufw
+</code></pre></div>
+<p>If you wish to test this setup, you could use another linux/mac computer:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">$ showmount -e 192.168.1.50
+Exports list on 192.168.1.50:
+/export/fs                          192.168.1.0/24
+/export                             192.168.1.0/24
+</code></pre></div>
+<p>and then</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">$ mkdir tmp
+$ mount -t nfs 192.168.1.50:/export/fs/ tmp/
+$ ls tmp/
+bin     dev     etc     home    lib     lib32   linuxrc media   mnt     opt     proc    root    run     sbin    sys     tmp     usr     var
+</code></pre></div>
+<p>The following is <em>wrong</em>; you won&#39;t be able to boot.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">$ ls tmp/
+fs
+</code></pre></div>
+<p>Now go to the mini2440. Interrupt boot if necessary by pressing enter at this prompt</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">Hit any key to stop autoboot:  0
+MINI2440 #
+</code></pre></div>
+<p>Then</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">MINI2440 # setenv bootargs console=ttySAC0,115200 root=/dev/nfs nfsroot=192.168.1.50:/export/fs rw ip=192.168.1.60 noinitrd
+MINI2440 # saveenv
+MINI2440 # boot
+</code></pre></div>
+<p><code>ip</code> is the address you want to assign to your mini2440 and <code>nfsroot</code> should point the mini2440 to your server.</p>
+
+<p><code>/dev/nfs</code> need not exist in <code>/export/fs/dev</code> for mounting to be successful.</p>
 
       <footer class="entry-meta">
-        <span class="entry-tags"><a href="http://ackerleytng.github.io/tags/#cooking" title="Pages tagged cooking" class="tag">cooking</a><a href="http://ackerleytng.github.io/tags/#vegetarian" title="Pages tagged vegetarian" class="tag">vegetarian</a><a href="http://ackerleytng.github.io/tags/#eryngii" title="Pages tagged eryngii" class="tag">eryngii</a><a href="http://ackerleytng.github.io/tags/#mushrooms" title="Pages tagged mushrooms" class="tag">mushrooms</a><a href="http://ackerleytng.github.io/tags/#pork" title="Pages tagged pork" class="tag">pork</a></span>
-        <span><a href="http://ackerleytng.github.io/vegetarian-pork/" rel="bookmark" title="Vegetarian Pork!">Vegetarian Pork!</a> was published on <span class="entry-date date published updated"><time datetime="2014-09-28T00:00:00+08:00">September 28, 2014</time></span></span>
-        (revised: <span class="entry-date date modified"><time datetime="2014-11-19">11/19/2014</time></span>)
+        <span class="entry-tags"><a href="http://ackerleytng.github.io/tags/#mini2440 nfs rootfs linux" title="Pages tagged mini2440 nfs rootfs linux" class="tag">mini2440 nfs rootfs linux</a></span>
+        <span><a href="http://ackerleytng.github.io/linux-nfs-mini2440/" rel="bookmark" title="Putting Linux on mini2440 with nfs root filesystem">Putting Linux on mini2440 with nfs root filesystem</a> was published on <span class="entry-date date published updated"><time datetime="2015-04-11T00:00:00+08:00">April 11, 2015</time></span></span>
+        (revised: <span class="entry-date date modified"><time datetime="2015-04-11">04/11/2015</time></span>)
         <span class="author vcard"><span class="fn"><a href="http://ackerleytng.github.io/about/" title="About Ackerley Tng">Ackerley Tng</a></span></span>
         <div class="social-share">
           <ul class="socialcount socialcount-small inline-list">
-            <li class="facebook"><a href="https://www.facebook.com/sharer/sharer.php?u=http://ackerleytng.github.io/vegetarian-pork/" title="Share on Facebook"><span class="count"><i class="fa fa-facebook-square"></i> Like</span></a></li>
-            <li class="twitter"><a href="https://twitter.com/intent/tweet?text=http://ackerleytng.github.io/vegetarian-pork/" title="Share on Twitter"><span class="count"><i class="fa fa-twitter-square"></i> Tweet</span></a></li>
-            <li class="googleplus"><a href="https://plus.google.com/share?url=http://ackerleytng.github.io/vegetarian-pork/" title="Share on Google Plus"><span class="count"><i class="fa fa-google-plus-square"></i> +1</span></a></li>
+            <li class="facebook"><a href="https://www.facebook.com/sharer/sharer.php?u=http://ackerleytng.github.io/linux-nfs-mini2440/" title="Share on Facebook"><span class="count"><i class="fa fa-facebook-square"></i> Like</span></a></li>
+            <li class="twitter"><a href="https://twitter.com/intent/tweet?text=http://ackerleytng.github.io/linux-nfs-mini2440/" title="Share on Twitter"><span class="count"><i class="fa fa-twitter-square"></i> Tweet</span></a></li>
+            <li class="googleplus"><a href="https://plus.google.com/share?url=http://ackerleytng.github.io/linux-nfs-mini2440/" title="Share on Google Plus"><span class="count"><i class="fa fa-google-plus-square"></i> +1</span></a></li>
           </ul>
         </div><!-- /.social-share -->
       </footer>
@@ -152,23 +223,23 @@
     <div class="read-more">
       
         <div class="read-more-header">
-          <a href="http://ackerleytng.github.io/buddhist-script-pali-sanskrit/" class="read-more-btn">Read More</a>
+          <a href="http://ackerleytng.github.io/linux-jffs-mini2440/" class="read-more-btn">Read More</a>
         </div><!-- /.read-more-header -->
         <div class="read-more-content">
-          <h3><a href="http://ackerleytng.github.io/linux-nfs-mini2440/" title="Putting Linux on mini2440 with nfs root filesystem">Putting Linux on mini2440 with nfs root filesystem</a></h3>
-          <p>Putting Linux on mini2440 with nfs root filesystem <a href="http://ackerleytng.github.io/linux-nfs-mini2440/">Continue reading</a></p>
+          <h3><a href="http://ackerleytng.github.io/linux-jffs-mini2440/" title="Putting Linux on mini2440 with jffs2 filesystem">Putting Linux on mini2440 with jffs2 filesystem</a></h3>
+          <p>Putting Linux on mini2440 with a jffs2 filesystem <a href="http://ackerleytng.github.io/linux-jffs-mini2440/">Continue reading</a></p>
         </div><!-- /.read-more-content -->
       
       <div class="read-more-list">
         
           <div class="list-item">
-            <h4><a href="http://ackerleytng.github.io/linux-jffs-mini2440/" title="Putting Linux on mini2440 with jffs2 filesystem">Putting Linux on mini2440 with jffs2 filesystem</a></h4>
-            <span>Published on April 06, 2015</span>
+            <h4><a href="http://ackerleytng.github.io/linux-mini2440/" title="Putting Linux on mini2440">Putting Linux on mini2440</a></h4>
+            <span>Published on April 05, 2015</span>
           </div><!-- /.list-item -->
         
           <div class="list-item">
-            <h4><a href="http://ackerleytng.github.io/linux-mini2440/" title="Putting Linux on mini2440">Putting Linux on mini2440</a></h4>
-            <span>Published on April 05, 2015</span>
+            <h4><a href="http://ackerleytng.github.io/fried-okra/" title="Fried Okra!">Fried Okra!</a></h4>
+            <span>Published on November 19, 2014</span>
           </div><!-- /.list-item -->
         
       </div><!-- /.read-more-list -->

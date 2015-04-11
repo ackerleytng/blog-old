@@ -4,13 +4,104 @@
 <generator uri="https://github.com/mojombo/jekyll">Jekyll</generator>
 <link rel="self" type="application/atom+xml" href="http://ackerleytng.github.io/feed.xml" />
 <link rel="alternate" type="text/html" href="http://ackerleytng.github.io" />
-<updated>2015-04-06T22:52:56+08:00</updated>
+<updated>2015-04-11T11:38:55+08:00</updated>
 <id>http://ackerleytng.github.io/</id>
 <author>
   <name>Ackerley Tng</name>
   <uri>http://ackerleytng.github.io/</uri>
   <email>ackerleytng@gmail.com</email>
 </author>
+
+
+<entry>
+  <title type="html"><![CDATA[Putting Linux on mini2440 with nfs root filesystem]]></title>
+ <link rel="alternate" type="text/html" href="http://ackerleytng.github.io/linux-nfs-mini2440/" />
+  <id>http://ackerleytng.github.io/linux-nfs-mini2440</id>
+  <updated>2015-04-11T00:00:00-00:00</updated>
+  <published>2015-04-11T00:00:00+08:00</published>
+  
+  <author>
+    <name>Ackerley Tng</name>
+    <uri>http://ackerleytng.github.io</uri>
+    <email>ackerleytng@gmail.com</email>
+  </author>
+  <content type="html">&lt;p&gt;The &lt;a href=&quot;/linux-mini2440/&quot;&gt;previous post&lt;/a&gt; showed how to put Linux on the mini2440.&lt;/p&gt;
+
+&lt;p&gt;To facilitate development on the mini2440, it is advantageous to have a network file system as a rootfs:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Easily compile on the host and run it on the mini2440 without having to do troublesome transfers&lt;/li&gt;
+&lt;li&gt;Won&amp;#39;t be wasting write cycles on the flash&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1&gt;Setting up the nfs server&lt;/h1&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;sudo apt-get install nfs-kernel-server
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;You just need to add a single line to the configuration in &lt;code&gt;/etc/exports&lt;/code&gt;&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;/export/fs 192.168.1.0/24(rw,fsid=0,insecure,no_subtree_check,async,no_root_squash)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Untar &lt;code&gt;output/images/rootfs.tar&lt;/code&gt; into &lt;code&gt;/export/fs&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;Your &lt;code&gt;/export/fs&lt;/code&gt; should look like this:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;$ ls -al /export/fs/
+total 72
+drwxrwxr-x 18 root root 4096 Apr  6 23:21 .
+drwxr-xr-x  3 root root 4096 Apr  6 23:21 ..
+drwxrwxr-x  2 root root 4096 Apr  5 21:59 bin
+drwxr-xr-x  3 root root 4096 Apr 11 11:14 dev
+drwxr-xr-x  5 root root 4096 Apr 11 11:15 etc
+drwxrwxr-x  3 root root 4096 Mar  2 05:26 home
+drwxrwxr-x  3 root root 4096 Apr  5 21:59 lib
+lrwxrwxrwx  1 root root    3 Apr  5 21:11 lib32 -&amp;gt; lib
+lrwxrwxrwx  1 root root   11 Apr  5 21:45 linuxrc -&amp;gt; bin/busybox
+drwxrwxr-x  2 root root 4096 Mar  2 05:26 media
+drwxrwxr-x  2 root root 4096 Mar  2 05:26 mnt
+drwxrwxr-x  2 root root 4096 Mar  2 05:26 opt
+drwxrwxr-x  2 root root 4096 Mar  2 05:26 proc
+drwx------  2 root root 4096 Apr 11 11:16 root
+drwxrwxr-x  2 root root 4096 Apr 11 11:14 run
+drwxrwxr-x  2 root root 4096 Apr  5 21:59 sbin
+drwxrwxr-x  2 root root 4096 Mar  2 05:26 sys
+drwxrwxrwt  3 root root 4096 Apr  5 21:59 tmp
+drwxrwxr-x  6 root root 4096 Apr  5 21:45 usr
+drwxrwxr-x  4 root root 4096 Apr  5 22:01 var
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Note that the symlinks should be there.&lt;/p&gt;
+
+&lt;p&gt;You might need to turn off the firewall to enable access&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;sudo disable ufw
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;If you wish to test this setup, you could use another linux/mac computer:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;$ showmount -e 192.168.1.50
+Exports list on 192.168.1.50:
+/export/fs                          192.168.1.0/24
+/export                             192.168.1.0/24
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;and then&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;$ mkdir tmp
+$ mount -t nfs 192.168.1.50:/export/fs/ tmp/
+$ ls tmp/
+bin     dev     etc     home    lib     lib32   linuxrc media   mnt     opt     proc    root    run     sbin    sys     tmp     usr     var
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;The following is &lt;em&gt;wrong&lt;/em&gt;; you won&amp;#39;t be able to boot.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;$ ls tmp/
+fs
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Now go to the mini2440. Interrupt boot if necessary by pressing enter at this prompt&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;Hit any key to stop autoboot:  0
+MINI2440 #
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Then&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;MINI2440 # setenv bootargs console=ttySAC0,115200 root=/dev/nfs nfsroot=192.168.1.50:/export/fs rw ip=192.168.1.60 noinitrd
+MINI2440 # saveenv
+MINI2440 # boot
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;&lt;code&gt;ip&lt;/code&gt; is the address you want to assign to your mini2440 and &lt;code&gt;nfsroot&lt;/code&gt; should point the mini2440 to your server.&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;/dev/nfs&lt;/code&gt; need not exist in &lt;code&gt;/export/fs/dev&lt;/code&gt; for mounting to be successful.&lt;/p&gt;
+
+  &lt;p&gt;&lt;a href=&quot;http://ackerleytng.github.io/linux-nfs-mini2440/&quot;&gt;Putting Linux on mini2440 with nfs root filesystem&lt;/a&gt; was originally published by Ackerley Tng at &lt;a href=&quot;http://ackerleytng.github.io&quot;&gt;Ackerley's Blog&lt;/a&gt; on April 11, 2015.&lt;/p&gt;</content>
+</entry>
 
 
 <entry>
@@ -1475,60 +1566,6 @@ sudo avrdude -V -F -c avrisp2 -p m2560 -P usb -U flash:w:blink.hex
 &lt;p&gt;Then, I had to restart my set-top box (like completely power off and start it again) and then it worked.&lt;/p&gt;
 
   &lt;p&gt;&lt;a href=&quot;http://ackerleytng.github.io/rt-ac66r-mio-tv/&quot;&gt;Using Asus RT-AC66R with mio TV&lt;/a&gt; was originally published by Ackerley Tng at &lt;a href=&quot;http://ackerleytng.github.io&quot;&gt;Ackerley's Blog&lt;/a&gt; on July 12, 2014.&lt;/p&gt;</content>
-</entry>
-
-
-<entry>
-  <title type="html"><![CDATA[Reviving the WD Passport]]></title>
- <link rel="alternate" type="text/html" href="http://ackerleytng.github.io/reviving-wd-passport/" />
-  <id>http://ackerleytng.github.io/reviving-wd-passport</id>
-  <updated>2014-07-08T00:00:00-00:00</updated>
-  <published>2014-07-08T00:00:00+08:00</published>
-  
-  <author>
-    <name>Ackerley Tng</name>
-    <uri>http://ackerleytng.github.io</uri>
-    <email>ackerleytng@gmail.com</email>
-  </author>
-  <content type="html">&lt;p&gt;So. I&amp;#39;m not sure if this is just luck, but I managed to revive a connection to my WD Passport (Essential SE). There are so many forum threads on the Internet that discuss this topic, but most are just cliffhangers that don&amp;#39;t provide real solutions.&lt;/p&gt;
-
-&lt;p&gt;It was neither being recognized on a Mac nor PC, even after:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Trying different cables&lt;/li&gt;
-&lt;li&gt;Using the USB ports at the back of the computer instead of those in the front&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Here are some other suggestions that you might want to try if you have the resources or patience. I personally think that this is not an issue with power supply to the WD Passport, but you can still try:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Using a Y-cable, which is something like &lt;a href=&quot;http://en.wikipedia.org/wiki/File:Y-shaped_USB_3.0_cable.jpg&quot;&gt;this&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;Returning it to Western Digital for a new unit&lt;/li&gt;
-&lt;li&gt;Disconnecting all unnecessary USB devices so that all the power goes to the WD Passport&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3&gt;Revival Procedure&lt;/h3&gt;
-
-&lt;p&gt;I used a desktop PC running 64-bit Windows 7, eventually, to connect to the WD Passport. The WD Passport was never used with this desktop before, hence we know that the drivers for the WD Passport was never installed from the web.&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;Connect the WD Passport to the USB ports at the &lt;em&gt;back&lt;/em&gt; of a &lt;em&gt;desktop&lt;/em&gt; PC. Windows will probably attempt to install the WD Passport, but will not find the right drivers, because it is unable to identify the device.&lt;/li&gt;
-&lt;li&gt;Go to Device Manager. You should see a USB device that has a yellow triangle next to it, indicating that the drivers for the WD Passport were not installed properly.&lt;/li&gt;
-&lt;li&gt;Download and install the appropriate WD Passport drivers from &lt;a href=&quot;http://wdc.custhelp.com/app/answers/detail/a_id/1708/related/1/session/L2F2LzEvdGltZS8xNDA0ODUwMTc4L3NpZC8zd0ExaE9ZbA%3D%3D&quot;&gt;here&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;Go back to Device Manager. Right-click on the Unknown Device, then select &amp;quot;Update Driver Software&amp;quot;.&lt;/li&gt;
-&lt;li&gt;Choose to browse your computer for driver software.&lt;/li&gt;
-&lt;li&gt;Pick from a list of device drivers on your computer.&lt;/li&gt;
-&lt;li&gt;From the list, choose Western Digital, then select WD SES Device. Complete that installation procedure and the WD Passport should now be recognized as a &amp;quot;WD SES Device&amp;quot;. The drive, however, is probably still not working.&lt;/li&gt;
-&lt;li&gt;Unplug the WD Passport. (I unplugged the USB cable on the side of the WD Passport (as opposed to the side plugged into the computer)&lt;/li&gt;
-&lt;li&gt;Plug it back in, and it should auto-detect and install, and work this time.&lt;/li&gt;
-&lt;li&gt;You should probably grab everything you can from the drive and not use it again.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h3&gt;Update the Firmware&lt;/h3&gt;
-
-&lt;p&gt;Update the firmware on the newly-revived Passport following instructions &lt;a href=&quot;http://www.wdc.com/wdproducts/wdsmartwareupdate/firmware.asp?id=wdfMyPassport&amp;amp;os=WIN&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
-
-  &lt;p&gt;&lt;a href=&quot;http://ackerleytng.github.io/reviving-wd-passport/&quot;&gt;Reviving the WD Passport&lt;/a&gt; was originally published by Ackerley Tng at &lt;a href=&quot;http://ackerleytng.github.io&quot;&gt;Ackerley's Blog&lt;/a&gt; on July 08, 2014.&lt;/p&gt;</content>
 </entry>
 
 </feed>

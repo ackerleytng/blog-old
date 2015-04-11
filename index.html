@@ -122,6 +122,101 @@
 <article class="hentry">
   <header>
     <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2015-04-11T00:00:00+08:00"><a href="http://ackerleytng.github.io/linux-nfs-mini2440/">April 11, 2015</a></time></span><span class="author vcard"><span class="fn"><a href="http://ackerleytng.github.io/about/" title="About Ackerley Tng">Ackerley Tng</a></span></span>&nbsp; &bull; &nbsp;<span class="entry-comments"><a href="http://ackerleytng.github.io/linux-nfs-mini2440/#disqus_thread">Comment</a></span>
+      
+      <span class="entry-reading-time pull-right">
+        <i class="fa fa-clock-o"></i>
+        
+        Reading time ~2 minutes
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="http://ackerleytng.github.io/linux-nfs-mini2440/" rel="bookmark" title="Putting Linux on mini2440 with nfs root filesystem" itemprop="url">Putting Linux on mini2440 with nfs root filesystem</a></h1>
+    
+  </header>
+  <div class="entry-content">
+    <p>The <a href="/linux-mini2440/">previous post</a> showed how to put Linux on the mini2440.</p>
+
+<p>To facilitate development on the mini2440, it is advantageous to have a network file system as a rootfs:</p>
+
+<ul>
+<li>Easily compile on the host and run it on the mini2440 without having to do troublesome transfers</li>
+<li>Won&#39;t be wasting write cycles on the flash</li>
+</ul>
+
+<h1>Setting up the nfs server</h1>
+<div class="highlight"><pre><code class="language-text" data-lang="text">sudo apt-get install nfs-kernel-server
+</code></pre></div>
+<p>You just need to add a single line to the configuration in <code>/etc/exports</code></p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">/export/fs 192.168.1.0/24(rw,fsid=0,insecure,no_subtree_check,async,no_root_squash)
+</code></pre></div>
+<p>Untar <code>output/images/rootfs.tar</code> into <code>/export/fs</code>.</p>
+
+<p>Your <code>/export/fs</code> should look like this:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">$ ls -al /export/fs/
+total 72
+drwxrwxr-x 18 root root 4096 Apr  6 23:21 .
+drwxr-xr-x  3 root root 4096 Apr  6 23:21 ..
+drwxrwxr-x  2 root root 4096 Apr  5 21:59 bin
+drwxr-xr-x  3 root root 4096 Apr 11 11:14 dev
+drwxr-xr-x  5 root root 4096 Apr 11 11:15 etc
+drwxrwxr-x  3 root root 4096 Mar  2 05:26 home
+drwxrwxr-x  3 root root 4096 Apr  5 21:59 lib
+lrwxrwxrwx  1 root root    3 Apr  5 21:11 lib32 -&gt; lib
+lrwxrwxrwx  1 root root   11 Apr  5 21:45 linuxrc -&gt; bin/busybox
+drwxrwxr-x  2 root root 4096 Mar  2 05:26 media
+drwxrwxr-x  2 root root 4096 Mar  2 05:26 mnt
+drwxrwxr-x  2 root root 4096 Mar  2 05:26 opt
+drwxrwxr-x  2 root root 4096 Mar  2 05:26 proc
+drwx------  2 root root 4096 Apr 11 11:16 root
+drwxrwxr-x  2 root root 4096 Apr 11 11:14 run
+drwxrwxr-x  2 root root 4096 Apr  5 21:59 sbin
+drwxrwxr-x  2 root root 4096 Mar  2 05:26 sys
+drwxrwxrwt  3 root root 4096 Apr  5 21:59 tmp
+drwxrwxr-x  6 root root 4096 Apr  5 21:45 usr
+drwxrwxr-x  4 root root 4096 Apr  5 22:01 var
+</code></pre></div>
+<p>Note that the symlinks should be there.</p>
+
+<p>You might need to turn off the firewall to enable access</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">sudo disable ufw
+</code></pre></div>
+<p>If you wish to test this setup, you could use another linux/mac computer:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">$ showmount -e 192.168.1.50
+Exports list on 192.168.1.50:
+/export/fs                          192.168.1.0/24
+/export                             192.168.1.0/24
+</code></pre></div>
+<p>and then</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">$ mkdir tmp
+$ mount -t nfs 192.168.1.50:/export/fs/ tmp/
+$ ls tmp/
+bin     dev     etc     home    lib     lib32   linuxrc media   mnt     opt     proc    root    run     sbin    sys     tmp     usr     var
+</code></pre></div>
+<p>The following is <em>wrong</em>; you won&#39;t be able to boot.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">$ ls tmp/
+fs
+</code></pre></div>
+<p>Now go to the mini2440. Interrupt boot if necessary by pressing enter at this prompt</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">Hit any key to stop autoboot:  0
+MINI2440 #
+</code></pre></div>
+<p>Then</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">MINI2440 # setenv bootargs console=ttySAC0,115200 root=/dev/nfs nfsroot=192.168.1.50:/export/fs rw ip=192.168.1.60 noinitrd
+MINI2440 # saveenv
+MINI2440 # boot
+</code></pre></div>
+<p><code>ip</code> is the address you want to assign to your mini2440 and <code>nfsroot</code> should point the mini2440 to your server.</p>
+
+<p><code>/dev/nfs</code> need not exist in <code>/export/fs/dev</code> for mounting to be successful.</p>
+
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
+
+<article class="hentry">
+  <header>
+    <div class="entry-meta">
       <span class="entry-date date published updated"><time datetime="2015-04-06T00:00:00+08:00"><a href="http://ackerleytng.github.io/linux-jffs-mini2440/">April 06, 2015</a></time></span><span class="author vcard"><span class="fn"><a href="http://ackerleytng.github.io/about/" title="About Ackerley Tng">Ackerley Tng</a></span></span>&nbsp; &bull; &nbsp;<span class="entry-comments"><a href="http://ackerleytng.github.io/linux-jffs-mini2440/#disqus_thread">Comment</a></span>
       
       <span class="entry-reading-time pull-right">
@@ -614,30 +709,6 @@ Environment size: 1151/131068 bytes
   </header>
   <div class="entry-content">
     <p><img src="http://ackerleytng.github.io/post_images/pan-fried-chicken-potatoes.jpg" alt="fried-okra-0"></p>
-
-  </div><!-- /.entry-content -->
-</article><!-- /.hentry -->
-
-<article class="hentry">
-  <header>
-    <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2014-10-12T00:00:00+08:00"><a href="http://ackerleytng.github.io/sewing-pencil-case/">October 12, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://ackerleytng.github.io/about/" title="About Ackerley Tng">Ackerley Tng</a></span></span>&nbsp; &bull; &nbsp;<span class="entry-comments"><a href="http://ackerleytng.github.io/sewing-pencil-case/#disqus_thread">Comment</a></span>
-      
-      <span class="entry-reading-time pull-right">
-        <i class="fa fa-clock-o"></i>
-        
-        Reading time ~1 minute
-      </span><!-- /.entry-reading-time -->
-      
-    </div><!-- /.entry-meta -->
-    
-      <h1 class="entry-title"><a href="http://ackerleytng.github.io/sewing-pencil-case/" rel="bookmark" title="Making My Own Pencilcase" itemprop="url">Making My Own Pencilcase</a></h1>
-    
-  </header>
-  <div class="entry-content">
-    <p>This is the first step towards sewing my own bag!</p>
-
-<p><img src="http://ackerleytng.github.io/post_images/pencil-case.jpg" alt="pencil-case"></p>
 
   </div><!-- /.entry-content -->
 </article><!-- /.hentry -->
