@@ -191,6 +191,9 @@ bin     dev     etc     home    lib     lib32   linuxrc media   mnt     opt     
 <div class="highlight"><pre><code class="language-text" data-lang="text">$ ls tmp/
 fs
 </code></pre></div>
+<p>Looking in system logs might help with debugging your nfs setup</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">tail -f /var/log/syslog
+</code></pre></div>
 <p>Now go to the mini2440. Interrupt boot if necessary by pressing enter at this prompt</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">Hit any key to stop autoboot:  0
 MINI2440 #
