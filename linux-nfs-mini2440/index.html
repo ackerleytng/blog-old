@@ -123,7 +123,7 @@
         <p class="entry-reading-time">
           <i class="fa fa-clock-o"></i>
           
-          Reading time ~2 minutes
+          Reading time ~3 minutes
         </p><!-- /.entry-reading-time -->
         
       </div><!-- /.header-title-wrap -->
@@ -142,7 +142,7 @@
 <div class="highlight"><pre><code class="language-text" data-lang="text">sudo apt-get install nfs-kernel-server
 </code></pre></div>
 <p>You just need to add a single line to the configuration in <code>/etc/exports</code></p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">/export/fs 192.168.1.0/24(rw,fsid=0,insecure,no_subtree_check,async,no_root_squash)
+<div class="highlight"><pre><code class="language-text" data-lang="text">/export/fs 192.168.1.0/24(rw,insecure,no_subtree_check,async,no_root_squash)
 </code></pre></div>
 <p>Untar <code>output/images/rootfs.tar</code> into <code>/export/fs</code>.</p>
 
@@ -207,6 +207,52 @@ MINI2440 # boot
 
 <p><code>/dev/nfs</code> need not exist in <code>/export/fs/dev</code> for mounting to be successful.</p>
 
+<h2>Loading the kernel over nfs too!</h2>
+
+<p>Go back to <code>/etc/exports</code> and add a second line</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">/export/fs     192.168.1.*(rw,insecure,no_subtree_check,async,no_root_squash)
+/export/kernel 192.168.1.*(ro,insecure,no_subtree_check,async)
+</code></pre></div><div class="highlight"><pre><code class="language-text" data-lang="text">$ sudo service nfs-kernel-server restart
+</code></pre></div>
+<p>Then on the mini2440</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">MINI2440 # setenv bootcmd nfs 0x32000000 192.168.1.50:/export/kernel/uImage \; bootm
+MINI2440 # saveenv
+Saving Environment to NAND...
+Erasing Nand...Writing to Nand... done
+MINI2440 # boot
+</code></pre></div>
+<p>Full <code>printenv</code> on mini2440:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">MINI2440 # printenv
+bootdelay=3
+baudrate=115200
+ethaddr=08:08:11:18:12:27
+usbtty=cdc_acm
+mini2440=mini2440=0tb
+bootargs_base=console=ttySAC0,115200 noinitrd
+bootargs_init=init=/sbin/init
+root_nand=root=/dev/mtdblock3 rootfstype=jffs2
+root_mmc=root=/dev/mmcblk0p2 rootdelay=2
+set_root_nfs=setenv root_nfs root=/dev/nfs rw nfsroot=${serverip}:${root_nfs}
+ifconfig_static=run setenv ifconfig ip=${ipaddr}:${serverip}::${netmask}:mini2440:eth0
+ifconfig_dhcp=run setenv ifconfig ip=dhcp
+ifconfig=ip=dhcp
+set_bootargs_mmc=setenv bootargs ${bootargs_base} ${bootargs_init} ${mini2440} ${root_mmc}
+set_bootargs_nand=setenv bootargs ${bootargs_base} ${bootargs_init} ${mini2440} ${root_nand}
+set_bootargs_nfs=run set_root_nfs; setenv bootargs ${bootargs_base} ${bootargs_init} ${mini2440} ${root_nfs} ${ifconfig}
+mtdids=nand0=mini2440-nand
+mtdparts=mtdparts=mini2440-nand:0x00040000(u-boot),0x00020000(u-boot_env),0x00500000(kernel),0x0faa0000(rootfs)
+filesize=51A630
+fileaddr=32000000
+netmask=255.255.255.0
+ipaddr=192.168.1.60
+serverip=192.168.1.50
+root_nfs=/export/fs
+bootargs=console=ttySAC0,115200 root=/dev/nfs nfsroot=192.168.1.50:/export/fs rw ip=192.168.1.60 noinitrd
+bootcmd=nfs 0x32000000 192.168.1.50:/export/kernel/uImage ; bootm
+partition=nand0,0
+mtddevnum=0
+mtddevname=u-boot
+</code></pre></div>
       <footer class="entry-meta">
         <span class="entry-tags"><a href="http://ackerleytng.github.io/tags/#mini2440 nfs rootfs linux" title="Pages tagged mini2440 nfs rootfs linux" class="tag">mini2440 nfs rootfs linux</a></span>
         <span><a href="http://ackerleytng.github.io/linux-nfs-mini2440/" rel="bookmark" title="Putting Linux on mini2440 with nfs root filesystem">Putting Linux on mini2440 with nfs root filesystem</a> was published on <span class="entry-date date published updated"><time datetime="2015-04-11T00:00:00+08:00">April 11, 2015</time></span></span>

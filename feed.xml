@@ -4,7 +4,7 @@
 <generator uri="https://github.com/mojombo/jekyll">Jekyll</generator>
 <link rel="self" type="application/atom+xml" href="http://ackerleytng.github.io/feed.xml" />
 <link rel="alternate" type="text/html" href="http://ackerleytng.github.io" />
-<updated>2015-04-11T11:42:34+08:00</updated>
+<updated>2015-04-12T11:11:40+08:00</updated>
 <id>http://ackerleytng.github.io/</id>
 <author>
   <name>Ackerley Tng</name>
@@ -38,7 +38,7 @@
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;sudo apt-get install nfs-kernel-server
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;You just need to add a single line to the configuration in &lt;code&gt;/etc/exports&lt;/code&gt;&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;/export/fs 192.168.1.0/24(rw,fsid=0,insecure,no_subtree_check,async,no_root_squash)
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;/export/fs 192.168.1.0/24(rw,insecure,no_subtree_check,async,no_root_squash)
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;Untar &lt;code&gt;output/images/rootfs.tar&lt;/code&gt; into &lt;code&gt;/export/fs&lt;/code&gt;.&lt;/p&gt;
 
@@ -103,6 +103,52 @@ MINI2440 # boot
 
 &lt;p&gt;&lt;code&gt;/dev/nfs&lt;/code&gt; need not exist in &lt;code&gt;/export/fs/dev&lt;/code&gt; for mounting to be successful.&lt;/p&gt;
 
+&lt;h2&gt;Loading the kernel over nfs too!&lt;/h2&gt;
+
+&lt;p&gt;Go back to &lt;code&gt;/etc/exports&lt;/code&gt; and add a second line&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;/export/fs     192.168.1.*(rw,insecure,no_subtree_check,async,no_root_squash)
+/export/kernel 192.168.1.*(ro,insecure,no_subtree_check,async)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;$ sudo service nfs-kernel-server restart
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Then on the mini2440&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;MINI2440 # setenv bootcmd nfs 0x32000000 192.168.1.50:/export/kernel/uImage \; bootm
+MINI2440 # saveenv
+Saving Environment to NAND...
+Erasing Nand...Writing to Nand... done
+MINI2440 # boot
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Full &lt;code&gt;printenv&lt;/code&gt; on mini2440:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;MINI2440 # printenv
+bootdelay=3
+baudrate=115200
+ethaddr=08:08:11:18:12:27
+usbtty=cdc_acm
+mini2440=mini2440=0tb
+bootargs_base=console=ttySAC0,115200 noinitrd
+bootargs_init=init=/sbin/init
+root_nand=root=/dev/mtdblock3 rootfstype=jffs2
+root_mmc=root=/dev/mmcblk0p2 rootdelay=2
+set_root_nfs=setenv root_nfs root=/dev/nfs rw nfsroot=${serverip}:${root_nfs}
+ifconfig_static=run setenv ifconfig ip=${ipaddr}:${serverip}::${netmask}:mini2440:eth0
+ifconfig_dhcp=run setenv ifconfig ip=dhcp
+ifconfig=ip=dhcp
+set_bootargs_mmc=setenv bootargs ${bootargs_base} ${bootargs_init} ${mini2440} ${root_mmc}
+set_bootargs_nand=setenv bootargs ${bootargs_base} ${bootargs_init} ${mini2440} ${root_nand}
+set_bootargs_nfs=run set_root_nfs; setenv bootargs ${bootargs_base} ${bootargs_init} ${mini2440} ${root_nfs} ${ifconfig}
+mtdids=nand0=mini2440-nand
+mtdparts=mtdparts=mini2440-nand:0x00040000(u-boot),0x00020000(u-boot_env),0x00500000(kernel),0x0faa0000(rootfs)
+filesize=51A630
+fileaddr=32000000
+netmask=255.255.255.0
+ipaddr=192.168.1.60
+serverip=192.168.1.50
+root_nfs=/export/fs
+bootargs=console=ttySAC0,115200 root=/dev/nfs nfsroot=192.168.1.50:/export/fs rw ip=192.168.1.60 noinitrd
+bootcmd=nfs 0x32000000 192.168.1.50:/export/kernel/uImage ; bootm
+partition=nand0,0
+mtddevnum=0
+mtddevname=u-boot
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
   &lt;p&gt;&lt;a href=&quot;http://ackerleytng.github.io/linux-nfs-mini2440/&quot;&gt;Putting Linux on mini2440 with nfs root filesystem&lt;/a&gt; was originally published by Ackerley Tng at &lt;a href=&quot;http://ackerleytng.github.io&quot;&gt;Ackerley's Blog&lt;/a&gt; on April 11, 2015.&lt;/p&gt;</content>
 </entry>
 
