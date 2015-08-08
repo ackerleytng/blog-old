@@ -4,13 +4,43 @@
 <generator uri="https://github.com/mojombo/jekyll">Jekyll</generator>
 <link rel="self" type="application/atom+xml" href="http://ackerleytng.github.io/feed.xml" />
 <link rel="alternate" type="text/html" href="http://ackerleytng.github.io" />
-<updated>2015-04-12T11:11:40+08:00</updated>
+<updated>2015-08-09T01:44:56+08:00</updated>
 <id>http://ackerleytng.github.io/</id>
 <author>
   <name>Ackerley Tng</name>
   <uri>http://ackerleytng.github.io/</uri>
   <email>ackerleytng@gmail.com</email>
 </author>
+
+
+<entry>
+  <title type="html"><![CDATA[National Day Songs WordCloud!]]></title>
+ <link rel="alternate" type="text/html" href="http://ackerleytng.github.io/natday-songs-wordcloud/" />
+  <id>http://ackerleytng.github.io/natday-songs-wordcloud</id>
+  <updated>2014-11-19T00:00:00-00:00</updated>
+  <published>2015-08-08T00:00:00+08:00</published>
+  
+  <author>
+    <name>Ackerley Tng</name>
+    <uri>http://ackerleytng.github.io</uri>
+    <email>ackerleytng@gmail.com</email>
+  </author>
+  <content type="html">&lt;p&gt;I wanted to find out which words appear most often in our National Day songs, so here&amp;#39;s a WordCloud!&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://ackerleytng.github.io/post_images/natday-songs-wordcloud.png&quot; alt=&quot;natday-songs-wordcloud&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;Here&amp;#39;s what I did:&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;I got the list of songs from &lt;a href=&quot;http://www.straitstimes.com/singapore/dick-lee-unveils-2015-ndp-song-our-singapore-revisit-past-national-day-parade-theme-songs&quot;&gt;here&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;I googled the song titles for the lyrics, and then I checked the lyrics that I copied by listening to all the songs&lt;/li&gt;
+&lt;li&gt;I put all the lyrics into one text file, I duplicated songs as necessary (e.g. Home was used as the national day song in two years, 1998 and 2004). I also expanded the lyrics by copying and pasting choruses as necessary, so that the lyrics are written out as sung&lt;/li&gt;
+&lt;li&gt;I manually removed the contractions (I&amp;#39;ll was replaced with I will etc). I think is fairer because then &amp;#39;ll and will won&amp;#39;t be considered two different words&lt;/li&gt;
+&lt;li&gt;Used this &lt;a href=&quot;http://ackerleytng.github.io/post_downloads/parse-natday-songs.py&quot;&gt;script&lt;/a&gt; to generate the WordCloud&lt;/li&gt;
+&lt;/ol&gt;
+
+  &lt;p&gt;&lt;a href=&quot;http://ackerleytng.github.io/natday-songs-wordcloud/&quot;&gt;National Day Songs WordCloud!&lt;/a&gt; was originally published by Ackerley Tng at &lt;a href=&quot;http://ackerleytng.github.io&quot;&gt;Ackerley's Blog&lt;/a&gt; on August 08, 2015.&lt;/p&gt;</content>
+</entry>
 
 
 <entry>
@@ -1591,30 +1621,6 @@ avr-objcopy -O ihex -R .eeprom blink.out blink.hex
 sudo avrdude -V -F -c avrisp2 -p m2560 -P usb -U flash:w:blink.hex
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
   &lt;p&gt;&lt;a href=&quot;http://ackerleytng.github.io/arduino-with-avrisp-mkii-crunchbang/&quot;&gt;Setting up Arduino with CrunchBang Linux for pure C projects&lt;/a&gt; was originally published by Ackerley Tng at &lt;a href=&quot;http://ackerleytng.github.io&quot;&gt;Ackerley's Blog&lt;/a&gt; on July 17, 2014.&lt;/p&gt;</content>
-</entry>
-
-
-<entry>
-  <title type="html"><![CDATA[Using Asus RT-AC66R with mio TV]]></title>
- <link rel="alternate" type="text/html" href="http://ackerleytng.github.io/rt-ac66r-mio-tv/" />
-  <id>http://ackerleytng.github.io/rt-ac66r-mio-tv</id>
-  <updated>2014-07-12T00:00:00-00:00</updated>
-  <published>2014-07-12T00:00:00+08:00</published>
-  
-  <author>
-    <name>Ackerley Tng</name>
-    <uri>http://ackerleytng.github.io</uri>
-    <email>ackerleytng@gmail.com</email>
-  </author>
-  <content type="html">&lt;p&gt;The Asus RT-AC66R is a rather popular router! But I guess instructions are lacking. Anyway, here&amp;#39;s a post to show that the RT-AC66R can indeed be used with Singtel&amp;#39;s mio TV.&lt;/p&gt;
-
-&lt;p&gt;Connect the Optical Network Terminal (ONT) to the Asus RT-AC66R&amp;#39;s WAN port. Then, connect the mio TV set-top box to the 4th LAN port of the RT-AC66R.&lt;/p&gt;
-
-&lt;p&gt;Go to the RT-AC66R&amp;#39;s configuration page, and then on the &amp;quot;Advanced Settings&amp;quot; column on the left, select &amp;quot;LAN&amp;quot;. Select the &amp;quot;IPTV&amp;quot; tab at the top. For the ISP profile, select Singtel-MIO. (My firmware version is 3.0.0.4.374_979) The table entry for IPTV STB Port should say LAN4. I didn&amp;#39;t change the other entries in the &amp;quot;Special Applications&amp;quot; section.&lt;/p&gt;
-
-&lt;p&gt;Then, I had to restart my set-top box (like completely power off and start it again) and then it worked.&lt;/p&gt;
-
-  &lt;p&gt;&lt;a href=&quot;http://ackerleytng.github.io/rt-ac66r-mio-tv/&quot;&gt;Using Asus RT-AC66R with mio TV&lt;/a&gt; was originally published by Ackerley Tng at &lt;a href=&quot;http://ackerleytng.github.io&quot;&gt;Ackerley's Blog&lt;/a&gt; on July 12, 2014.&lt;/p&gt;</content>
 </entry>
 
 </feed>
