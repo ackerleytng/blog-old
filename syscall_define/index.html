@@ -1,0 +1,427 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if (IE 7)&!(IEMobile)]><html class="no-js lt-ie9 lt-ie8" lang="en"><![endif]-->
+<!--[if (IE 8)&!(IEMobile)]><html class="no-js lt-ie9" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<title>SYSCALL_DEFINE &#8211; Ackerley's Blog</title>
+<meta name="description" content="SYSCALL_DEFINE">
+<meta name="keywords" content="linux, kernel">
+
+
+
+<!-- Open Graph -->
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SYSCALL_DEFINE">
+<meta property="og:description" content="SYSCALL_DEFINE">
+<meta property="og:url" content="http://ackerleytng.github.io/syscall_define/">
+<meta property="og:site_name" content="Ackerley's Blog">
+
+
+
+
+
+<link rel="canonical" href="http://ackerleytng.github.io/syscall_define/">
+<link href="http://ackerleytng.github.io/feed.xml" type="application/atom+xml" rel="alternate" title="Ackerley's Blog Feed">
+
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="http://ackerleytng.github.io/assets/css/main.min.css">
+<!-- Webfonts -->
+<link href="http://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic" rel="stylesheet" type="text/css">
+
+<meta http-equiv="cleartype" content="on">
+
+<!-- Load Modernizr -->
+<script src="http://ackerleytng.github.io/assets/js/vendor/modernizr-2.6.2.custom.min.js"></script>
+
+<!-- Icons -->
+<!-- 16x16 -->
+<link rel="shortcut icon" href="http://ackerleytng.github.io/favicon.ico">
+<!-- 32x32 -->
+<link rel="shortcut icon" href="http://ackerleytng.github.io/favicon.png">
+<!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
+<link rel="apple-touch-icon-precomposed" href="http://ackerleytng.github.io/images/apple-touch-icon-precomposed.png">
+<!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://ackerleytng.github.io/images/apple-touch-icon-72x72-precomposed.png">
+<!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://ackerleytng.github.io/images/apple-touch-icon-114x114-precomposed.png">
+<!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://ackerleytng.github.io/images/apple-touch-icon-144x144-precomposed.png">
+
+
+
+</head>
+
+<body id="post" class="feature">
+
+<!--[if lt IE 9]><div class="upgrade"><strong><a href="http://whatbrowser.org/">Your browser is quite old!</strong> Why not upgrade to a different browser to better enjoy this site?</a></div><![endif]-->
+<nav id="dl-menu" class="dl-menuwrapper" role="navigation">
+	<button class="dl-trigger">Open Menu</button>
+	<ul class="dl-menu">
+		<li><a href="http://ackerleytng.github.io">Home</a></li>
+		<li>
+			<a href="#">About</a>
+			<ul class="dl-submenu">
+				<li>
+					<img src="http://ackerleytng.github.io/images/avatar.jpg" alt="Ackerley Tng photo" class="author-photo">
+					<h4>Ackerley Tng</h4>
+					<p>Electrical Engineer at heart. Interested in Computer Architecture, cooking, skating, life, singing and efficiency in general</p>
+				</li>
+				<li><a href="http://ackerleytng.github.io/about/">Learn More</a></li>
+				<li>
+					<a href="mailto:ackerleytng@gmail.com"><i class="fa fa-envelope"></i> Email</a>
+				</li>
+				
+				
+				
+				
+				
+				
+				
+				
+				
+			</ul><!-- /.dl-submenu -->
+		</li>
+		<li>
+			<a href="#">Posts</a>
+			<ul class="dl-submenu">
+				<li><a href="http://ackerleytng.github.io/posts/">All Posts</a></li>
+				<li><a href="http://ackerleytng.github.io/tags/">All Tags</a></li>
+			</ul>
+		</li>
+		
+	</ul><!-- /.dl-menu -->
+</nav><!-- /.dl-menuwrapper -->
+
+
+
+<div class="entry-header">
+  <div class="image-credit">Image source: <a href="http://www.dargadgetz.com/ios-7-abstract-wallpaper-pack-for-iphone-5-and-ipod-touch-retina/">dargadgetz</a></div><!-- /.image-credit -->
+  <div class="entry-image">
+    <img src="http://ackerleytng.github.io/images/abstract-3.jpg" alt="SYSCALL_DEFINE">
+  </div><!-- /.entry-image -->
+</div><!-- /.entry-header -->
+
+
+<div id="main" role="main">
+  <article class="hentry">
+    <header class="header-title">
+      <div class="header-title-wrap">
+        
+          <h1 class="entry-title"><a href="http://ackerleytng.github.io/syscall_define/" rel="bookmark" title="SYSCALL_DEFINE">SYSCALL_DEFINE</a></h1>
+        
+        <h2>November 08, 2015</h2>
+        
+        <p class="entry-reading-time">
+          <i class="fa fa-clock-o"></i>
+          
+          Reading time ~6 minutes
+        </p><!-- /.entry-reading-time -->
+        
+      </div><!-- /.header-title-wrap -->
+    </header>
+    <div class="entry-content">
+      <p>I think macros are pretty interesting... Really wanted to take some time to understand what this particular one means!</p>
+
+<p>For this post, I&#39;ll use Linux 4.3, the latest stable version at the point of writing.</p>
+
+<p>To put things in context, let&#39;s get a concrete example of a syscall -- read.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">SYSCALL_DEFINE3(read, unsigned int, fd, char __user *, buf, size_t, count)
+{
+        struct fd f = fdget_pos(fd);
+        ssize_t ret = -EBADF;
+
+        if (f.file) {
+                loff_t pos = file_pos_read(f.file);
+                ret = vfs_read(f.file, buf, count, &amp;pos);
+                if (ret &gt;= 0)
+                        file_pos_write(f.file, pos);
+                fdput_pos(f);
+        }
+        return ret;
+}
+</code></pre></div>
+<p>The macro SYSCALL_DEFINE3 is defined in <code>include/linux/syscalls.h</code>.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">#define SYSCALL_DEFINE1(name, ...) SYSCALL_DEFINEx(1, _##name, __VA_ARGS__)
+#define SYSCALL_DEFINE2(name, ...) SYSCALL_DEFINEx(2, _##name, __VA_ARGS__)
+#define SYSCALL_DEFINE3(name, ...) SYSCALL_DEFINEx(3, _##name, __VA_ARGS__)
+#define SYSCALL_DEFINE4(name, ...) SYSCALL_DEFINEx(4, _##name, __VA_ARGS__)
+#define SYSCALL_DEFINE5(name, ...) SYSCALL_DEFINEx(5, _##name, __VA_ARGS__)
+#define SYSCALL_DEFINE6(name, ...) SYSCALL_DEFINEx(6, _##name, __VA_ARGS__)
+</code></pre></div>
+<p>Applying that macro, we have</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">SYSCALL_DEFINEx(3, _read, unsigned int, fd, char __user *, buf, size_t, count)
+{
+        struct file *file;
+        ...
+</code></pre></div>
+<p><code>SYSCALL_DEFINEx</code> is defined as</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">#define SYSCALL_DEFINEx(x, sname, ...)                          \
+        SYSCALL_METADATA(sname, x, __VA_ARGS__)                 \
+        __SYSCALL_DEFINEx(x, sname, __VA_ARGS__)
+</code></pre></div>
+<p>I&#39;ll deal with <code>__SYSCALL_DEFINEx</code> first.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">#define __SYSCALL_DEFINEx(x, name, ...)                                 \
+        asmlinkage long sys##name(__MAP(x,__SC_DECL,__VA_ARGS__))       \
+                __attribute__((alias(__stringify(SyS##name))));         \
+        static inline long SYSC##name(__MAP(x,__SC_DECL,__VA_ARGS__));  \
+        asmlinkage long SyS##name(__MAP(x,__SC_LONG,__VA_ARGS__));      \
+        asmlinkage long SyS##name(__MAP(x,__SC_LONG,__VA_ARGS__))       \
+        {                                                               \
+                long ret = SYSC##name(__MAP(x,__SC_CAST,__VA_ARGS__));  \
+                __MAP(x,__SC_TEST,__VA_ARGS__);                         \
+                __PROTECT(x, ret,__MAP(x,__SC_ARGS,__VA_ARGS__));       \
+                return ret;                                             \
+        }                                                               \
+        static inline long SYSC##name(__MAP(x,__SC_DECL,__VA_ARGS__))
+</code></pre></div>
+<p><code>asmlinkage</code> is a macro too!</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">#define asmlinkage CPP_ASMLINKAGE __attribute__((regparm(0)))
+</code></pre></div>
+<p>This is an instruction to gcc to expect to get all the arguments for this function from the stack.</p>
+
+<p><code>__MAP</code> is an amazing macro, and the following comment in the code is quite descriptive:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">/*
+ * __MAP - apply a macro to syscall arguments
+ * __MAP(n, m, t1, a1, t2, a2, ..., tn, an) will expand to
+ *    m(t1, a1), m(t2, a2), ..., m(tn, an)
+ * The first argument must be equal to the amount of type/name
+ * pairs given.  Note that this list of pairs (i.e. the arguments
+ * of __MAP starting at the third one) is in the same format as
+ * for SYSCALL_DEFINE&lt;n&gt;/COMPAT_SYSCALL_DEFINE&lt;n&gt;
+ */
+#define __MAP0(m,...)
+#define __MAP1(m,t,a) m(t,a)
+#define __MAP2(m,t,a,...) m(t,a), __MAP1(m,__VA_ARGS__)
+#define __MAP3(m,t,a,...) m(t,a), __MAP2(m,__VA_ARGS__)
+#define __MAP4(m,t,a,...) m(t,a), __MAP3(m,__VA_ARGS__)
+#define __MAP5(m,t,a,...) m(t,a), __MAP4(m,__VA_ARGS__)
+#define __MAP6(m,t,a,...) m(t,a), __MAP5(m,__VA_ARGS__)
+#define __MAP(n,...) __MAP##n(__VA_ARGS__)
+</code></pre></div>
+<p><code>__SC_DECL</code> is also a macro!</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">#define __SC_DECL(t, a) t a
+</code></pre></div>
+<p>The kernel code uses this <code>__SC_DECL</code> to declare parameters in the function.</p>
+
+<p>So, in the first line after <code>SYSCALL_DEFINEx</code>, we have</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">__MAP(x,__SC_DECL,__VA_ARGS__)
+</code></pre></div>
+<p>More concretely, we have </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">__MAP(3,__SC_DECL, unsigned int, fd, char __user *, buf, size_t, count)
+</code></pre></div><div class="highlight"><pre><code class="language-text" data-lang="text">__MAP3(__SC_DECL, unsigned int, fd, char __user *, buf, size_t, count)
+</code></pre></div><div class="highlight"><pre><code class="language-text" data-lang="text">__SC_DECL(unsigned int, fd), __MAP2(__SC_DECL, char __user *, buf, size_t, count)
+</code></pre></div><div class="highlight"><pre><code class="language-text" data-lang="text">__SC_DECL(unsigned int, fd), __SC_DECL(char __user *, buf), __MAP1(__SC_DECL, size_t, count)
+</code></pre></div><div class="highlight"><pre><code class="language-text" data-lang="text">__SC_DECL(unsigned int, fd), __SC_DECL(char __user *, buf), __SC_DECL(size_t, count)
+</code></pre></div>
+<p>And then <code>__SC_DECL</code> is also a macro,</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">#define __SC_DECL(t, a) t a
+</code></pre></div>
+<p>So we have</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">unsigned int fd, char __user * buf, size_t count
+</code></pre></div>
+<p>Hence, the first line of <code>__SYSCALL_DEFINEx</code> expands to</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">asmlinkage long sys_read(unsigned int fd, char __user * buf, size_t count) __attribute__((alias(&quot;SyS_read&quot;)))
+</code></pre></div>
+<p>Now what is an <code>alias</code>? It&#39;s a gcc <a href="https://gcc.gnu.org/onlinedocs/gcc/Common-Function-Attributes.html#Common-Function-Attributes">attribute</a>. From the <a href="https://gcc.gnu.org/onlinedocs/gcc/Common-Function-Attributes.html#Common-Function-Attributes">gcc site</a>, &quot;The alias attribute causes the declaration to be emitted as an alias for another symbol, which must be specified.&quot;</p>
+
+<p>So as I understand it, <code>sys_read</code> is now the same thing as <code>SyS_read</code>. The following line declares the function,</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">asmlinkage long SyS##name(__MAP(x,__SC_LONG,__VA_ARGS__)); 
+</code></pre></div>
+<p>And these lines define it:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">asmlinkage long SyS##name(__MAP(x,__SC_LONG,__VA_ARGS__))       \
+{                                                               \
+        long ret = SYSC##name(__MAP(x,__SC_CAST,__VA_ARGS__));  \
+        __MAP(x,__SC_TEST,__VA_ARGS__);                         \
+        __PROTECT(x, ret,__MAP(x,__SC_ARGS,__VA_ARGS__));       \
+        return ret;                                             \
+}                                                               \
+</code></pre></div>
+<p>Notice that the same <code>__MAP</code> macro is used to apply <code>__SC_LONG</code> in the declaration and definition of <code>SyS_read</code>.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">#define __TYPE_IS_L(t)  (__same_type((t)0, 0L))
+#define __TYPE_IS_UL(t) (__same_type((t)0, 0UL))
+#define __TYPE_IS_LL(t) (__same_type((t)0, 0LL) || __same_type((t)0, 0ULL))
+#define __SC_LONG(t, a) __typeof(__builtin_choose_expr(__TYPE_IS_LL(t), 0LL, 0L)) a
+</code></pre></div>
+<p>I believe <code>__SC_LONG</code> checks the type of <code>t</code> and generates <code>long long a</code> or <code>long a</code> based on whether <code>t</code> was originally of type <code>long long</code>. Isn&#39;t it interesting that the preprocessor can generate code based on macro arguments?</p>
+
+<p>The result of <code>__MAP</code>ing <code>__SC_LONG</code> is</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">asmlinkage long SyS_read(long fd, long buf, long count)
+</code></pre></div>
+<p>In the next line, we have</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">long ret = SYSC##name(__MAP(x,__SC_CAST,__VA_ARGS__));
+</code></pre></div>
+<p><code>__SC_CAST</code> is relatively simple, it just basically casts the input arguments to the types suitable for <code>SYSC_read</code>.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">#define __SC_CAST(t, a) (t) a
+</code></pre></div>
+<p>So <code>SyS_read</code> calls <code>SYSC_read</code>, then saves the result in <code>ret</code>. In the next line, we have</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">__MAP(x,__SC_TEST,__VA_ARGS__);
+</code></pre></div>
+<p>Following that macro in the code, we have</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">#define __SC_TEST(t, a) (void)BUILD_BUG_ON_ZERO(!__TYPE_IS_LL(t) &amp;&amp; sizeof(t) &gt; sizeof(long))
+</code></pre></div>
+<p><code>BUILD_BUG_ON_ZERO</code> is pretty interesting. This <a href="http://stackoverflow.com/questions/9229601/what-is-in-c-code">stackoverflow question</a> has a really good explanation of what this does.</p>
+
+<p><code>BUILD_BUG_ON_ZERO</code> is, I <a href="http://stackoverflow.com/questions/9229601/what-is-in-c-code">quote</a>, &quot;a way to check whether the expression e can be evaluated to be 0, and if not, to fail the build.&quot;</p>
+
+<p>So the line</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">__MAP(x,__SC_TEST,__VA_ARGS__);
+</code></pre></div>
+<p>tests the type of each argument. After applying de Morgan&#39;s theorem (because of <code>ON_ZERO</code> in <code>BUILD_BUG_ON_ZERO</code>), each argument must either be of type <code>long long</code>, or have a bitwidth less than or equal to that of <code>long</code>.</p>
+
+<p>Moving on to the next line, <code>__SC_ARGS</code> basically extracts the argument and drops the type:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">#define __SC_ARGS(t, a) a
+</code></pre></div>
+<p><code>__PROTECT</code> is a macro, defined as</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">#define __PROTECT(...) asmlinkage_protect(__VA_ARGS__)
+</code></pre></div>
+<p>Its function is well-explained in the comment:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">/*
+ * Make sure the compiler doesn&#39;t do anything stupid with the
+ * arguments on the stack - they are owned by the *caller*, not
+ * the callee. This just fools gcc into not spilling into them,
+ * and keeps it from doing tailcall recursion and/or using the
+ * stack slots for temporaries, since they are live and &quot;used&quot;
+ * all the way to the end of the function.
+ *
+ * NOTE! On x86-64, all the arguments are in registers, so this
+ * only matters on a 32-bit kernel.
+ */
+#define asmlinkage_protect(n, ret, args...) \
+        __asmlinkage_protect##n(ret, ##args)
+#define __asmlinkage_protect_n(ret, args...) \
+        __asm__ __volatile__ (&quot;&quot; : &quot;=r&quot; (ret) : &quot;&quot; (ret), ##args)
+#define __asmlinkage_protect0(ret) \
+        __asmlinkage_protect_n(ret)
+#define __asmlinkage_protect1(ret, arg1) \
+        __asmlinkage_protect_n(ret, &quot;m&quot; (arg1))
+#define __asmlinkage_protect2(ret, arg1, arg2) \
+        __asmlinkage_protect_n(ret, &quot;m&quot; (arg1), &quot;m&quot; (arg2))
+#define __asmlinkage_protect3(ret, arg1, arg2, arg3) \
+        __asmlinkage_protect_n(ret, &quot;m&quot; (arg1), &quot;m&quot; (arg2), &quot;m&quot; (arg3))
+#define __asmlinkage_protect4(ret, arg1, arg2, arg3, arg4) \
+        __asmlinkage_protect_n(ret, &quot;m&quot; (arg1), &quot;m&quot; (arg2), &quot;m&quot; (arg3), \
+                              &quot;m&quot; (arg4))
+#define __asmlinkage_protect5(ret, arg1, arg2, arg3, arg4, arg5) \
+        __asmlinkage_protect_n(ret, &quot;m&quot; (arg1), &quot;m&quot; (arg2), &quot;m&quot; (arg3), \
+                              &quot;m&quot; (arg4), &quot;m&quot; (arg5))
+#define __asmlinkage_protect6(ret, arg1, arg2, arg3, arg4, arg5, arg6) \
+        __asmlinkage_protect_n(ret, &quot;m&quot; (arg1), &quot;m&quot; (arg2), &quot;m&quot; (arg3), \
+                              &quot;m&quot; (arg4), &quot;m&quot; (arg5), &quot;m&quot; (arg6))
+</code></pre></div>
+<p>So the <code>SyS_read</code> function essentially just calls <code>SYSC_read</code>, applies some compile-time checks, and returns the result.</p>
+
+<p>Finally! We&#39;re at the definition of the actual syscall.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">static inline long SYSC##name(__MAP(x,__SC_DECL,__VA_ARGS__))
+</code></pre></div>
+<p>A quick look at <code>SYSCALL_METADATA</code> shows that the macro expands to stuff used for tracing syscalls <code>#ifdef CONFIG_FTRACE_SYSCALLS</code>. </p>
+
+<p>So after all the expansion, </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">SYSCALL_DEFINE3(read, unsigned int, fd, char __user *, buf, size_t, count)
+{
+        struct fd f = fdget_pos(fd);
+        ...
+</code></pre></div>
+<p>becomes</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">... syscall metadata stuff ...
+asmlinkage long sys_read(unsigned int fd, char __user * buf, size_t count) __attribute__((alias(&quot;SyS_read&quot;)))
+static inline long SYSC_read(unsigned int fd, char __user * buf, size_t count);
+asmlinkage long SyS_read(long fd, long buf, long count);
+asmlinkage long SyS_read(long fd, long buf, long count)
+{
+    long ret = SYSC_read((unsigned int) fd, (char __user *) buf, (size_t) count);
+    ... compile-time tests for each argument ...
+    ... assembly stuff to prevent clobbering of arguments on stack ...
+    return ret;
+}
+static inline long SYSC_read(unsigned int fd, char __user * buf, size_t count)
+{
+        struct fd f = fdget_pos(fd);
+        ...
+</code></pre></div>
+      <footer class="entry-meta">
+        <span class="entry-tags"><a href="http://ackerleytng.github.io/tags/#linux" title="Pages tagged linux" class="tag">linux</a><a href="http://ackerleytng.github.io/tags/#kernel" title="Pages tagged kernel" class="tag">kernel</a></span>
+        <span><a href="http://ackerleytng.github.io/syscall_define/" rel="bookmark" title="SYSCALL_DEFINE">SYSCALL_DEFINE</a> was published on <span class="entry-date date published updated"><time datetime="2015-11-08T00:00:00+08:00">November 08, 2015</time></span></span>
+        (revised: <span class="entry-date date modified"><time datetime="2015-11-08">11/08/2015</time></span>)
+        <span class="author vcard"><span class="fn"><a href="http://ackerleytng.github.io/about/" title="About Ackerley Tng">Ackerley Tng</a></span></span>
+        <div class="social-share">
+          <ul class="socialcount socialcount-small inline-list">
+            <li class="facebook"><a href="https://www.facebook.com/sharer/sharer.php?u=http://ackerleytng.github.io/syscall_define/" title="Share on Facebook"><span class="count"><i class="fa fa-facebook-square"></i> Like</span></a></li>
+            <li class="twitter"><a href="https://twitter.com/intent/tweet?text=http://ackerleytng.github.io/syscall_define/" title="Share on Twitter"><span class="count"><i class="fa fa-twitter-square"></i> Tweet</span></a></li>
+            <li class="googleplus"><a href="https://plus.google.com/share?url=http://ackerleytng.github.io/syscall_define/" title="Share on Google Plus"><span class="count"><i class="fa fa-google-plus-square"></i> +1</span></a></li>
+          </ul>
+        </div><!-- /.social-share -->
+      </footer>
+    </div><!-- /.entry-content -->
+    <section id="disqus_thread"></section><!-- /#disqus_thread -->
+    
+    <div class="read-more">
+      
+        <div class="read-more-header">
+          <a href="http://ackerleytng.github.io/natday-songs-wordcloud/" class="read-more-btn">Read More</a>
+        </div><!-- /.read-more-header -->
+        <div class="read-more-content">
+          <h3><a href="http://ackerleytng.github.io/natday-songs-wordcloud/" title="National Day Songs WordCloud!">National Day Songs WordCloud!</a></h3>
+          <p>National Day Songs WordCloud <a href="http://ackerleytng.github.io/natday-songs-wordcloud/">Continue reading</a></p>
+        </div><!-- /.read-more-content -->
+      
+      <div class="read-more-list">
+        
+          <div class="list-item">
+            <h4><a href="http://ackerleytng.github.io/linux-nfs-mini2440/" title="Putting Linux on mini2440 with nfs root filesystem">Putting Linux on mini2440 with nfs root filesystem</a></h4>
+            <span>Published on April 11, 2015</span>
+          </div><!-- /.list-item -->
+        
+          <div class="list-item">
+            <h4><a href="http://ackerleytng.github.io/linux-jffs-mini2440/" title="Putting Linux on mini2440 with jffs2 filesystem">Putting Linux on mini2440 with jffs2 filesystem</a></h4>
+            <span>Published on April 06, 2015</span>
+          </div><!-- /.list-item -->
+        
+      </div><!-- /.read-more-list -->
+      
+    </div><!-- /.read-more -->
+  </article>
+</div><!-- /#main -->
+
+<div class="footer-wrapper">
+  <footer role="contentinfo">
+    <span>&copy; 2015 Ackerley Tng. Powered by <a href="http://jekyllrb.com">Jekyll</a> using the <a href="http://mademistakes.com/hpstr/">HPSTR Theme</a>.</span>
+  </footer>
+</div><!-- /.footer-wrapper -->
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="http://ackerleytng.github.io/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script src="http://ackerleytng.github.io/assets/js/scripts.min.js"></script>
+
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'ackerleytng'; // required: replace example with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = '//' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>	        
+
+</body>
+</html>

@@ -122,6 +122,33 @@
 <article class="hentry">
   <header>
     <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2014-07-25T00:00:00+08:00"><a href="http://ackerleytng.github.io/wireless-at-sgx/">July 25, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://ackerleytng.github.io/about/" title="About Ackerley Tng">Ackerley Tng</a></span></span>&nbsp; &bull; &nbsp;<span class="entry-comments"><a href="http://ackerleytng.github.io/wireless-at-sgx/#disqus_thread">Comment</a></span>
+      
+      <span class="entry-reading-time pull-right">
+        <i class="fa fa-clock-o"></i>
+        
+        Reading time ~1 minute
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="http://ackerleytng.github.io/wireless-at-sgx/" rel="bookmark" title="Wireless@SGx" itemprop="url">Wireless@SGx</a></h1>
+    
+  </header>
+  <div class="entry-content">
+    <p>I wonder if anyone else still uses Wireless@SGx, but anyway...</p>
+
+<ol>
+<li>Go <a href="http://pas.singtel.com/wsg_connect/index.php">here</a> to generate your username. I used my Singnet account, which is of the form <code>blahblah@singnet</code>. The username generated should be <code>blahblah|???????????????????????@singnet</code>.</li>
+<li>Use the generated username as the username when connecting to Wireless@SGx. The password is the same password you use for Singnet. You can ignore all the other instructions about PEAP etc - those should come automatically on today&#39;s devices.</li>
+</ol>
+
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
+
+<article class="hentry">
+  <header>
+    <div class="entry-meta">
       <span class="entry-date date published updated"><time datetime="2014-07-24T00:00:00+08:00"><a href="http://ackerleytng.github.io/understanding-coe/">July 24, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://ackerleytng.github.io/about/" title="About Ackerley Tng">Ackerley Tng</a></span></span>&nbsp; &bull; &nbsp;<span class="entry-comments"><a href="http://ackerleytng.github.io/understanding-coe/#disqus_thread">Comment</a></span>
       
       <span class="entry-reading-time pull-right">
@@ -381,38 +408,6 @@ alias mysqlstop=&quot;mysqladmin -u root -p shutdown&quot;
 
 <p>When setting up ssh keys, there&#39;s no need to modify the sshd_config file as described on the page. It seems to work out of the box.</p>
 
-  </div><!-- /.entry-content -->
-</article><!-- /.hentry -->
-
-<article class="hentry">
-  <header>
-    <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2014-07-17T00:00:00+08:00"><a href="http://ackerleytng.github.io/arduino-with-avrisp-mkii-crunchbang/">July 17, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://ackerleytng.github.io/about/" title="About Ackerley Tng">Ackerley Tng</a></span></span>&nbsp; &bull; &nbsp;<span class="entry-comments"><a href="http://ackerleytng.github.io/arduino-with-avrisp-mkii-crunchbang/#disqus_thread">Comment</a></span>
-      
-      <span class="entry-reading-time pull-right">
-        <i class="fa fa-clock-o"></i>
-        
-        Reading time ~1 minute
-      </span><!-- /.entry-reading-time -->
-      
-    </div><!-- /.entry-meta -->
-    
-      <h1 class="entry-title"><a href="http://ackerleytng.github.io/arduino-with-avrisp-mkii-crunchbang/" rel="bookmark" title="Setting up Arduino with CrunchBang Linux for pure C projects" itemprop="url">Setting up Arduino with CrunchBang Linux for pure C projects</a></h1>
-    
-  </header>
-  <div class="entry-content">
-    <p>I&#39;m powering the Arduino Mega 2560 board using USB. However, I&#39;m going to program the Arduino using an AVRISP mkii programmer. <a href="http://allaboutee.com/2011/05/11/how-to-program-an-avr-microcontroller/">This site</a> shows the pinout of the programmer, and upon comparison with the <a href="http://arduino.cc/en/uploads/Main/arduino-mega2560_R3-sch.pdf">Arduino schematic</a>, I&#39;ve decided to use the programmer this way:</p>
-
-<p><img src="http://ackerleytng.github.io/post_images/arduino_setup.jpg" alt="Arduino Setup"></p>
-
-<p>Use apt-get to install packages</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">sudo apt-get install gcc-avr binutils-avr gdb-avr avr-libc avrdude
-</code></pre></div>
-<p>To use avr-gcc to compile</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">avr-gcc -DF_CPU=16000000UL -mmcu=atmega2560 -Os -o blink.out blink.c
-avr-objcopy -O ihex -R .eeprom blink.out blink.hex
-sudo avrdude -V -F -c avrisp2 -p m2560 -P usb -U flash:w:blink.hex
-</code></pre></div>
   </div><!-- /.entry-content -->
 </article><!-- /.hentry -->
 

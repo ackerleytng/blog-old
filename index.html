@@ -122,6 +122,244 @@
 <article class="hentry">
   <header>
     <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2015-11-08T00:00:00+08:00"><a href="http://ackerleytng.github.io/syscall_define/">November 08, 2015</a></time></span><span class="author vcard"><span class="fn"><a href="http://ackerleytng.github.io/about/" title="About Ackerley Tng">Ackerley Tng</a></span></span>&nbsp; &bull; &nbsp;<span class="entry-comments"><a href="http://ackerleytng.github.io/syscall_define/#disqus_thread">Comment</a></span>
+      
+      <span class="entry-reading-time pull-right">
+        <i class="fa fa-clock-o"></i>
+        
+        Reading time ~6 minutes
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="http://ackerleytng.github.io/syscall_define/" rel="bookmark" title="SYSCALL_DEFINE" itemprop="url">SYSCALL_DEFINE</a></h1>
+    
+  </header>
+  <div class="entry-content">
+    <p>I think macros are pretty interesting... Really wanted to take some time to understand what this particular one means!</p>
+
+<p>For this post, I&#39;ll use Linux 4.3, the latest stable version at the point of writing.</p>
+
+<p>To put things in context, let&#39;s get a concrete example of a syscall -- read.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">SYSCALL_DEFINE3(read, unsigned int, fd, char __user *, buf, size_t, count)
+{
+        struct fd f = fdget_pos(fd);
+        ssize_t ret = -EBADF;
+
+        if (f.file) {
+                loff_t pos = file_pos_read(f.file);
+                ret = vfs_read(f.file, buf, count, &amp;pos);
+                if (ret &gt;= 0)
+                        file_pos_write(f.file, pos);
+                fdput_pos(f);
+        }
+        return ret;
+}
+</code></pre></div>
+<p>The macro SYSCALL_DEFINE3 is defined in <code>include/linux/syscalls.h</code>.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">#define SYSCALL_DEFINE1(name, ...) SYSCALL_DEFINEx(1, _##name, __VA_ARGS__)
+#define SYSCALL_DEFINE2(name, ...) SYSCALL_DEFINEx(2, _##name, __VA_ARGS__)
+#define SYSCALL_DEFINE3(name, ...) SYSCALL_DEFINEx(3, _##name, __VA_ARGS__)
+#define SYSCALL_DEFINE4(name, ...) SYSCALL_DEFINEx(4, _##name, __VA_ARGS__)
+#define SYSCALL_DEFINE5(name, ...) SYSCALL_DEFINEx(5, _##name, __VA_ARGS__)
+#define SYSCALL_DEFINE6(name, ...) SYSCALL_DEFINEx(6, _##name, __VA_ARGS__)
+</code></pre></div>
+<p>Applying that macro, we have</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">SYSCALL_DEFINEx(3, _read, unsigned int, fd, char __user *, buf, size_t, count)
+{
+        struct file *file;
+        ...
+</code></pre></div>
+<p><code>SYSCALL_DEFINEx</code> is defined as</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">#define SYSCALL_DEFINEx(x, sname, ...)                          \
+        SYSCALL_METADATA(sname, x, __VA_ARGS__)                 \
+        __SYSCALL_DEFINEx(x, sname, __VA_ARGS__)
+</code></pre></div>
+<p>I&#39;ll deal with <code>__SYSCALL_DEFINEx</code> first.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">#define __SYSCALL_DEFINEx(x, name, ...)                                 \
+        asmlinkage long sys##name(__MAP(x,__SC_DECL,__VA_ARGS__))       \
+                __attribute__((alias(__stringify(SyS##name))));         \
+        static inline long SYSC##name(__MAP(x,__SC_DECL,__VA_ARGS__));  \
+        asmlinkage long SyS##name(__MAP(x,__SC_LONG,__VA_ARGS__));      \
+        asmlinkage long SyS##name(__MAP(x,__SC_LONG,__VA_ARGS__))       \
+        {                                                               \
+                long ret = SYSC##name(__MAP(x,__SC_CAST,__VA_ARGS__));  \
+                __MAP(x,__SC_TEST,__VA_ARGS__);                         \
+                __PROTECT(x, ret,__MAP(x,__SC_ARGS,__VA_ARGS__));       \
+                return ret;                                             \
+        }                                                               \
+        static inline long SYSC##name(__MAP(x,__SC_DECL,__VA_ARGS__))
+</code></pre></div>
+<p><code>asmlinkage</code> is a macro too!</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">#define asmlinkage CPP_ASMLINKAGE __attribute__((regparm(0)))
+</code></pre></div>
+<p>This is an instruction to gcc to expect to get all the arguments for this function from the stack.</p>
+
+<p><code>__MAP</code> is an amazing macro, and the following comment in the code is quite descriptive:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">/*
+ * __MAP - apply a macro to syscall arguments
+ * __MAP(n, m, t1, a1, t2, a2, ..., tn, an) will expand to
+ *    m(t1, a1), m(t2, a2), ..., m(tn, an)
+ * The first argument must be equal to the amount of type/name
+ * pairs given.  Note that this list of pairs (i.e. the arguments
+ * of __MAP starting at the third one) is in the same format as
+ * for SYSCALL_DEFINE&lt;n&gt;/COMPAT_SYSCALL_DEFINE&lt;n&gt;
+ */
+#define __MAP0(m,...)
+#define __MAP1(m,t,a) m(t,a)
+#define __MAP2(m,t,a,...) m(t,a), __MAP1(m,__VA_ARGS__)
+#define __MAP3(m,t,a,...) m(t,a), __MAP2(m,__VA_ARGS__)
+#define __MAP4(m,t,a,...) m(t,a), __MAP3(m,__VA_ARGS__)
+#define __MAP5(m,t,a,...) m(t,a), __MAP4(m,__VA_ARGS__)
+#define __MAP6(m,t,a,...) m(t,a), __MAP5(m,__VA_ARGS__)
+#define __MAP(n,...) __MAP##n(__VA_ARGS__)
+</code></pre></div>
+<p><code>__SC_DECL</code> is also a macro!</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">#define __SC_DECL(t, a) t a
+</code></pre></div>
+<p>The kernel code uses this <code>__SC_DECL</code> to declare parameters in the function.</p>
+
+<p>So, in the first line after <code>SYSCALL_DEFINEx</code>, we have</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">__MAP(x,__SC_DECL,__VA_ARGS__)
+</code></pre></div>
+<p>More concretely, we have </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">__MAP(3,__SC_DECL, unsigned int, fd, char __user *, buf, size_t, count)
+</code></pre></div><div class="highlight"><pre><code class="language-text" data-lang="text">__MAP3(__SC_DECL, unsigned int, fd, char __user *, buf, size_t, count)
+</code></pre></div><div class="highlight"><pre><code class="language-text" data-lang="text">__SC_DECL(unsigned int, fd), __MAP2(__SC_DECL, char __user *, buf, size_t, count)
+</code></pre></div><div class="highlight"><pre><code class="language-text" data-lang="text">__SC_DECL(unsigned int, fd), __SC_DECL(char __user *, buf), __MAP1(__SC_DECL, size_t, count)
+</code></pre></div><div class="highlight"><pre><code class="language-text" data-lang="text">__SC_DECL(unsigned int, fd), __SC_DECL(char __user *, buf), __SC_DECL(size_t, count)
+</code></pre></div>
+<p>And then <code>__SC_DECL</code> is also a macro,</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">#define __SC_DECL(t, a) t a
+</code></pre></div>
+<p>So we have</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">unsigned int fd, char __user * buf, size_t count
+</code></pre></div>
+<p>Hence, the first line of <code>__SYSCALL_DEFINEx</code> expands to</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">asmlinkage long sys_read(unsigned int fd, char __user * buf, size_t count) __attribute__((alias(&quot;SyS_read&quot;)))
+</code></pre></div>
+<p>Now what is an <code>alias</code>? It&#39;s a gcc <a href="https://gcc.gnu.org/onlinedocs/gcc/Common-Function-Attributes.html#Common-Function-Attributes">attribute</a>. From the <a href="https://gcc.gnu.org/onlinedocs/gcc/Common-Function-Attributes.html#Common-Function-Attributes">gcc site</a>, &quot;The alias attribute causes the declaration to be emitted as an alias for another symbol, which must be specified.&quot;</p>
+
+<p>So as I understand it, <code>sys_read</code> is now the same thing as <code>SyS_read</code>. The following line declares the function,</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">asmlinkage long SyS##name(__MAP(x,__SC_LONG,__VA_ARGS__)); 
+</code></pre></div>
+<p>And these lines define it:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">asmlinkage long SyS##name(__MAP(x,__SC_LONG,__VA_ARGS__))       \
+{                                                               \
+        long ret = SYSC##name(__MAP(x,__SC_CAST,__VA_ARGS__));  \
+        __MAP(x,__SC_TEST,__VA_ARGS__);                         \
+        __PROTECT(x, ret,__MAP(x,__SC_ARGS,__VA_ARGS__));       \
+        return ret;                                             \
+}                                                               \
+</code></pre></div>
+<p>Notice that the same <code>__MAP</code> macro is used to apply <code>__SC_LONG</code> in the declaration and definition of <code>SyS_read</code>.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">#define __TYPE_IS_L(t)  (__same_type((t)0, 0L))
+#define __TYPE_IS_UL(t) (__same_type((t)0, 0UL))
+#define __TYPE_IS_LL(t) (__same_type((t)0, 0LL) || __same_type((t)0, 0ULL))
+#define __SC_LONG(t, a) __typeof(__builtin_choose_expr(__TYPE_IS_LL(t), 0LL, 0L)) a
+</code></pre></div>
+<p>I believe <code>__SC_LONG</code> checks the type of <code>t</code> and generates <code>long long a</code> or <code>long a</code> based on whether <code>t</code> was originally of type <code>long long</code>. Isn&#39;t it interesting that the preprocessor can generate code based on macro arguments?</p>
+
+<p>The result of <code>__MAP</code>ing <code>__SC_LONG</code> is</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">asmlinkage long SyS_read(long fd, long buf, long count)
+</code></pre></div>
+<p>In the next line, we have</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">long ret = SYSC##name(__MAP(x,__SC_CAST,__VA_ARGS__));
+</code></pre></div>
+<p><code>__SC_CAST</code> is relatively simple, it just basically casts the input arguments to the types suitable for <code>SYSC_read</code>.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">#define __SC_CAST(t, a) (t) a
+</code></pre></div>
+<p>So <code>SyS_read</code> calls <code>SYSC_read</code>, then saves the result in <code>ret</code>. In the next line, we have</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">__MAP(x,__SC_TEST,__VA_ARGS__);
+</code></pre></div>
+<p>Following that macro in the code, we have</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">#define __SC_TEST(t, a) (void)BUILD_BUG_ON_ZERO(!__TYPE_IS_LL(t) &amp;&amp; sizeof(t) &gt; sizeof(long))
+</code></pre></div>
+<p><code>BUILD_BUG_ON_ZERO</code> is pretty interesting. This <a href="http://stackoverflow.com/questions/9229601/what-is-in-c-code">stackoverflow question</a> has a really good explanation of what this does.</p>
+
+<p><code>BUILD_BUG_ON_ZERO</code> is, I <a href="http://stackoverflow.com/questions/9229601/what-is-in-c-code">quote</a>, &quot;a way to check whether the expression e can be evaluated to be 0, and if not, to fail the build.&quot;</p>
+
+<p>So the line</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">__MAP(x,__SC_TEST,__VA_ARGS__);
+</code></pre></div>
+<p>tests the type of each argument. After applying de Morgan&#39;s theorem (because of <code>ON_ZERO</code> in <code>BUILD_BUG_ON_ZERO</code>), each argument must either be of type <code>long long</code>, or have a bitwidth less than or equal to that of <code>long</code>.</p>
+
+<p>Moving on to the next line, <code>__SC_ARGS</code> basically extracts the argument and drops the type:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">#define __SC_ARGS(t, a) a
+</code></pre></div>
+<p><code>__PROTECT</code> is a macro, defined as</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">#define __PROTECT(...) asmlinkage_protect(__VA_ARGS__)
+</code></pre></div>
+<p>Its function is well-explained in the comment:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">/*
+ * Make sure the compiler doesn&#39;t do anything stupid with the
+ * arguments on the stack - they are owned by the *caller*, not
+ * the callee. This just fools gcc into not spilling into them,
+ * and keeps it from doing tailcall recursion and/or using the
+ * stack slots for temporaries, since they are live and &quot;used&quot;
+ * all the way to the end of the function.
+ *
+ * NOTE! On x86-64, all the arguments are in registers, so this
+ * only matters on a 32-bit kernel.
+ */
+#define asmlinkage_protect(n, ret, args...) \
+        __asmlinkage_protect##n(ret, ##args)
+#define __asmlinkage_protect_n(ret, args...) \
+        __asm__ __volatile__ (&quot;&quot; : &quot;=r&quot; (ret) : &quot;&quot; (ret), ##args)
+#define __asmlinkage_protect0(ret) \
+        __asmlinkage_protect_n(ret)
+#define __asmlinkage_protect1(ret, arg1) \
+        __asmlinkage_protect_n(ret, &quot;m&quot; (arg1))
+#define __asmlinkage_protect2(ret, arg1, arg2) \
+        __asmlinkage_protect_n(ret, &quot;m&quot; (arg1), &quot;m&quot; (arg2))
+#define __asmlinkage_protect3(ret, arg1, arg2, arg3) \
+        __asmlinkage_protect_n(ret, &quot;m&quot; (arg1), &quot;m&quot; (arg2), &quot;m&quot; (arg3))
+#define __asmlinkage_protect4(ret, arg1, arg2, arg3, arg4) \
+        __asmlinkage_protect_n(ret, &quot;m&quot; (arg1), &quot;m&quot; (arg2), &quot;m&quot; (arg3), \
+                              &quot;m&quot; (arg4))
+#define __asmlinkage_protect5(ret, arg1, arg2, arg3, arg4, arg5) \
+        __asmlinkage_protect_n(ret, &quot;m&quot; (arg1), &quot;m&quot; (arg2), &quot;m&quot; (arg3), \
+                              &quot;m&quot; (arg4), &quot;m&quot; (arg5))
+#define __asmlinkage_protect6(ret, arg1, arg2, arg3, arg4, arg5, arg6) \
+        __asmlinkage_protect_n(ret, &quot;m&quot; (arg1), &quot;m&quot; (arg2), &quot;m&quot; (arg3), \
+                              &quot;m&quot; (arg4), &quot;m&quot; (arg5), &quot;m&quot; (arg6))
+</code></pre></div>
+<p>So the <code>SyS_read</code> function essentially just calls <code>SYSC_read</code>, applies some compile-time checks, and returns the result.</p>
+
+<p>Finally! We&#39;re at the definition of the actual syscall.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">static inline long SYSC##name(__MAP(x,__SC_DECL,__VA_ARGS__))
+</code></pre></div>
+<p>A quick look at <code>SYSCALL_METADATA</code> shows that the macro expands to stuff used for tracing syscalls <code>#ifdef CONFIG_FTRACE_SYSCALLS</code>. </p>
+
+<p>So after all the expansion, </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">SYSCALL_DEFINE3(read, unsigned int, fd, char __user *, buf, size_t, count)
+{
+        struct fd f = fdget_pos(fd);
+        ...
+</code></pre></div>
+<p>becomes</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">... syscall metadata stuff ...
+asmlinkage long sys_read(unsigned int fd, char __user * buf, size_t count) __attribute__((alias(&quot;SyS_read&quot;)))
+static inline long SYSC_read(unsigned int fd, char __user * buf, size_t count);
+asmlinkage long SyS_read(long fd, long buf, long count);
+asmlinkage long SyS_read(long fd, long buf, long count)
+{
+    long ret = SYSC_read((unsigned int) fd, (char __user *) buf, (size_t) count);
+    ... compile-time tests for each argument ...
+    ... assembly stuff to prevent clobbering of arguments on stack ...
+    return ret;
+}
+static inline long SYSC_read(unsigned int fd, char __user * buf, size_t count)
+{
+        struct fd f = fdget_pos(fd);
+        ...
+</code></pre></div>
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
+
+<article class="hentry">
+  <header>
+    <div class="entry-meta">
       <span class="entry-date date published updated"><time datetime="2015-08-08T00:00:00+08:00"><a href="http://ackerleytng.github.io/natday-songs-wordcloud/">August 08, 2015</a></time></span><span class="author vcard"><span class="fn"><a href="http://ackerleytng.github.io/about/" title="About Ackerley Tng">Ackerley Tng</a></span></span>&nbsp; &bull; &nbsp;<span class="entry-comments"><a href="http://ackerleytng.github.io/natday-songs-wordcloud/#disqus_thread">Comment</a></span>
       
       <span class="entry-reading-time pull-right">
@@ -742,34 +980,6 @@ Environment size: 1151/131068 bytes
 <li>http://bill.station51.net/?post/2010/01/16/U-Boot-on-Mini2440</li>
 <li>http://e2e.ti.com/support/dsp/davinci<em>digital</em>media_processors/f/100/p/210595/745675</li>
 </ul>
-
-  </div><!-- /.entry-content -->
-</article><!-- /.hentry -->
-
-<article class="hentry">
-  <header>
-    <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2014-11-19T00:00:00+08:00"><a href="http://ackerleytng.github.io/fried-okra/">November 19, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://ackerleytng.github.io/about/" title="About Ackerley Tng">Ackerley Tng</a></span></span>&nbsp; &bull; &nbsp;<span class="entry-comments"><a href="http://ackerleytng.github.io/fried-okra/#disqus_thread">Comment</a></span>
-      
-      <span class="entry-reading-time pull-right">
-        <i class="fa fa-clock-o"></i>
-        
-        Reading time ~1 minute
-      </span><!-- /.entry-reading-time -->
-      
-    </div><!-- /.entry-meta -->
-    
-      <h1 class="entry-title"><a href="http://ackerleytng.github.io/fried-okra/" rel="bookmark" title="Fried Okra!" itemprop="url">Fried Okra!</a></h1>
-    
-  </header>
-  <div class="entry-content">
-    <p>First try:</p>
-
-<p><img src="http://ackerleytng.github.io/post_images/fried-okra-0.jpg" alt="fried-okra-0"></p>
-
-<p>Second try:</p>
-
-<p><img src="http://ackerleytng.github.io/post_images/fried-okra-1.jpg" alt="fried-okra-1"></p>
 
   </div><!-- /.entry-content -->
 </article><!-- /.hentry -->
