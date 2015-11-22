@@ -6,7 +6,7 @@
     
     
     <url>
-        <loc>http://ackerleytng.github.io/404.html</loc>
+        <loc>http://ackerleytng.github.io/404/</loc>
     </url>
     
     <url>
@@ -18,7 +18,7 @@
     </url>
     
     <url>
-        <loc>http://ackerleytng.github.io/index.html</loc>
+        <loc>http://ackerleytng.github.io/</loc>
     </url>
     
     <url>
@@ -34,22 +34,30 @@
     </url>
     
     <url>
-        <loc>http://ackerleytng.github.io/page2/index.html</loc>
+        <loc>http://ackerleytng.github.io/page2/</loc>
     </url>
     
     <url>
-        <loc>http://ackerleytng.github.io/page3/index.html</loc>
+        <loc>http://ackerleytng.github.io/page3/</loc>
     </url>
     
     <url>
-        <loc>http://ackerleytng.github.io/page4/index.html</loc>
+        <loc>http://ackerleytng.github.io/page4/</loc>
     </url>
     
     <url>
-        <loc>http://ackerleytng.github.io/page5/index.html</loc>
+        <loc>http://ackerleytng.github.io/page5/</loc>
+    </url>
+    
+    <url>
+        <loc>http://ackerleytng.github.io/page6/</loc>
     </url>
     
 
+    
+    <url>
+        <loc>http://ackerleytng.github.io/new-project-common-lisp/</loc>
+    </url>
     
     <url>
         <loc>http://ackerleytng.github.io/syscall_define/</loc>

@@ -16,7 +16,7 @@
 <meta property="og:type" content="article">
 <meta property="og:title" content="Latest Posts">
 <meta property="og:description" content="Listing of Posts.">
-<meta property="og:url" content="http://ackerleytng.github.io/index.html">
+<meta property="og:url" content="http://ackerleytng.github.io/">
 <meta property="og:site_name" content="Ackerley's Blog">
 
 
@@ -119,6 +119,124 @@
 
 <div id="main" role="main">
   
+<article class="hentry">
+  <header>
+    <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2015-11-22T00:00:00+08:00"><a href="http://ackerleytng.github.io/new-project-common-lisp/">November 22, 2015</a></time></span><span class="author vcard"><span class="fn"><a href="http://ackerleytng.github.io/about/" title="About Ackerley Tng">Ackerley Tng</a></span></span>&nbsp; &bull; &nbsp;<span class="entry-comments"><a href="http://ackerleytng.github.io/new-project-common-lisp/#disqus_thread">Comment</a></span>
+      
+      <span class="entry-reading-time pull-right">
+        <i class="fa fa-clock-o"></i>
+        
+        Reading time ~3 minutes
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="http://ackerleytng.github.io/new-project-common-lisp/" rel="bookmark" title="Starting a new project in Common Lisp" itemprop="url">Starting a new project in Common Lisp</a></h1>
+    
+  </header>
+  <div class="entry-content">
+    <p>Is it fair to say that there aren&#39;t that many up-to-date books for common lisp that would help a beginner who doesn&#39;t want to start with a prebuilt environment?</p>
+
+<p>I want to try and set up as much of my own environment as possible because</p>
+
+<ul>
+<li>I don&#39;t want to download multiple environments for my computer</li>
+<li>I want to know how the environment was set up so that I will know how to replicate it</li>
+</ul>
+
+<p>There are many good books but a lot of them use old syntax, or they don&#39;t explain how to work with quicklisp...</p>
+
+<p>The Common Lisp world feels fragmented because there are so many ways to do things, and many guides (if the guides exist) assume a certain setup. This makes the guide difficult to follow if you don&#39;t want to start at the beginning. I think this is probably a side effect of the power of lisp - people can build entire environments on their own, and they become so used to it that they forget what it is like for a beginner. These people are the ones who write books, so that makes it really difficult to understand for a beginner.</p>
+
+<p>Anyway.</p>
+
+<h1>Setup</h1>
+
+<p>So quicklisp is like a package manager for existing lisp projects. It&#39;s something like gems for ruby and pip for python. You need it. <a href="https://www.quicklisp.org/beta/">Install it from here.</a> If you don&#39;t need the package vecto you can skip all the vecto stuff, but remember this <code>(ql:add-to-init-file)</code>. We want quicklisp to autostart with sbcl.</p>
+
+<p>Then, we want to enable asdf in slime, in emacs. Go to your <code>.emacs</code> file, make sure you see <code>slime-asdf</code> in this list:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">(setq slime-contribs &#39;(slime-fancy slime-asdf))
+</code></pre></div>
+<p>This will enable <code>slime-load-system</code> later to load <code>.asd</code> files.</p>
+
+<h1>How to start programming</h1>
+
+<p>Start sbcl, then first load quickproject with quicklisp, then use quickproject to make your project.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">$ sbcl
+This is SBCL 1.3.0, an implementation of ANSI Common Lisp.
+More information about SBCL is available at &lt;http://www.sbcl.org/&gt;.
+
+SBCL is free software, provided as is, with absolutely no warranty.
+It is mostly in the public domain; some portions are provided under
+BSD-style licenses.  See the CREDITS and COPYING files in the
+distribution for more information.
+* (ql:quickload :quickproject)
+To load &quot;quickproject&quot;:
+  Load 1 ASDF system:
+    quickproject
+; Loading &quot;quickproject&quot;
+
+(:QUICKPROJECT)
+* (quickproject:make-project #p&quot;~/src/test/&quot; :depends-on &#39;(cl-ppcre))
+
+&quot;myproject&quot;
+</code></pre></div>
+<p>That creates a project in <code>~/src/test/</code> and makes it depend on <code>cl-ppcre</code>.</p>
+
+<p>I think of <code>quickproject</code> as something like <code>rails new &lt;project&gt;</code>. It builds you a skeleton. This is the skeleton.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">$ ls
+README.txt   package.lisp test.asd     test.lisp
+</code></pre></div>
+<p>I think <code>package.lisp</code> is like a C header file, except that it is all headers in one.</p>
+
+<p><code>test.asd</code> is like a <code>Gemfile</code>, which defines the packages, the files, the dependencies.</p>
+
+<p><code>test.lisp</code> is where you want to be programming in.</p>
+
+<p>Now open <code>test.asd</code> in emacs.</p>
+
+<p>The repl should start on it&#39;s own, presenting you with a <code>CL-USER&gt;</code> prompt. <code>CL-USER</code> is actually the package that you&#39;re currently working in.</p>
+
+<p>I&#39;ll add something to <code>test.lisp</code> so we can test it.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">(defun hello-world ()
+  &#39;hello-world)
+</code></pre></div>
+<p>Compile <code>test.asd</code>. With your cursor in <code>test.asd</code>&#39;s frame, press <code>C-c C-k</code>. Then load the system using <code>M-x slime-load-system</code> and then pick <code>test</code> as the system to load. Now go over to the repl frame, and then you want to switch to the package that you&#39;re working on. Pick one of two ways:</p>
+
+<ul>
+<li>type <code>(in-package :test)</code> at the repl</li>
+<li>press <code>,</code> at the prompt to use slime shortcuts, then type either 
+
+<ul>
+<li><code>!p</code></li>
+<li><code>change-package</code></li>
+</ul></li>
+</ul>
+
+<p>Now in the repl frame,</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">TEST&gt; (hello-world)
+HELLO-WORLD
+</code></pre></div>
+<p>Now I want to start using <code>cl-ppcre</code>.</p>
+
+<p>Go to <code>package.lisp</code>, modify the form to look like this</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">(defpackage #:test
+  (:use #:cl #:cl-ppcre))
+</code></pre></div>
+<p>Then go to <code>test.lisp</code> and add the following</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">(defun my-scan ()
+  (scan &quot;(a)*b&quot; &quot;xaaabd&quot;))
+</code></pre></div>
+<p>Now do <code>M-x slime-reload-system</code>.</p>
+
+<p>In the repl, try <code>(my-scan)</code>.</p>
+
+<p>That should not produce an error. :)</p>
+
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
+
 <article class="hentry">
   <header>
     <div class="entry-meta">
@@ -665,325 +783,6 @@ mtddevname=u-boot
   </div><!-- /.entry-content -->
 </article><!-- /.hentry -->
 
-<article class="hentry">
-  <header>
-    <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2015-04-05T00:00:00+08:00"><a href="http://ackerleytng.github.io/linux-mini2440/">April 05, 2015</a></time></span><span class="author vcard"><span class="fn"><a href="http://ackerleytng.github.io/about/" title="About Ackerley Tng">Ackerley Tng</a></span></span>&nbsp; &bull; &nbsp;<span class="entry-comments"><a href="http://ackerleytng.github.io/linux-mini2440/#disqus_thread">Comment</a></span>
-      
-      <span class="entry-reading-time pull-right">
-        <i class="fa fa-clock-o"></i>
-        
-        Reading time ~7 minutes
-      </span><!-- /.entry-reading-time -->
-      
-    </div><!-- /.entry-meta -->
-    
-      <h1 class="entry-title"><a href="http://ackerleytng.github.io/linux-mini2440/" rel="bookmark" title="Putting Linux on mini2440" itemprop="url">Putting Linux on mini2440</a></h1>
-    
-  </header>
-  <div class="entry-content">
-    <p>I hope to make this</p>
-
-<ul>
-<li>Pain free</li>
-<li>As close to first principles as possible so when new versions come out you can still follow this guide</li>
-</ul>
-
-<h2>Building the kernel and root file system</h2>
-
-<p>I grabbed the latest version of buildroot off http://buildroot.uclibc.org/downloads/.</p>
-
-<p>The version I got was <code>2015.02</code>. I managed to get Linux 3.18.6 working on the mini2440, but you might want the newest version at the point you&#39;re doing this.</p>
-
-<p>Untar the tarball and go to the extracted directory.</p>
-
-<p>Type <code>make menuconfig</code>.</p>
-
-<p>I tried using the mini2440 defconfig (as in default config), but I kinda tried so many different things that I don&#39;t know which of those are still valid. If you&#39;d like to try the mini2440 defconfig, or at least use that as a starting point, go to <code>&lt; Load &gt;</code> and load <code>configs/mini2440_defconfig</code>.</p>
-
-<p>If not, here&#39;s my final configuration.</p>
-
-<ul>
-<li>Target Architecture: ARM (little endian)</li>
-<li>Target Binary Format: ELF</li>
-<li>Target Architecture Variant: arm920t</li>
-<li>Target ABI: EABI</li>
-<li>Floating point strategy: Soft float</li>
-<li>ARM instruction set: ARM</li>
-</ul>
-
-<p>I changed the <code>System hostname</code> and <code>System banner</code> in <code>System configuration</code>, but those are cosmetic.</p>
-
-<p>For Linux kernel configuration, I used a defconfig, and the name of the defconfig is <code>mini2440</code>.</p>
-
-<p>I am using <code>uImage</code> for the <code>Kernel binary format</code></p>
-
-<p>As for filesystem, I selected <code>initial RAM filesystem linked into linux kernel</code></p>
-
-<p>I also selected <code>jffs2 root filesystem</code> and for <code>Flash Type</code>, I selected <code>NAND flash with 2kB Page and 128 kB erasesize</code></p>
-
-<p>This version of buildroot doesn&#39;t build U-Boot properly due to a missing defconfig, so I did not select any bootloader.</p>
-
-<p>Then...</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">make
-</code></pre></div>
-<h1>Putting U-boot on mini2440</h1>
-
-<p>I got a compiled version of U-boot from http://www.mech.tohoku-gakuin.ac.jp/rde/contents/tech/mini2440/archive/u-boot_20100701.zip, but just in case that file disappears, <a href="/post_downloads/u-boot_20100701.zip">u-boot_20100701.zip</a>.</p>
-
-<p>This zip file contains two tools that you might need to transfer files over USB to the mini2440. After you extract the files in the archive, they will be in the <code>tools/</code> directory. I don&#39;t think there is a difference between <code>s3c2410_boot_usb</code> and <code>usbpush</code>.</p>
-
-<h2>Hardware connections</h2>
-
-<ul>
-<li>Connect the mini2440 to power</li>
-<li>Connect the mini2440 to a USB port on your Linux PC using a Type A (male) to Type B (male) USB cable</li>
-<li>Connect the mini2440 to a serial port on your Linux PC using a serial cable</li>
-</ul>
-
-<p>Start minicom</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">sudo minicom -s
-</code></pre></div>
-<p>Here are my settings</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">    +-----------------------------------------------------------------------+
-    | A -    Serial Device      : /dev/ttyS0                                |
-    | B - Lockfile Location     : /var/lock                                 |
-    | C -   Callin Program      :                                           |
-    | D -  Callout Program      :                                           |
-    | E -    Bps/Par/Bits       : 115200 8N1                                |
-    | F - Hardware Flow Control : No                                        |
-    | G - Software Flow Control : No                                        |
-    |                                                                       |
-    |    Change which setting?                                              |
-    +-----------------------------------------------------------------------+
-            | Screen and keyboard      |
-            | Save setup as dfl        |
-            | Save setup as..          |
-            | Exit                     |
-            | Exit from Minicom        |
-            +--------------------------+
-</code></pre></div>
-<p>If you set the NAND/NOR switch on the mini2440 to NOR and power up the mini2440, you should see something like this:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">##### FriendlyARM BIOS 2.0 for 2440 #####
-[x] format NAND FLASH for Linux
-[v] Download vivi
-[k] Download linux kernel
-[y] Download root_yaffs image
-[a] Absolute User Application
-[n] Download Nboot for WinCE
-[l] Download WinCE boot-logo
-[w] Download WinCE NK.bin
-[d] Download &amp; Run
-[z] Download zImage into RAM
-[g] Boot linux from RAM
-[f] Format the nand flash
-[b] Boot the system
-[s] Set the boot parameters
-[u] Backup NAND Flash to HOST through USB(upload)
-[r] Restore NAND Flash from HOST through USB
-[q] Goto shell of vivi
-Enter your selection:
-</code></pre></div>
-<h2>Conceptually,</h2>
-
-<p>You want to put U-Boot, a bootloader, into NAND flash, which will then load your linux kernel, which would in turn load your root filesystem.</p>
-
-<p>Here&#39;s the final layout you want to achieve</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">MINI2440 # mtdparts
-
-device nand0 &lt;mini2440-nand&gt;, # parts = 4
- #: name                        size            offset          mask_flags
- 0: u-boot              0x00040000      0x00000000      0
- 1: u-boot_env          0x00020000      0x00040000      0
- 2: kernel              0x00500000      0x00060000      0
- 3: rootfs              0x0faa0000      0x00560000      0
-
-active partition: nand0,0 - (u-boot) 0x00040000 @ 0x00000000
-
-defaults:
-mtdids  : nand0=mini2440-nand
-mtdparts: &lt;NULL&gt;
-</code></pre></div>
-<h2>Putting U-Boot into NAND flash</h2>
-
-<p>In this section, you&#39;re going to first put U-Boot onto mini2440&#39;s ram, and then run U-Boot from ram to make it do some cleanup, and then get U-Boot to copy itself into NAND flash.</p>
-
-<p>Ask mini2440 to receive U-Boot:</p>
-
-<p>In minicom:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">##### FriendlyARM BIOS 2.0 for 2440 #####
-[x] format NAND FLASH for Linux
-[v] Download vivi
-[k] Download linux kernel
-[y] Download root_yaffs image
-[a] Absolute User Application
-[n] Download Nboot for WinCE
-[l] Download WinCE boot-logo
-[w] Download WinCE NK.bin
-[d] Download &amp; Run
-[z] Download zImage into RAM
-[g] Boot linux from RAM
-[f] Format the nand flash
-[b] Boot the system
-[s] Set the boot parameters
-[u] Backup NAND Flash to HOST through USB(upload)
-[r] Restore NAND Flash from HOST through USB
-[q] Goto shell of vivi
-Enter your selection:
-</code></pre></div>
-<p>Press <code>q</code></p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">Supervivi&gt; load ram &lt;destination-address-in-ram&gt; &lt;size-to-transfer&gt; u
-</code></pre></div>
-<p>What I used:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">Supervivi&gt; load ram 0x32000000 242360 u
-</code></pre></div>
-<p>Send U-Boot over USB to mini2440. I used <code>u-boot-256M.bin</code>, because my mini2440 had a flash size of 256M. Many sites say that there should be no difference between using <code>u-boot-256M.bin</code> and <code>u-boot-128M.bin</code>, but I used <code>u-boot-256M.bin</code> anyway. On Linux PC:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">$ sudo ./tools/s3c2410_boot_usb u-boot_20100701/u-boot-256M.bin
-</code></pre></div>
-<p>(Ignore the error if you get one)</p>
-
-<p>Start U-Boot</p>
-
-<p>In minicom:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">Supervivi&gt; go 0x32000000
-</code></pre></div>
-<p>Clear everything in NAND flash</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">MINI2440 # nand scrub
-</code></pre></div>
-<p>Create bad block table (This took quite a while for me, be patient)</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">MINI2440 # nand createbbt
-</code></pre></div>
-<p>Create/view partitions</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">MINI2440 # mtdparts
-</code></pre></div>
-<p>Write uboot to NAND flash. You have some options here.</p>
-
-<p>Raw write, doesn&#39;t look for bad blocks, data might get written to bad block. This will copy the full size of the nand partition, beginning with the address in ram provided.
-<code>
-MINI2440 # nand write &lt;address-in-ram-in-hex&gt; &lt;partition-in-nand&gt;
-</code></p>
-
-<p>Write, taking into account bad blocks
-<code>
-MINI2440 # nand write.e &lt;source-in-hex&gt; &lt;destination-in-hex&gt; &lt;bytes-to-write-in-hex&gt;
-</code></p>
-
-<p>I used</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">MINI2440 # nand write 0x32000000 u-boot
-</code></pre></div>
-<p>Partition the NAND</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">MINI2440# dynpart
-</code></pre></div>
-<p>Create the dynamic environment space for u-boot</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">MINI2440# dynenv set u-boot_env
-</code></pre></div>
-<p>Save the environment to NAND.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">MINI2440# saveenv
-</code></pre></div>
-<p>Switch off the mini2440, flip the NAND/NOR switch to NAND, and switch on the mini2440.</p>
-
-<p>You should get to a <code>MINI2440#</code> prompt. If you don&#39;t, try pressing enter a few times in minicom, the prompt might show up then.</p>
-
-<h2>Transferring uImage into NAND flash</h2>
-
-<p>I transferred using tftp, but you might be able to do it using USB like above.</p>
-
-<p>Find the address of the kernel partition:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">MINI2440 # mtdparts
-
-device nand0 &lt;mini2440-nand&gt;, # parts = 4
- #: name                        size            offset          mask_flags
- 0: u-boot              0x00040000      0x00000000      0
- 1: u-boot_env          0x00020000      0x00040000      0
- 2: kernel              0x00500000      0x00060000      0
- 3: rootfs              0x0faa0000      0x00560000      0
-
-active partition: nand0,0 - (u-boot) 0x00040000 @ 0x00000000
-
-defaults:
-mtdids  : nand0=mini2440-nand
-mtdparts: &lt;NULL&gt;
-</code></pre></div>
-<p>Erase the kernel partition:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">MINI2440# nand erase 60000 500000
-</code></pre></div>
-<p>Set up your network. I connected the mini2440 to my router, and the Linux PC to the router at 192.168.1.50</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">MINI2440# setenv ipaddr 192.168.1.60
-MINI2440# setenv serverip 192.168.1.50
-</code></pre></div>
-<p>Download uImage from Linux PC over LAN into RAM, at 0x32000000 again. First place <code>uImage</code> into <code>/tftpboot</code> (Google how to set up tftp).</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">MINI2440# tftp 32000000 uImage
-</code></pre></div>
-<p>Copy uImage from ram into NAND</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">MINI2440# nand write.e 32000000 60000 &lt;size-of-uImage-in-hex&gt;
-</code></pre></div>
-<p>Set the boot command to load kernel image from NAND flash.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">MINI2440# setenv bootcmd &#39;nboot.e kernel;bootm&#39;
-MINI2440# saveenv
-</code></pre></div>
-<p>Power cycle the mini2440, and it should boot into Linux.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">Loading from NAND 256MiB 3,3V 8-bit, offset 0x60000
-   Image Name:   Linux-3.18.6
-   Created:      2015-04-05   4:34:50 UTC
-   Image Type:   ARM Linux Kernel Image (uncompressed)
-   Data Size:    5350896 Bytes =  5.1 MB
-   Load Address: 30008000
-   Entry Point:  30008000
-## Booting kernel from Legacy Image at 32000000 ...
-   Image Name:   Linux-3.18.6
-   Created:      2015-04-05   4:34:50 UTC
-   Image Type:   ARM Linux Kernel Image (uncompressed)
-   Data Size:    5350896 Bytes =  5.1 MB
-   Load Address: 30008000
-   Entry Point:  30008000
-   Verifying Checksum ... OK
-   Loading Kernel Image ...
-...
-</code></pre></div>
-<h2>Here&#39;s my entire U-Boot environment, just in case...</h2>
-<div class="highlight"><pre><code class="language-text" data-lang="text">MINI2440 # printenv
-bootargs=root=/dev/mtdblock3 rootfstype=jffs2 console=ttySAC0,115200
-bootdelay=3
-baudrate=115200
-ethaddr=08:08:11:18:12:27
-netmask=255.255.255.0
-usbtty=cdc_acm
-mini2440=mini2440=0tb
-bootargs_base=console=ttySAC0,115200 noinitrd
-bootargs_init=init=/sbin/init
-root_nand=root=/dev/mtdblock3 rootfstype=jffs2
-root_mmc=root=/dev/mmcblk0p2 rootdelay=2
-root_nfs=/mnt/nfs
-set_root_nfs=setenv root_nfs root=/dev/nfs rw nfsroot=${serverip}:${root_nfs}
-ifconfig_static=run setenv ifconfig ip=${ipaddr}:${serverip}::${netmask}:mini2440:eth0
-ifconfig_dhcp=run setenv ifconfig ip=dhcp
-ifconfig=ip=dhcp
-set_bootargs_mmc=setenv bootargs ${bootargs_base} ${bootargs_init} ${mini2440} ${root_mmc}
-set_bootargs_nand=setenv bootargs ${bootargs_base} ${bootargs_init} ${mini2440} ${root_nand}
-set_bootargs_nfs=run set_root_nfs; setenv bootargs ${bootargs_base} ${bootargs_init} ${mini2440} ${root_nfs} ${ifconfig}
-mtdids=nand0=mini2440-nand
-mtdparts=mtdparts=mini2440-nand:0x00040000(u-boot),0x00020000(u-boot_env),0x00500000(kernel),0x0faa0000(rootfs)
-bootcmd=nboot.e kernel;bootm
-ipaddr=192.168.1.60
-serverip=192.168.1.50
-partition=nand0,0
-mtddevnum=0
-mtddevname=u-boot
-
-Environment size: 1151/131068 bytes
-</code></pre></div>
-<h1>References</h1>
-
-<ul>
-<li>http://geekwentfreak-raviteja.rhcloud.com/blog/2010/07/27/flashing-uboot-onto-nand-mini2440/</li>
-<li>http://geekwentfreak-raviteja.rhcloud.com/blog/2010/09/19/mini2440-flashing-linux-uimage-into-nand/</li>
-<li>http://bill.station51.net/?post/2010/01/16/U-Boot-on-Mini2440</li>
-<li>http://e2e.ti.com/support/dsp/davinci<em>digital</em>media_processors/f/100/p/210595/745675</li>
-</ul>
-
-  </div><!-- /.entry-content -->
-</article><!-- /.hentry -->
-
 
 <div class="pagination">
   
@@ -1017,6 +816,12 @@ Environment size: 1151/131068 bytes
       <li>
         
           <a href="http://ackerleytng.github.io/page5">5</a>
+        
+      </li>
+    
+      <li>
+        
+          <a href="http://ackerleytng.github.io/page6">6</a>
         
       </li>
     

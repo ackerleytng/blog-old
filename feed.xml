@@ -4,13 +4,127 @@
 <generator uri="https://github.com/mojombo/jekyll">Jekyll</generator>
 <link rel="self" type="application/atom+xml" href="http://ackerleytng.github.io/feed.xml" />
 <link rel="alternate" type="text/html" href="http://ackerleytng.github.io" />
-<updated>2015-11-08T12:38:36+08:00</updated>
+<updated>2015-11-22T09:18:58+08:00</updated>
 <id>http://ackerleytng.github.io/</id>
 <author>
   <name>Ackerley Tng</name>
   <uri>http://ackerleytng.github.io/</uri>
   <email>ackerleytng@gmail.com</email>
 </author>
+
+
+<entry>
+  <title type="html"><![CDATA[Starting a new project in Common Lisp]]></title>
+ <link rel="alternate" type="text/html" href="http://ackerleytng.github.io/new-project-common-lisp/" />
+  <id>http://ackerleytng.github.io/new-project-common-lisp</id>
+  <updated>2015-11-22T00:00:00-00:00</updated>
+  <published>2015-11-22T00:00:00+08:00</published>
+  
+  <author>
+    <name>Ackerley Tng</name>
+    <uri>http://ackerleytng.github.io</uri>
+    <email>ackerleytng@gmail.com</email>
+  </author>
+  <content type="html">&lt;p&gt;Is it fair to say that there aren&amp;#39;t that many up-to-date books for common lisp that would help a beginner who doesn&amp;#39;t want to start with a prebuilt environment?&lt;/p&gt;
+
+&lt;p&gt;I want to try and set up as much of my own environment as possible because&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;I don&amp;#39;t want to download multiple environments for my computer&lt;/li&gt;
+&lt;li&gt;I want to know how the environment was set up so that I will know how to replicate it&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;There are many good books but a lot of them use old syntax, or they don&amp;#39;t explain how to work with quicklisp...&lt;/p&gt;
+
+&lt;p&gt;The Common Lisp world feels fragmented because there are so many ways to do things, and many guides (if the guides exist) assume a certain setup. This makes the guide difficult to follow if you don&amp;#39;t want to start at the beginning. I think this is probably a side effect of the power of lisp - people can build entire environments on their own, and they become so used to it that they forget what it is like for a beginner. These people are the ones who write books, so that makes it really difficult to understand for a beginner.&lt;/p&gt;
+
+&lt;p&gt;Anyway.&lt;/p&gt;
+
+&lt;h1&gt;Setup&lt;/h1&gt;
+
+&lt;p&gt;So quicklisp is like a package manager for existing lisp projects. It&amp;#39;s something like gems for ruby and pip for python. You need it. &lt;a href=&quot;https://www.quicklisp.org/beta/&quot;&gt;Install it from here.&lt;/a&gt; If you don&amp;#39;t need the package vecto you can skip all the vecto stuff, but remember this &lt;code&gt;(ql:add-to-init-file)&lt;/code&gt;. We want quicklisp to autostart with sbcl.&lt;/p&gt;
+
+&lt;p&gt;Then, we want to enable asdf in slime, in emacs. Go to your &lt;code&gt;.emacs&lt;/code&gt; file, make sure you see &lt;code&gt;slime-asdf&lt;/code&gt; in this list:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;(setq slime-contribs &amp;#39;(slime-fancy slime-asdf))
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;This will enable &lt;code&gt;slime-load-system&lt;/code&gt; later to load &lt;code&gt;.asd&lt;/code&gt; files.&lt;/p&gt;
+
+&lt;h1&gt;How to start programming&lt;/h1&gt;
+
+&lt;p&gt;Start sbcl, then first load quickproject with quicklisp, then use quickproject to make your project.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;$ sbcl
+This is SBCL 1.3.0, an implementation of ANSI Common Lisp.
+More information about SBCL is available at &amp;lt;http://www.sbcl.org/&amp;gt;.
+
+SBCL is free software, provided as is, with absolutely no warranty.
+It is mostly in the public domain; some portions are provided under
+BSD-style licenses.  See the CREDITS and COPYING files in the
+distribution for more information.
+* (ql:quickload :quickproject)
+To load &amp;quot;quickproject&amp;quot;:
+  Load 1 ASDF system:
+    quickproject
+; Loading &amp;quot;quickproject&amp;quot;
+
+(:QUICKPROJECT)
+* (quickproject:make-project #p&amp;quot;~/src/test/&amp;quot; :depends-on &amp;#39;(cl-ppcre))
+
+&amp;quot;myproject&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;That creates a project in &lt;code&gt;~/src/test/&lt;/code&gt; and makes it depend on &lt;code&gt;cl-ppcre&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;I think of &lt;code&gt;quickproject&lt;/code&gt; as something like &lt;code&gt;rails new &amp;lt;project&amp;gt;&lt;/code&gt;. It builds you a skeleton. This is the skeleton.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;$ ls
+README.txt   package.lisp test.asd     test.lisp
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;I think &lt;code&gt;package.lisp&lt;/code&gt; is like a C header file, except that it is all headers in one.&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;test.asd&lt;/code&gt; is like a &lt;code&gt;Gemfile&lt;/code&gt;, which defines the packages, the files, the dependencies.&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;test.lisp&lt;/code&gt; is where you want to be programming in.&lt;/p&gt;
+
+&lt;p&gt;Now open &lt;code&gt;test.asd&lt;/code&gt; in emacs.&lt;/p&gt;
+
+&lt;p&gt;The repl should start on it&amp;#39;s own, presenting you with a &lt;code&gt;CL-USER&amp;gt;&lt;/code&gt; prompt. &lt;code&gt;CL-USER&lt;/code&gt; is actually the package that you&amp;#39;re currently working in.&lt;/p&gt;
+
+&lt;p&gt;I&amp;#39;ll add something to &lt;code&gt;test.lisp&lt;/code&gt; so we can test it.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;(defun hello-world ()
+  &amp;#39;hello-world)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Compile &lt;code&gt;test.asd&lt;/code&gt;. With your cursor in &lt;code&gt;test.asd&lt;/code&gt;&amp;#39;s frame, press &lt;code&gt;C-c C-k&lt;/code&gt;. Then load the system using &lt;code&gt;M-x slime-load-system&lt;/code&gt; and then pick &lt;code&gt;test&lt;/code&gt; as the system to load. Now go over to the repl frame, and then you want to switch to the package that you&amp;#39;re working on. Pick one of two ways:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;type &lt;code&gt;(in-package :test)&lt;/code&gt; at the repl&lt;/li&gt;
+&lt;li&gt;press &lt;code&gt;,&lt;/code&gt; at the prompt to use slime shortcuts, then type either 
+
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;!p&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;change-package&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Now in the repl frame,&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;TEST&amp;gt; (hello-world)
+HELLO-WORLD
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Now I want to start using &lt;code&gt;cl-ppcre&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;Go to &lt;code&gt;package.lisp&lt;/code&gt;, modify the form to look like this&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;(defpackage #:test
+  (:use #:cl #:cl-ppcre))
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Then go to &lt;code&gt;test.lisp&lt;/code&gt; and add the following&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;(defun my-scan ()
+  (scan &amp;quot;(a)*b&amp;quot; &amp;quot;xaaabd&amp;quot;))
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Now do &lt;code&gt;M-x slime-reload-system&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;In the repl, try &lt;code&gt;(my-scan)&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;That should not produce an error. :)&lt;/p&gt;
+
+  &lt;p&gt;&lt;a href=&quot;http://ackerleytng.github.io/new-project-common-lisp/&quot;&gt;Starting a new project in Common Lisp&lt;/a&gt; was originally published by Ackerley Tng at &lt;a href=&quot;http://ackerleytng.github.io&quot;&gt;Ackerley's Blog&lt;/a&gt; on November 22, 2015.&lt;/p&gt;</content>
+</entry>
 
 
 <entry>
@@ -1802,31 +1916,6 @@ alias mysqlstart=&amp;quot;sudo /opt/local/lib/mysql56/bin/mysqld_safe &amp;amp;
 alias mysqlstop=&amp;quot;mysqladmin -u root -p shutdown&amp;quot;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
   &lt;p&gt;&lt;a href=&quot;http://ackerleytng.github.io/web-server-setup/&quot;&gt;Web Server Setup on my Mac&lt;/a&gt; was originally published by Ackerley Tng at &lt;a href=&quot;http://ackerleytng.github.io&quot;&gt;Ackerley's Blog&lt;/a&gt; on July 17, 2014.&lt;/p&gt;</content>
-</entry>
-
-
-<entry>
-  <title type="html"><![CDATA[Setting up OpenSSH on CrunchBang Linux]]></title>
- <link rel="alternate" type="text/html" href="http://ackerleytng.github.io/setting-up-openssh/" />
-  <id>http://ackerleytng.github.io/setting-up-openssh</id>
-  <updated>2014-07-17T00:00:00-00:00</updated>
-  <published>2014-07-17T00:00:00+08:00</published>
-  
-  <author>
-    <name>Ackerley Tng</name>
-    <uri>http://ackerleytng.github.io</uri>
-    <email>ackerleytng@gmail.com</email>
-  </author>
-  <content type="html">&lt;p&gt;When installing crunchbang I&amp;#39;m pretty sure I chose to install the OpenSSH server but somehow I when I did this again, it still installed for me. Hope it isn&amp;#39;t installed twice for some stupid reason.&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;sudo apt-get install openssh-server
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;and that was it. I can ssh in from my mac after that.&lt;/p&gt;
-
-&lt;p&gt;Follow instructions from &lt;a href=&quot;http://crunchbanglinux.org/wiki/howto/ssh&quot;&gt;here&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;When setting up ssh keys, there&amp;#39;s no need to modify the sshd_config file as described on the page. It seems to work out of the box.&lt;/p&gt;
-
-  &lt;p&gt;&lt;a href=&quot;http://ackerleytng.github.io/setting-up-openssh/&quot;&gt;Setting up OpenSSH on CrunchBang Linux&lt;/a&gt; was originally published by Ackerley Tng at &lt;a href=&quot;http://ackerleytng.github.io&quot;&gt;Ackerley's Blog&lt;/a&gt; on July 17, 2014.&lt;/p&gt;</content>
 </entry>
 
 </feed>
