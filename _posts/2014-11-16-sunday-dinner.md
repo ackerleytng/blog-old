@@ -13,4 +13,4 @@ comments: true
 share: true
 ---
 
-![fried-okra-0]({{ site.url }}/post_images/pan-fried-chicken-potatoes.jpg)
+![fried-okra-0]({{ site.github.url }}/post_images/pan-fried-chicken-potatoes.jpg)

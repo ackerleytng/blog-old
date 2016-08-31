@@ -15,4 +15,4 @@ share: true
 
 This is the first step towards sewing my own bag!
 
-![pencil-case]({{ site.url }}/post_images/pencil-case.jpg)
+![pencil-case]({{ site.github.url }}/post_images/pencil-case.jpg)

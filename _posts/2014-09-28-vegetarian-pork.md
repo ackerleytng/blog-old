@@ -15,4 +15,4 @@ share: true
 
 The oxymoron. Well but this is actually eryngii mushrooms, sliced and coated with egg, stir fried.
 
-![vegetarian-pork]({{ site.url }}/post_images/vegetarian-pork.jpg)
+![vegetarian-pork]({{ site.github.url }}/post_images/vegetarian-pork.jpg)

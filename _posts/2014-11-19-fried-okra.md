@@ -15,8 +15,8 @@ share: true
 
 First try:
 
-![fried-okra-0]({{ site.url }}/post_images/fried-okra-0.jpg)
+![fried-okra-0]({{ site.github.url }}/post_images/fried-okra-0.jpg)
 
 Second try:
 
-![fried-okra-1]({{ site.url }}/post_images/fried-okra-1.jpg)
+![fried-okra-1]({{ site.github.url }}/post_images/fried-okra-1.jpg)
